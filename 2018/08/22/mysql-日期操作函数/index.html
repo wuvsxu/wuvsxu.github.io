@@ -5,19 +5,20 @@
   
 
   
-  <title>无恤</title>
+  <title>mysql 日期操作函数 DATE_ADD() DATE_SUB() Function | 无恤</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="java博客">
+  <meta name="description" content="DATE_ADD()：日期增加函数DATE_SUB()：日期减少函数  例添加15分钟到日期并返回日期：1SELECT DATE_ADD(&quot;2018-08-22 09:34:21&quot;, INTERVAL 15 MINUTE); 从日期减去10天并返回日期：1SELECT DATE_SUB(&quot;2018-08-22&quot;, INTERVAL 10 DAY); 定义和用法1234567DATE_ADD（）函数">
 <meta name="keywords" content="java">
-<meta property="og:type" content="website">
-<meta property="og:title" content="无恤">
-<meta property="og:url" content="https://wuvsxu.github.io/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql 日期操作函数 DATE_ADD() DATE_SUB() Function">
+<meta property="og:url" content="https://wuvsxu.github.io/2018/08/22/mysql-日期操作函数/index.html">
 <meta property="og:site_name" content="无恤">
-<meta property="og:description" content="java博客">
+<meta property="og:description" content="DATE_ADD()：日期增加函数DATE_SUB()：日期减少函数  例添加15分钟到日期并返回日期：1SELECT DATE_ADD(&quot;2018-08-22 09:34:21&quot;, INTERVAL 15 MINUTE); 从日期减去10天并返回日期：1SELECT DATE_SUB(&quot;2018-08-22&quot;, INTERVAL 10 DAY); 定义和用法1234567DATE_ADD（）函数">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-08-22T09:24:47.431Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="无恤">
-<meta name="twitter:description" content="java博客">
+<meta name="twitter:title" content="mysql 日期操作函数 DATE_ADD() DATE_SUB() Function">
+<meta name="twitter:description" content="DATE_ADD()：日期增加函数DATE_SUB()：日期减少函数  例添加15分钟到日期并返回日期：1SELECT DATE_ADD(&quot;2018-08-22 09:34:21&quot;, INTERVAL 15 MINUTE); 从日期减去10天并返回日期：1SELECT DATE_SUB(&quot;2018-08-22&quot;, INTERVAL 10 DAY); 定义和用法1234567DATE_ADD（）函数">
   
     <link rel="alternate" href="/atom.xml" title="无恤" type="application/atom+xml">
   
@@ -68,9 +69,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-mysql-日期操作函数" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-mysql-日期操作函数" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/08/22/mysql-日期操作函数/" class="article-date">
   <time datetime="2018-08-22T09:13:37.000Z" itemprop="datePublished">2018-08-22</time>
@@ -83,8 +82,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/08/22/mysql-日期操作函数/">mysql 日期操作函数 DATE_ADD() DATE_SUB() Function</a>
+    <h1 class="article-title" itemprop="name">
+      mysql 日期操作函数 DATE_ADD() DATE_SUB() Function
     </h1>
   
 
@@ -219,90 +218,19 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-支付遇到的问题" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/08/22/支付遇到的问题/" class="article-date">
-  <time datetime="2018-08-22T09:07:11.000Z" itemprop="datePublished">2018-08-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/08/22/支付遇到的问题/">订单支付遇到的问题</a>
-    </h1>
+    <a href="/2018/08/22/支付遇到的问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">订单支付遇到的问题</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>前提：是这样的，一笔订单下单之后，如果不支付，会处于待支付状态。而一般这个订单会有类似 30 分钟不支付自动取消订单的功能。</p>
-<p>实现：这种功能的实现，可以通过定时任务，每隔 30 秒或一分钟扫描一次。但如果集群环境下，可能定时任务会执行重复。当然我们可以通过类似操作系统 PV 操作限制同一时段只能一个定时任务执行。</p>
-<p>目标：这种情况，除了定时任务，还有没有其他好点的实现？</p>
-<p>###解决办法</p>
-<p>1.记录下单时间 。在用户访问订单的时候用超时时间和下单时间比较，如果超时就取消订单，用户主动触发。在加上定时任务，扫描表，过期订单改为取消状态。<br>优点：方法简单高效<br>缺点：用户自己触发的这种并不能即使恢复库存.<br>2.利用redis。将订单存入redis中，给订单设置过期时间（expire ）。支付时，去redis查询订单，不存在的话讲订单设置为已取消。</p>
-<p>3.延时队列。 可以 rabbitmq 实现的。AB 两个队列，A 队列设置消息过期时间，A 队列没有消费者，A 队列过期后自动转发到 B 队列，B 队列消费者进行取消队列。（此处是别人给的方案，对消息队列熟悉，等有时间研究）</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wuvsxu.github.io/2018/08/22/支付遇到的问题/" data-id="cjl4y9nts0001t0o8zgvvr9ho" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-  
-    <article id="post-wz测试文章" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/08/22/wz测试文章/" class="article-date">
-  <time datetime="2018-08-21T16:56:36.000Z" itemprop="datePublished">2018-08-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/08/22/wz测试文章/">wz测试文章</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p> 这是一篇测试文章，来自于：<a href="https://zhuanlan.zhihu.com/p/25729240" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/25729240</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wuvsxu.github.io/2018/08/22/wz测试文章/" data-id="cjl4y9ntw0002t0o8u7mqn05y" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
 
 </section>
         
