@@ -70,6 +70,126 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-excel转html在线工具" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/23/excel转html在线工具/" class="article-date">
+  <time datetime="2018-08-23T01:18:39.000Z" itemprop="datePublished">2018-08-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/23/excel转html在线工具/">excel转html在线工具</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="链接地址："><a href="#链接地址：" class="headerlink" title=" 链接地址："></a><a href="http://pressbin.com/tools/excel_to_html_table/index.html" target="_blank" rel="noopener"> 链接地址：</a></h5><hr>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在makedowm中，设计表格可能会遇到需要合并两个表格的情况，但是makedown只能制作简单的表格，这时就需要直接写成html格式。</span><br><span class="line">在朋友的提示下，找到了一个可以把excel直接转换为html的工具。</span><br><span class="line">直接从excel中复制内容进来，点击 conver进行转换，然后进行修改。</span><br></pre></td></tr></table></figure>
+<h3 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">虽然这种方法可以解决问题，但是makedown原本目的是为了让文本简洁可读高效，违背了makedown的初衷，不建议用这种方式</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wuvsxu.github.io/2018/08/23/excel转html在线工具/" data-id="cjl7dlhbq000134o8zxr0j18r" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spring-定时任务" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/23/spring-定时任务/" class="article-date">
+  <time datetime="2018-08-23T01:17:16.000Z" itemprop="datePublished">2018-08-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/23/spring-定时任务/">spring 定时任务</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>可基于注解，也可基于配置</p>
+<h2 id="1-在配置文件中配置定时任务"><a href="#1-在配置文件中配置定时任务" class="headerlink" title="1.在配置文件中配置定时任务"></a>1.在配置文件中配置定时任务</h2><h5 id="spring配置文件中，添加命名空间"><a href="#spring配置文件中，添加命名空间" class="headerlink" title="spring配置文件中，添加命名空间"></a>spring配置文件中，添加命名空间</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">在&lt;beans &gt;中添加</span><br><span class="line">xmlns:task=<span class="string">"http://www.springframework.org/schema/task"</span>  </span><br><span class="line">	http://www.springframework.org/schema/task</span><br><span class="line">	http://www.springframework.org/schema/task/spring-task-3.2.xsd</span><br></pre></td></tr></table></figure>
+<h5 id="xml添加配置"><a href="#xml添加配置" class="headerlink" title="xml添加配置"></a>xml添加配置</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 定时任务 （将类注入xml）--&gt;</span><br><span class="line">&lt;bean id=<span class="string">"jobBean"</span> class=<span class="string">"com.bxj.common.task.ClearOrderTask"</span> /&gt;</span><br><span class="line">&lt;bean id=<span class="string">"jobDetail"</span> class=<span class="string">"org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"</span>&gt;</span><br><span class="line">	&lt;property name=<span class="string">"targetObject"</span> ref=<span class="string">"jobBean"</span> /&gt;</span><br><span class="line">	&lt;!--ClearOrderTask类中需要执行的方法--&gt;</span><br><span class="line">	&lt;property name=<span class="string">"targetMethod"</span> value=<span class="string">"doClearOrder"</span> /&gt;</span><br><span class="line">	&lt;!--将并发设置为<span class="literal">false</span>--&gt;</span><br><span class="line">	&lt;property name=<span class="string">"concurrent"</span> value=<span class="string">"false"</span> /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=<span class="string">"clearOrderTrigger"</span> class=<span class="string">"org.springframework.scheduling.quartz.CronTriggerFactoryBean"</span>&gt;</span><br><span class="line">	&lt;property name=<span class="string">"jobDetail"</span> ref=<span class="string">"jobDetail"</span> /&gt;</span><br><span class="line">	&lt;!--表达式，每天晚上23点55分开始 执行一次 （可以自定义，谷歌关键词 cron表达式）  --&gt;</span><br><span class="line">	&lt;property name=<span class="string">"cronExpression"</span> value=<span class="string">"0 55 23 * * ?"</span> /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--总管理类如果将lazy-init=<span class="string">'false'</span>那么容器启动就会执行调度程序     --&gt;</span><br><span class="line">&lt;bean id=<span class="string">"orderQuertz"</span> class=<span class="string">"org.springframework.scheduling.quartz.SchedulerFactoryBean"</span> lazy-init=<span class="string">"false"</span> &gt;</span><br><span class="line">	&lt;property name=<span class="string">"triggers"</span>&gt;</span><br><span class="line">		&lt;list&gt;</span><br><span class="line">			&lt;!--作业调度器,list下可加入其他的调度器   --&gt;</span><br><span class="line">			&lt;ref bean=<span class="string">"clearOrderTrigger"</span> /&gt;</span><br><span class="line">		&lt;/list&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="执行方法"><a href="#执行方法" class="headerlink" title="执行方法"></a>执行方法</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">	public class ClearOrderTask &#123;	</span><br><span class="line">	/**</span><br><span class="line">	 * 调度任务开关</span><br><span class="line">	 */</span><br><span class="line">	@Value(<span class="string">"<span class="variable">$&#123;CLEAR_ORDER_TASK_SWITCH&#125;</span>"</span>)</span><br><span class="line">	private String CLEAR_ORDER_TASK_SWITCH;</span><br><span class="line">	@Autowired</span><br><span class="line">	private OrderInfoService orderInfoService;</span><br><span class="line">	@Autowired</span><br><span class="line">	private OrderDetailService orderDetailService;</span><br><span class="line">	@Transactional</span><br><span class="line">	public void doClearOrder() throws Exception&#123;		</span><br><span class="line">		//检查配置文件任务开关</span><br><span class="line">		<span class="keyword">if</span>( Const.TASK_SWITCH_ON.equals( CLEAR_ORDER_TASK_SWITCH ))&#123;</span><br><span class="line">			//清除订单</span><br><span class="line">            //先删除订单明细</span><br><span class="line">			orderDetailService.deleteOrderDetailByTask();</span><br><span class="line">			//再删除订单</span><br><span class="line">			orderInfoService.deleteOrderInfoByTask();;</span><br><span class="line">		&#125;	</span><br><span class="line">	&#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-注解配置定时任务"><a href="#2-注解配置定时任务" class="headerlink" title="2.注解配置定时任务"></a>2.注解配置定时任务</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class MyTask2 &#123;  </span><br><span class="line">    /**</span><br><span class="line">     * 定时计算。每天凌晨 01:00 执行一次</span><br><span class="line">     */</span><br><span class="line">    @Scheduled(cron = <span class="string">"0 0 1 * * *"</span>)</span><br><span class="line">    public void <span class="function"><span class="title">show</span></span>() &#123;</span><br><span class="line">        System.out.println(<span class="string">"show method 2"</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">      </span><br><span class="line">    /**</span><br><span class="line">     * 启动时执行一次，之后每隔2秒执行一次  </span><br><span class="line">     */</span><br><span class="line">    @Scheduled(fixedRate = 1000*2)   </span><br><span class="line">    public void <span class="function"><span class="title">print</span></span>() &#123;  </span><br><span class="line">        System.out.println(<span class="string">"print method 2"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="定时任务和cron表达式相关链接"><a href="#定时任务和cron表达式相关链接" class="headerlink" title="定时任务和cron表达式相关链接"></a>定时任务和cron表达式相关链接</h3><pre><code>[参考链接](https://www.jianshu.com/p/25c601f43552)
+[在线cron表达式生成器](http://cron.qqe2.com/)
+[cron表达式详解]( https://www.cnblogs.com/liuyitian/p/4108391.html)
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wuvsxu.github.io/2018/08/23/spring-定时任务/" data-id="cjl7dlhbw000334o81dxj9md3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-chrome-上传下载时卡死问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/23/chrome-上传下载时卡死问题/" class="article-date">
+  <time datetime="2018-08-22T16:50:41.000Z" itemprop="datePublished">2018-08-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/23/chrome-上传下载时卡死问题/">chrome 上传下载时卡死问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="原因和解决办法"><a href="#原因和解决办法" class="headerlink" title="原因和解决办法"></a>原因和解决办法</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">搜狗输入法与chrome冲突，搜狗卸载重新安装就好了。</span><br></pre></td></tr></table></figure>
+<h4 id="近期遇到这种问题，将chrome重新安装了好多次都没用。装成低版本的chrome时就好了，但是因为版本太低，好多插件不起效，用起来还是蛋疼。"><a href="#近期遇到这种问题，将chrome重新安装了好多次都没用。装成低版本的chrome时就好了，但是因为版本太低，好多插件不起效，用起来还是蛋疼。" class="headerlink" title="近期遇到这种问题，将chrome重新安装了好多次都没用。装成低版本的chrome时就好了，但是因为版本太低，好多插件不起效，用起来还是蛋疼。"></a>近期遇到这种问题，将chrome重新安装了好多次都没用。装成低版本的chrome时就好了，但是因为版本太低，好多插件不起效，用起来还是蛋疼。</h4><h4 id="然后在网上找原因时，看到有说可能与搜狗有关系，卸载搜狗后，chrome恢复正常，-重新安装成新版本的搜狗后，问题解决"><a href="#然后在网上找原因时，看到有说可能与搜狗有关系，卸载搜狗后，chrome恢复正常，-重新安装成新版本的搜狗后，问题解决" class="headerlink" title="然后在网上找原因时，看到有说可能与搜狗有关系，卸载搜狗后，chrome恢复正常， 重新安装成新版本的搜狗后，问题解决"></a>然后在网上找原因时，看到有说可能与搜狗有关系，卸载搜狗后，chrome恢复正常， 重新安装成新版本的搜狗后，问题解决</h4><p> <a href="http://tieba.baidu.com/p/5782771456?traceid=" target="_blank" rel="noopener">参考地址</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wuvsxu.github.io/2018/08/23/chrome-上传下载时卡死问题/" data-id="cjl7dlhbi000034o8kfc9w3oq" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-mysql-日期操作函数" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/08/22/mysql-日期操作函数/" class="article-date">
@@ -95,29 +215,8 @@
         <p>DATE_ADD()：日期增加函数<br>DATE_SUB()：日期减少函数 </p>
 <h3 id="例"><a href="#例" class="headerlink" title="例"></a>例</h3><p>添加15分钟到日期并返回日期：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DATE_ADD(<span class="string">"2018-08-22 09:34:21"</span>, INTERVAL 15 MINUTE);</span><br></pre></td></tr></table></figure></p>
 <p>从日期减去10天并返回日期：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DATE_SUB(<span class="string">"2018-08-22"</span>, INTERVAL 10 DAY);</span><br></pre></td></tr></table></figure></p>
-<h3 id="定义和用法"><a href="#定义和用法" class="headerlink" title="定义和用法"></a>定义和用法</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DATE_ADD（）函数在添加特定时间/日期间隔后返回日期。</span><br><span class="line">DATE_SUB（）函数在减去某个时间/日期间隔后返回一个日期。</span><br><span class="line">``` </span><br><span class="line"><span class="comment">### 一般写法</span></span><br><span class="line">``` bash</span><br><span class="line">DATE_ADD(date, INTERVAL value unit)</span><br><span class="line">DATE_SUB(date, INTERVAL value unit)</span><br></pre></td></tr></table></figure>
-<h3 id="参数值"><a href="#参数值" class="headerlink" title="参数值"></a>参数值</h3><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>date</td>
-<td>必填，原日期</td>
-</tr>
-<tr>
-<td>value</td>
-<td>必填，增加/减去日期的值 </td>
-</tr>
-<tr>
-<td>unit</td>
-<td>必填，单位类型</td>
-</tr>
-</tbody>
-</table>
+<h3 id="定义和用法"><a href="#定义和用法" class="headerlink" title="定义和用法"></a>定义和用法</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">_定义：_</span><br><span class="line">DATE_ADD（）函数在添加特定时间/日期间隔后返回日期。</span><br><span class="line">DATE_SUB（）函数在减去某个时间/日期间隔后返回一个日期。</span><br><span class="line">__用法：__</span><br><span class="line">DATE_ADD(date, INTERVAL value unit)</span><br><span class="line">DATE_SUB(date, INTERVAL value unit)</span><br></pre></td></tr></table></figure>
+<h3 id="参数值"><a href="#参数值" class="headerlink" title="参数值"></a>参数值</h3><p>参数 | 说明|<br>|—- | —                        |<br>|date | 必填，原日期               |<br>|value | 必填，增加/减去日期的值   |<br>|unit | 必填，单位类型             |</p>
 <h3 id="unit值"><a href="#unit值" class="headerlink" title="unit值"></a>unit值</h3><table>
 <thead>
 <tr>
@@ -132,7 +231,7 @@
 </tr>
 <tr>
 <td>SECOND</td>
-<td>秒 </td>
+<td>秒</td>
 </tr>
 <tr>
 <td>MINUTE</td>
@@ -208,12 +307,12 @@
 </tr>
 </tbody>
 </table>
-<p>######<br>参考地址1: <a href="https://www.w3schools.com/sql/func_mysql_date_add.asp" target="_blank" rel="noopener">Deployment</a><br>参考地址2: <a href="https://www.w3schools.com/sql/func_mysql_date_sub.asp" target="_blank" rel="noopener">Deployment</a></p>
+<h5 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h5><p>参考地址1: <a href="https://www.w3schools.com/sql/func_mysql_date_add.asp" target="_blank" rel="noopener">https://www.w3schools.com/sql/func_mysql_date_add.asp</a><br>参考地址2: <a href="https://www.w3schools.com/sql/func_mysql_date_sub.asp" target="_blank" rel="noopener">https://www.w3schools.com/sql/func_mysql_date_sub.asp</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wuvsxu.github.io/2018/08/22/mysql-日期操作函数/" data-id="cjl4y9ntk0000t0o8a65r105y" class="article-share-link">Share</a>
+      <a data-url="https://wuvsxu.github.io/2018/08/22/mysql-日期操作函数/" data-id="cjl7dlhbt000234o8ewi7t4f1" class="article-share-link">Share</a>
       
       
     </footer>
@@ -255,7 +354,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wuvsxu.github.io/2018/08/22/支付遇到的问题/" data-id="cjl4y9nts0001t0o8zgvvr9ho" class="article-share-link">Share</a>
+      <a data-url="https://wuvsxu.github.io/2018/08/22/支付遇到的问题/" data-id="cjl7dlhbz000534o8f2n0s3ys" class="article-share-link">Share</a>
       
       
     </footer>
@@ -292,7 +391,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wuvsxu.github.io/2018/08/22/wz测试文章/" data-id="cjl4y9ntw0002t0o8u7mqn05y" class="article-share-link">Share</a>
+      <a data-url="https://wuvsxu.github.io/2018/08/22/wz测试文章/" data-id="cjl7dlhby000434o8rv08eq88" class="article-share-link">Share</a>
       
       
     </footer>
@@ -333,15 +432,23 @@
       <ul>
         
           <li>
+            <a href="/2018/08/23/excel转html在线工具/">excel转html在线工具</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/23/spring-定时任务/">spring 定时任务</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/23/chrome-上传下载时卡死问题/">chrome 上传下载时卡死问题</a>
+          </li>
+        
+          <li>
             <a href="/2018/08/22/mysql-日期操作函数/">mysql 日期操作函数 DATE_ADD() DATE_SUB() Function</a>
           </li>
         
           <li>
             <a href="/2018/08/22/支付遇到的问题/">订单支付遇到的问题</a>
-          </li>
-        
-          <li>
-            <a href="/2018/08/22/wz测试文章/">wz测试文章</a>
           </li>
         
       </ul>

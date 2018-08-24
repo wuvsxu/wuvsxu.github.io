@@ -7,18 +7,18 @@
   
   <title>mysql 日期操作函数 DATE_ADD() DATE_SUB() Function | 无恤</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="DATE_ADD()：日期增加函数DATE_SUB()：日期减少函数  例添加15分钟到日期并返回日期：1SELECT DATE_ADD(&quot;2018-08-22 09:34:21&quot;, INTERVAL 15 MINUTE); 从日期减去10天并返回日期：1SELECT DATE_SUB(&quot;2018-08-22&quot;, INTERVAL 10 DAY); 定义和用法1234567DATE_ADD（）函数">
+  <meta name="description" content="DATE_ADD()：日期增加函数DATE_SUB()：日期减少函数  例添加15分钟到日期并返回日期：1SELECT DATE_ADD(&quot;2018-08-22 09:34:21&quot;, INTERVAL 15 MINUTE); 从日期减去10天并返回日期：1SELECT DATE_SUB(&quot;2018-08-22&quot;, INTERVAL 10 DAY); 定义和用法123456_定义：_DATE_ADD">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mysql 日期操作函数 DATE_ADD() DATE_SUB() Function">
 <meta property="og:url" content="https://wuvsxu.github.io/2018/08/22/mysql-日期操作函数/index.html">
 <meta property="og:site_name" content="无恤">
-<meta property="og:description" content="DATE_ADD()：日期增加函数DATE_SUB()：日期减少函数  例添加15分钟到日期并返回日期：1SELECT DATE_ADD(&quot;2018-08-22 09:34:21&quot;, INTERVAL 15 MINUTE); 从日期减去10天并返回日期：1SELECT DATE_SUB(&quot;2018-08-22&quot;, INTERVAL 10 DAY); 定义和用法1234567DATE_ADD（）函数">
+<meta property="og:description" content="DATE_ADD()：日期增加函数DATE_SUB()：日期减少函数  例添加15分钟到日期并返回日期：1SELECT DATE_ADD(&quot;2018-08-22 09:34:21&quot;, INTERVAL 15 MINUTE); 从日期减去10天并返回日期：1SELECT DATE_SUB(&quot;2018-08-22&quot;, INTERVAL 10 DAY); 定义和用法123456_定义：_DATE_ADD">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-08-22T09:24:47.431Z">
+<meta property="og:updated_time" content="2018-08-22T18:09:28.133Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql 日期操作函数 DATE_ADD() DATE_SUB() Function">
-<meta name="twitter:description" content="DATE_ADD()：日期增加函数DATE_SUB()：日期减少函数  例添加15分钟到日期并返回日期：1SELECT DATE_ADD(&quot;2018-08-22 09:34:21&quot;, INTERVAL 15 MINUTE); 从日期减去10天并返回日期：1SELECT DATE_SUB(&quot;2018-08-22&quot;, INTERVAL 10 DAY); 定义和用法1234567DATE_ADD（）函数">
+<meta name="twitter:description" content="DATE_ADD()：日期增加函数DATE_SUB()：日期减少函数  例添加15分钟到日期并返回日期：1SELECT DATE_ADD(&quot;2018-08-22 09:34:21&quot;, INTERVAL 15 MINUTE); 从日期减去10天并返回日期：1SELECT DATE_SUB(&quot;2018-08-22&quot;, INTERVAL 10 DAY); 定义和用法123456_定义：_DATE_ADD">
   
     <link rel="alternate" href="/atom.xml" title="无恤" type="application/atom+xml">
   
@@ -94,29 +94,8 @@
         <p>DATE_ADD()：日期增加函数<br>DATE_SUB()：日期减少函数 </p>
 <h3 id="例"><a href="#例" class="headerlink" title="例"></a>例</h3><p>添加15分钟到日期并返回日期：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DATE_ADD(<span class="string">"2018-08-22 09:34:21"</span>, INTERVAL 15 MINUTE);</span><br></pre></td></tr></table></figure></p>
 <p>从日期减去10天并返回日期：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DATE_SUB(<span class="string">"2018-08-22"</span>, INTERVAL 10 DAY);</span><br></pre></td></tr></table></figure></p>
-<h3 id="定义和用法"><a href="#定义和用法" class="headerlink" title="定义和用法"></a>定义和用法</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DATE_ADD（）函数在添加特定时间/日期间隔后返回日期。</span><br><span class="line">DATE_SUB（）函数在减去某个时间/日期间隔后返回一个日期。</span><br><span class="line">``` </span><br><span class="line"><span class="comment">### 一般写法</span></span><br><span class="line">``` bash</span><br><span class="line">DATE_ADD(date, INTERVAL value unit)</span><br><span class="line">DATE_SUB(date, INTERVAL value unit)</span><br></pre></td></tr></table></figure>
-<h3 id="参数值"><a href="#参数值" class="headerlink" title="参数值"></a>参数值</h3><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>date</td>
-<td>必填，原日期</td>
-</tr>
-<tr>
-<td>value</td>
-<td>必填，增加/减去日期的值 </td>
-</tr>
-<tr>
-<td>unit</td>
-<td>必填，单位类型</td>
-</tr>
-</tbody>
-</table>
+<h3 id="定义和用法"><a href="#定义和用法" class="headerlink" title="定义和用法"></a>定义和用法</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">_定义：_</span><br><span class="line">DATE_ADD（）函数在添加特定时间/日期间隔后返回日期。</span><br><span class="line">DATE_SUB（）函数在减去某个时间/日期间隔后返回一个日期。</span><br><span class="line">__用法：__</span><br><span class="line">DATE_ADD(date, INTERVAL value unit)</span><br><span class="line">DATE_SUB(date, INTERVAL value unit)</span><br></pre></td></tr></table></figure>
+<h3 id="参数值"><a href="#参数值" class="headerlink" title="参数值"></a>参数值</h3><p>参数 | 说明|<br>|—- | —                        |<br>|date | 必填，原日期               |<br>|value | 必填，增加/减去日期的值   |<br>|unit | 必填，单位类型             |</p>
 <h3 id="unit值"><a href="#unit值" class="headerlink" title="unit值"></a>unit值</h3><table>
 <thead>
 <tr>
@@ -131,7 +110,7 @@
 </tr>
 <tr>
 <td>SECOND</td>
-<td>秒 </td>
+<td>秒</td>
 </tr>
 <tr>
 <td>MINUTE</td>
@@ -207,12 +186,12 @@
 </tr>
 </tbody>
 </table>
-<p>######<br>参考地址1: <a href="https://www.w3schools.com/sql/func_mysql_date_add.asp" target="_blank" rel="noopener">Deployment</a><br>参考地址2: <a href="https://www.w3schools.com/sql/func_mysql_date_sub.asp" target="_blank" rel="noopener">Deployment</a></p>
+<h5 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h5><p>参考地址1: <a href="https://www.w3schools.com/sql/func_mysql_date_add.asp" target="_blank" rel="noopener">https://www.w3schools.com/sql/func_mysql_date_add.asp</a><br>参考地址2: <a href="https://www.w3schools.com/sql/func_mysql_date_sub.asp" target="_blank" rel="noopener">https://www.w3schools.com/sql/func_mysql_date_sub.asp</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wuvsxu.github.io/2018/08/22/mysql-日期操作函数/" data-id="cjl4y9ntk0000t0o8a65r105y" class="article-share-link">Share</a>
+      <a data-url="https://wuvsxu.github.io/2018/08/22/mysql-日期操作函数/" data-id="cjl7dlhbt000234o8ewi7t4f1" class="article-share-link">Share</a>
       
       
     </footer>
@@ -220,6 +199,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2018/08/23/chrome-上传下载时卡死问题/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          chrome 上传下载时卡死问题
+        
+      </div>
+    </a>
   
   
     <a href="/2018/08/22/支付遇到的问题/" id="article-nav-older" class="article-nav-link-wrap">
@@ -261,15 +249,23 @@
       <ul>
         
           <li>
+            <a href="/2018/08/23/excel转html在线工具/">excel转html在线工具</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/23/spring-定时任务/">spring 定时任务</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/23/chrome-上传下载时卡死问题/">chrome 上传下载时卡死问题</a>
+          </li>
+        
+          <li>
             <a href="/2018/08/22/mysql-日期操作函数/">mysql 日期操作函数 DATE_ADD() DATE_SUB() Function</a>
           </li>
         
           <li>
             <a href="/2018/08/22/支付遇到的问题/">订单支付遇到的问题</a>
-          </li>
-        
-          <li>
-            <a href="/2018/08/22/wz测试文章/">wz测试文章</a>
           </li>
         
       </ul>
