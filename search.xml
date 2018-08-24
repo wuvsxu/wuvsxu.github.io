@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[excel转html在线工具]]></title>
+    <url>%2F2018%2F08%2F23%2Fexcel%E8%BD%AChtml%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%2F</url>
+    <content type="text"><![CDATA[链接地址：http://pressbin.com/tools/excel_to_html_table/index.html 解决方案123在makedowm中，设计表格可能会遇到需要合并两个表格的情况，但是makedown只能制作简单的表格，这时就需要直接写成html格式。在朋友的提示下，找到了一个可以把excel直接转换为html的工具。直接从excel中复制内容进来，点击 conver进行转换，然后进行修改。 缺陷1虽然这种方法可以解决问题，但是makedown原本目的是为了让文本简洁可读高效，违背了makedown的初衷，不建议用这种方式]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>html</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[spring 定时任务]]></title>
+    <url>%2F2018%2F08%2F23%2Fspring-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%2F</url>
+    <content type="text"><![CDATA[可基于注解，也可基于配置 1.在配置文件中配置定时任务spring配置文件中，添加命名空间1234在&lt;beans &gt;中添加xmlns:task="http://www.springframework.org/schema/task" http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd xml添加配置12345678910111213141516171819202122232425&lt;!-- 定时任务 （将类注入xml）--&gt;&lt;bean id="jobBean" class="com.bxj.common.task.ClearOrderTask" /&gt;&lt;bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"&gt; &lt;property name="targetObject" ref="jobBean" /&gt; &lt;!--ClearOrderTask类中需要执行的方法--&gt; &lt;property name="targetMethod" value="doClearOrder" /&gt; &lt;!--将并发设置为false--&gt; &lt;property name="concurrent" value="false" /&gt;&lt;/bean&gt;&lt;bean id="clearOrderTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"&gt; &lt;property name="jobDetail" ref="jobDetail" /&gt; &lt;!--表达式，每天晚上23点55分开始 执行一次 （可以自定义，谷歌关键词 cron表达式） --&gt; &lt;property name="cronExpression" value="0 55 23 * * ?" /&gt;&lt;/bean&gt;&lt;!--总管理类如果将lazy-init='false'那么容器启动就会执行调度程序 --&gt;&lt;bean id="orderQuertz" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="false" &gt; &lt;property name="triggers"&gt; &lt;list&gt; &lt;!--作业调度器,list下可加入其他的调度器 --&gt; &lt;ref bean="clearOrderTrigger" /&gt; &lt;/list&gt; &lt;/property&gt;&lt;/bean&gt; 执行方法12345678910111213141516171819202122 public class ClearOrderTask &#123; /** * 调度任务开关 */ @Value("$&#123;CLEAR_ORDER_TASK_SWITCH&#125;") private String CLEAR_ORDER_TASK_SWITCH; @Autowired private OrderInfoService orderInfoService; @Autowired private OrderDetailService orderDetailService; @Transactional public void doClearOrder() throws Exception&#123; //检查配置文件任务开关 if( Const.TASK_SWITCH_ON.equals( CLEAR_ORDER_TASK_SWITCH ))&#123; //清除订单 //先删除订单明细 orderDetailService.deleteOrderDetailByTask(); //再删除订单 orderInfoService.deleteOrderInfoByTask();; &#125; &#125; &#125; 2.注解配置定时任务123456789101112131415161718@Componentpublic class MyTask2 &#123; /** * 定时计算。每天凌晨 01:00 执行一次 */ @Scheduled(cron = "0 0 1 * * *") public void show() &#123; System.out.println("show method 2"); &#125; /** * 启动时执行一次，之后每隔2秒执行一次 */ @Scheduled(fixedRate = 1000*2) public void print() &#123; System.out.println("print method 2"); &#125;&#125; 定时任务和cron表达式相关链接参考链接在线cron表达式生成器cron表达式详解]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>spring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[chrome 上传下载时卡死问题]]></title>
+    <url>%2F2018%2F08%2F23%2Fchrome-%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E6%97%B6%E5%8D%A1%E6%AD%BB%E9%97%AE%E9%A2%98%2F</url>
+    <content type="text"><![CDATA[原因和解决办法1搜狗输入法与chrome冲突，搜狗卸载重新安装就好了。 近期遇到这种问题，将chrome重新安装了好多次都没用。装成低版本的chrome时就好了，但是因为版本太低，好多插件不起效，用起来还是蛋疼。然后在网上找原因时，看到有说可能与搜狗有关系，卸载搜狗后，chrome恢复正常， 重新安装成新版本的搜狗后，问题解决 参考地址:http://tieba.baidu.com/p/5782771456]]></content>
+      <categories>
+        <category>浏览器</category>
+      </categories>
+      <tags>
+        <tag>chrome</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[mysql 日期操作函数 DATE_ADD() DATE_SUB() Function]]></title>
+    <url>%2F2018%2F08%2F22%2Fmysql-%E6%97%A5%E6%9C%9F%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0%2F</url>
+    <content type="text"><![CDATA[DATE_ADD()：日期增加函数DATE_SUB()：日期减少函数 例添加15分钟到日期并返回日期：1SELECT DATE_ADD("2018-08-22 09:34:21", INTERVAL 15 MINUTE); 从日期减去10天并返回日期：1SELECT DATE_SUB("2018-08-22", INTERVAL 10 DAY); 定义和用法123456_定义：_DATE_ADD（）函数在添加特定时间/日期间隔后返回日期。DATE_SUB（）函数在减去某个时间/日期间隔后返回一个日期。__用法：__DATE_ADD(date, INTERVAL value unit)DATE_SUB(date, INTERVAL value unit) 参数值 参数 说明 date 必填，原日期 value 必填，增加/减去日期的值 unit 必填，单位类型 unit值 参数 说明 MICROSECOND 微秒 SECOND 秒 MINUTE 分钟 HOUR 小时 DAY 天 WEEK 周 MONTH 月 QUARTER 季度 YEAR 年 SECOND_MICROSECOND 秒.微秒 MINUTE_MICROSECOND 分钟.微秒 MINUTE_SECOND 分钟.秒 HOUR_MICROSECOND 小时.微秒 HOUR_SECOND 小时.秒 HOUR_MINUTE 小时.分 DAY_MICROSECOND 天.微秒 DAY_SECOND 天.秒 DAY_MINUTE 天.分 DAY_HOUR 天.时 YEAR_MONTH 年.月 参考地址参考地址1: https://www.w3schools.com/sql/func_mysql_date_add.asp参考地址2: https://www.w3schools.com/sql/func_mysql_date_sub.asp]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[订单支付遇到的问题]]></title>
+    <url>%2F2018%2F08%2F22%2F%E6%94%AF%E4%BB%98%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%2F</url>
+    <content type="text"><![CDATA[问题描述前提：是这样的，一笔订单下单之后，如果不支付，会处于待支付状态。而一般这个订单会有类似 30 分钟不支付自动取消订单的功能。 实现：这种功能的实现，可以通过定时任务，每隔 30 秒或一分钟扫描一次。但如果集群环境下，可能定时任务会执行重复。当然我们可以通过类似操作系统 PV 操作限制同一时段只能一个定时任务执行。 目标：这种情况，除了定时任务，还有没有其他好点的实现？ 解决办法1.记录下单时间 。在用户访问订单的时候用超时时间和下单时间比较，如果超时就取消订单，用户主动触发。在加上定时任务，扫描表，过期订单改为取消状态。优点：方法简单高效缺点：用户自己触发的这种并不能即使恢复库存.2.利用redis。将订单存入redis中，给订单设置过期时间（expire ）。支付时，去redis查询订单，不存在的话讲订单设置为已取消。 3.延时队列。 可以 rabbitmq 实现的。AB 两个队列，A 队列设置消息过期时间，A 队列没有消费者，A 队列过期后自动转发到 B 队列，B 队列消费者进行取消队列。（此处是别人给的方案，对消息队列熟悉，等有时间研究）]]></content>
+      <categories>
+        <category>业务</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[hexo搭建]]></title>
+    <url>%2F2018%2F08%2F22%2Fwz%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0%2F</url>
+    <content type="text"><![CDATA[这是一篇测试文章,感谢: hexo搭建：https://zhuanlan.zhihu.com/p/25729240 tags和categories用法：https://github.com/hexojs/hexo/issues/320 增加搜索功能：http://www.itfanr.cc/2017/10/27/add-search-function-to-hexo-blog/]]></content>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+</search>
