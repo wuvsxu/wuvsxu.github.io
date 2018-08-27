@@ -93,7 +93,7 @@
   <entry>
     <title><![CDATA[hexo搭建]]></title>
     <url>%2F2018%2F08%2F22%2Fwz%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0%2F</url>
-    <content type="text"><![CDATA[这是一篇测试文章,感谢: hexo搭建：https://zhuanlan.zhihu.com/p/25729240 tags和categories用法：https://github.com/hexojs/hexo/issues/320 增加搜索功能：http://www.itfanr.cc/2017/10/27/add-search-function-to-hexo-blog/]]></content>
+    <content type="text"><![CDATA[这是一篇测试文章,感谢: hexo搭建：https://zhuanlan.zhihu.com/p/25729240 tags和categories用法：https://github.com/hexojs/hexo/issues/320 增加搜索功能：http://www.itfanr.cc/2017/10/27/add-search-function-to-hexo-blog/ hexo 部署后 git项目的 Custom domain清空：在source文件夹下面建个CNAME文件夹，里面写上自己的域名https://www.zhihu.com/question/28814437]]></content>
       <tags>
         <tag>hexo</tag>
       </tags>
