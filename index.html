@@ -308,6 +308,517 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/27/mysqlql计算一段时间内-表中每天的数据量/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://wziyou.top:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/27/mysqlql计算一段时间内-表中每天的数据量/" itemprop="url">mysqlql计算一段时间内 表中每天的数据量</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-27T04:44:41+08:00">
+                2018-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="原sql为"><a href="#原sql为" class="headerlink" title="原sql为"></a>原sql为</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> SELECT</span><br><span class="line">   CAST(tt.startTime AS char)	  x,count(tt.id) y</span><br><span class="line">FROM</span><br><span class="line">    (</span><br><span class="line">        SELECT</span><br><span class="line">            t.id id,</span><br><span class="line">            date(t.start_time) startTime</span><br><span class="line">        FROM</span><br><span class="line">            sys_visit_log t</span><br><span class="line">        WHERE</span><br><span class="line">            t.prod_id IN (</span><br><span class="line">                SELECT</span><br><span class="line">                    xp.id</span><br><span class="line">                FROM</span><br><span class="line">                    xypt_production xp</span><br><span class="line">                WHERE</span><br><span class="line">                    xp.org_id = <span class="comment">#&#123;orgId,jdbcType=VARCHAR&#125;</span></span><br><span class="line">            )</span><br><span class="line">    ) tt</span><br><span class="line"><span class="built_in">where</span> tt.startTime &amp;lt; date(NOW()) and tt.startTime &amp;gt;= date( DATE_SUB(NOW(), INTERVAL 7 DAY))</span><br><span class="line">GROUP BY startTime</span><br><span class="line">ORDER BY tt.startTime ASC</span><br></pre></td></tr></table></figure>
+<h5 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2018-08-20	16</span><br><span class="line">2018-08-22	21</span><br><span class="line">2018-08-23	15</span><br><span class="line">2018-08-24	6</span><br></pre></td></tr></table></figure>
+<h3 id="修改后改为"><a href="#修改后改为" class="headerlink" title="修改后改为"></a>修改后改为</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	CAST(a.x AS CHAR) x,</span><br><span class="line">	count(tt.id) y</span><br><span class="line">FROM</span><br><span class="line">	(</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 1 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 2 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 3 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 4 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 5 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 6 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 7 DAY) ) x</span><br><span class="line">	) a</span><br><span class="line">LEFT JOIN (</span><br><span class="line">	SELECT</span><br><span class="line">		t.id id,</span><br><span class="line">		date(t.start_time) startTime</span><br><span class="line">	FROM</span><br><span class="line">		sys_visit_log t</span><br><span class="line">	WHERE</span><br><span class="line">		t.prod_id IN (</span><br><span class="line">			SELECT 	xp.id</span><br><span class="line">			FROM xypt_production xp</span><br><span class="line">			WHERE xp.org_id = <span class="string">'a4b1ccf70e4c47978e7931356ab43577'</span></span><br><span class="line">		)</span><br><span class="line">	AND date(t.start_time) &lt; date(NOW())</span><br><span class="line">	AND date(t.start_time) &gt;= date(</span><br><span class="line">		DATE_SUB(NOW(), INTERVAL 7 DAY)</span><br><span class="line">	)</span><br><span class="line">) tt ON a.x = tt.startTime</span><br><span class="line">GROUP BY a.x</span><br><span class="line">ORDER BY a.x ASC</span><br></pre></td></tr></table></figure>
+<h5 id="结果-1"><a href="#结果-1" class="headerlink" title="结果"></a>结果</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">2018-08-20	16</span><br><span class="line">2018-08-21	0</span><br><span class="line">2018-08-22	21</span><br><span class="line">2018-08-23	15</span><br><span class="line">2018-08-24	6</span><br><span class="line">2018-08-25	0</span><br><span class="line">2018-08-26	0</span><br></pre></td></tr></table></figure>
+<h3 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h3><p><a href="https://stackoverflow.com/questions/16636433/mysql-count-to-return-0-if-no-records-found" target="_blank" rel="noopener">https://stackoverflow.com/questions/16636433/mysql-count-to-return-0-if-no-records-found</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/27/mybatis坑点/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://wziyou.top:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/27/mybatis坑点/" itemprop="url">mybatis坑点</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-27T04:06:36+08:00">
+                2018-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>Mybatis出错：Error instantiating class xxx with invalid types () or values ()</p>
+<h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>原因是JavaBean必须要有无参构造器</p>
+<p>mybatis在创建bean映射的时候需要无参的构造其来构造对象，然后才进行赋值操作。</p>
+<p>因此，Bean必须要有无参构造函数才能正确映射。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/27/d3制作折线图/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://wziyou.top:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/27/d3制作折线图/" itemprop="url">d3制作折线图</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-27T02:06:20+08:00">
+                2018-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"> &lt;style&gt;</span><br><span class="line">        .container &#123;</span><br><span class="line">            margin: 30px auto;</span><br><span class="line">            width: 600px;</span><br><span class="line">            height: 300px;</span><br><span class="line">            border: 1px solid <span class="comment">#000;</span></span><br><span class="line">        &#125;</span><br><span class="line">        .axis path,</span><br><span class="line">        .axis line,</span><br><span class="line">        .line &#123;</span><br><span class="line">            stroke: <span class="comment">#000;</span></span><br><span class="line">            fill: none;</span><br><span class="line">        &#125;</span><br><span class="line"> &lt;/style&gt;</span><br><span class="line">&lt;div class=<span class="string">"tablebox"</span>&gt;</span><br><span class="line">    &lt;div class=<span class="string">"container"</span>&gt;</span><br><span class="line">        &lt;svg width=<span class="string">"100%"</span> height=<span class="string">"100%"</span>&gt;&lt;/svg&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;script src=<span class="string">"http://d3js.org/d3.v3.min.js"</span> charset=<span class="string">"utf-8"</span>&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">        window.onload = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">            var width = 600, height = 300;</span><br><span class="line">            // SVG画布边缘与图表内容的距离</span><br><span class="line">            var padding = &#123; top: 50, right: 50, bottom: 70, left: 50 &#125;;</span><br><span class="line">            // 创建一个分组用来组合要画的图表元素</span><br><span class="line">            var main = d3.select(<span class="string">'.container svg'</span>).append(<span class="string">'g'</span>)</span><br><span class="line">                .classed(<span class="string">'main'</span>, <span class="literal">true</span>)</span><br><span class="line">                .attr(<span class="string">'transform'</span>, <span class="string">"translate("</span> + padding.top + <span class="string">','</span> + padding.left + <span class="string">')'</span>);</span><br><span class="line">            // 模拟数据</span><br><span class="line">            var dataset = [</span><br><span class="line">                &#123;x: <span class="string">'2018-01-01'</span>, y: 11&#125;, &#123;x: <span class="string">'2018-01-02'</span>, y: 35&#125;,</span><br><span class="line">                &#123;x: <span class="string">'2018-01-03'</span>, y: 23&#125;, &#123;x: <span class="string">'2018-01-04'</span>, y: 78&#125;,</span><br><span class="line">                &#123;x: <span class="string">'2018-01-05'</span>, y: 55&#125;, &#123;x: <span class="string">'2018-01-06'</span>, y: 18&#125;,</span><br><span class="line">                &#123;x: <span class="string">'2018-01-07'</span>, y: 98&#125;, &#123;x: <span class="string">'2018-01-08'</span>, y: 100&#125;,</span><br><span class="line">                &#123;x: <span class="string">'2018-01-09'</span>, y: 22&#125;, &#123;x: <span class="string">'2018-01-10'</span>, y: 65&#125;</span><br><span class="line">            ];</span><br><span class="line">            // 创建x轴的比例尺(线性比例尺)</span><br><span class="line">            var format = d3.time.format(<span class="string">"%Y-%m-%d"</span>);</span><br><span class="line">           /* var xScale = d3.scale.linear()</span><br><span class="line">                .domain(d3.extent(dataset, <span class="keyword">function</span>(d) &#123;</span><br><span class="line">                    <span class="built_in">return</span> d.x;</span><br><span class="line">                &#125;))</span><br><span class="line">                .range([0, width - padding.left - padding.right]);*/</span><br><span class="line">            var xScale = d3.time.scale()</span><br><span class="line">                .domain([format.parse(dataset[0].x),</span><br><span class="line">                    format.parse(dataset[dataset.length-1].x)])</span><br><span class="line">                .range([0, width - padding.left - padding.right]);</span><br><span class="line">            // 创建y轴的比例尺(线性比例尺)</span><br><span class="line">            var yScale = d3.scale.linear()</span><br><span class="line">                .domain([0, d3.max(dataset,<span class="keyword">function</span>(d) &#123;</span><br><span class="line">                    <span class="built_in">return</span> d.y;</span><br><span class="line">                &#125;)])</span><br><span class="line">                .range([height - padding.top - padding.bottom, 0]);</span><br><span class="line">            // 创建x轴</span><br><span class="line">            var xAxis = d3.svg.axis()</span><br><span class="line">                .scale(xScale)</span><br><span class="line">                .orient(<span class="string">'bottom'</span>)</span><br><span class="line">                .tickFormat(d3.time.format(<span class="string">"%Y-%m-%d"</span>));</span><br><span class="line">            // 创建y轴</span><br><span class="line">            var yAxis = d3.svg.axis()</span><br><span class="line">                .scale(yScale)</span><br><span class="line">                .orient(<span class="string">'left'</span>);</span><br><span class="line">            // 添加SVG元素并与x轴进行“绑定”</span><br><span class="line">            main.append(<span class="string">'g'</span>)</span><br><span class="line">                .attr(<span class="string">'class'</span>, <span class="string">'x axis'</span>)</span><br><span class="line">                .attr(<span class="string">'transform'</span>, <span class="string">'translate(0,'</span> + (height - padding.top - padding.bottom) + <span class="string">')'</span>)</span><br><span class="line">                .call(xAxis)</span><br><span class="line">                .selectAll(<span class="string">"text"</span>)</span><br><span class="line">                .attr(<span class="string">"transform"</span>, <span class="string">"rotate(-70)"</span>)</span><br><span class="line">                .style(<span class="string">"text-anchor"</span>, <span class="string">"end"</span>);</span><br><span class="line">            ;</span><br><span class="line">            // 添加SVG元素并与y轴进行“绑定”</span><br><span class="line">            main.append(<span class="string">'g'</span>)</span><br><span class="line">                .attr(<span class="string">'class'</span>, <span class="string">'axis'</span>)</span><br><span class="line">                .call(yAxis);</span><br><span class="line">            // 添加折线</span><br><span class="line">            var line = d3.svg.line()</span><br><span class="line">                .x(<span class="keyword">function</span>(d) &#123;</span><br><span class="line">                    <span class="built_in">return</span> xScale(format.parse(d.x))</span><br><span class="line">                &#125;)</span><br><span class="line">                .y(<span class="keyword">function</span>(d) &#123;</span><br><span class="line">                    <span class="built_in">return</span> yScale(d.y);</span><br><span class="line">                &#125;)</span><br><span class="line">                // 选择线条的类型</span><br><span class="line">                .interpolate(<span class="string">'linear'</span>);</span><br><span class="line">            // 添加path元素，并通过line()计算出值来赋值</span><br><span class="line">            main.append(<span class="string">'path'</span>)</span><br><span class="line">                .attr(<span class="string">'class'</span>, <span class="string">'line'</span>)</span><br><span class="line">                .attr(<span class="string">'d'</span>, line(dataset));</span><br><span class="line">            // 添加点</span><br><span class="line">            main.selectAll(<span class="string">'circle'</span>)</span><br><span class="line">                .data(dataset)</span><br><span class="line">                .enter()</span><br><span class="line">                .append(<span class="string">'circle'</span>)</span><br><span class="line">                .attr(<span class="string">'cx'</span>, <span class="keyword">function</span>(d) &#123;</span><br><span class="line">                    <span class="built_in">return</span> xScale(format.parse(d.x));</span><br><span class="line">                &#125;)</span><br><span class="line">                .attr(<span class="string">'cy'</span>, <span class="keyword">function</span>(d) &#123;</span><br><span class="line">                    <span class="built_in">return</span> yScale(d.y);</span><br><span class="line">                &#125;)</span><br><span class="line">                .attr(<span class="string">'r'</span>, 5)</span><br><span class="line">                .attr(<span class="string">'fill'</span>, <span class="keyword">function</span>(d, i) &#123;</span><br><span class="line">                    <span class="built_in">return</span> getColor(i);</span><br><span class="line">                &#125;);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">function</span> getColor(idx) &#123;</span><br><span class="line">            var palette = [</span><br><span class="line">                <span class="string">'#2ec7c9'</span>, <span class="string">'#b6a2de'</span>, <span class="string">'#5ab1ef'</span>, <span class="string">'#ffb980'</span>, <span class="string">'#d87a80'</span>,</span><br><span class="line">                <span class="string">'#8d98b3'</span>, <span class="string">'#e5cf0d'</span>, <span class="string">'#97b552'</span>, <span class="string">'#95706d'</span>, <span class="string">'#dc69aa'</span>,</span><br><span class="line">                <span class="string">'#07a2a4'</span>, <span class="string">'#9a7fd1'</span>, <span class="string">'#588dd5'</span>, <span class="string">'#f5994e'</span>, <span class="string">'#c05050'</span>,</span><br><span class="line">                <span class="string">'#59678c'</span>, <span class="string">'#c9ab00'</span>, <span class="string">'#7eb00a'</span>, <span class="string">'#6f5553'</span>, <span class="string">'#c14089'</span></span><br><span class="line">            ]</span><br><span class="line">            <span class="built_in">return</span> palette[idx % palette.length];</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p><a href="http://www.wziyou.top:19080/demo/d3_demo.html" target="_blank" rel="noopener">点击查看 http://www.wziyou.top:19080/demo/d3_demo.html</a></p>
+<h3 id="参考内容"><a href="#参考内容" class="headerlink" title="参考内容"></a>参考内容</h3><p><a href="http://xgfe.github.io/uploads/chenwubai/d3-basicCharts-line/line.html" target="_blank" rel="noopener">d3制作折线图</a><br><a href="https://blog.csdn.net/github_37483541/article/details/54934158" target="_blank" rel="noopener">横坐标轴为日期</a><br><a href="https://stackoverflow.com/questions/37252425/d3-js-d3-min-js1-error-path-attribute-d-expected-number-mnan-nanlnan-na/37535473" target="_blank" rel="noopener">日期转换问题</a><br><a href="https://blog.csdn.net/tianxuzhang/article/details/11762825" target="_blank" rel="noopener">刻度数</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/23/idea使用指南/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://wziyou.top:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/23/idea使用指南/" itemprop="url">idea使用指南</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-23T23:35:19+08:00">
+                2018-08-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工具/" itemprop="url" rel="index">
+                    <span itemprop="name">工具</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="项目运行时-自动编译更新项目"><a href="#项目运行时-自动编译更新项目" class="headerlink" title="项目运行时 自动编译更新项目"></a>项目运行时 自动编译更新项目</h3><p><a href="https://blog.csdn.net/wangyy130/article/details/70901589" target="_blank" rel="noopener">https://blog.csdn.net/wangyy130/article/details/70901589</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/23/excel转html在线工具/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1298,7 +1809,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1320,7 +1831,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="mysql," />
 
 
 
@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="问题描述前提：是这样的，一笔订单下单之后，如果不支付，会处于待支付状态。而一般这个订单会有类似 30 分钟不支付自动取消订单的功能。 实现：这种功能的实现，可以通过定时任务，每隔 30 秒或一分钟扫描一次。但如果集群环境下，可能定时任务会执行重复。当然我们可以通过类似操作系统 PV 操作限制同一时段只能一个定时任务执行。 目标：这种情况，除了定时任务，还有没有其他好点的实现？ 解决办法1.记录下单">
-<meta name="keywords" content="java">
+<meta name="description" content="原sql为12345678910111213141516171819202122 SELECT   CAST(tt.startTime AS char)	  x,count(tt.id) yFROM    (        SELECT            t.id id,            date(t.start_time) startTime        FROM">
+<meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="订单支付遇到的问题">
-<meta property="og:url" content="https://wuvsxu.github.io/2018/08/22/支付遇到的问题/index.html">
+<meta property="og:title" content="mysqlql计算一段时间内 表中每天的数据量">
+<meta property="og:url" content="https://wuvsxu.github.io/2018/08/27/mysqlql计算一段时间内-表中每天的数据量/index.html">
 <meta property="og:site_name" content="晚来天欲雪，能饮一杯无">
-<meta property="og:description" content="问题描述前提：是这样的，一笔订单下单之后，如果不支付，会处于待支付状态。而一般这个订单会有类似 30 分钟不支付自动取消订单的功能。 实现：这种功能的实现，可以通过定时任务，每隔 30 秒或一分钟扫描一次。但如果集群环境下，可能定时任务会执行重复。当然我们可以通过类似操作系统 PV 操作限制同一时段只能一个定时任务执行。 目标：这种情况，除了定时任务，还有没有其他好点的实现？ 解决办法1.记录下单">
+<meta property="og:description" content="原sql为12345678910111213141516171819202122 SELECT   CAST(tt.startTime AS char)	  x,count(tt.id) yFROM    (        SELECT            t.id id,            date(t.start_time) startTime        FROM">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-24T09:15:28.276Z">
+<meta property="og:updated_time" content="2018-08-26T20:51:31.254Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="订单支付遇到的问题">
-<meta name="twitter:description" content="问题描述前提：是这样的，一笔订单下单之后，如果不支付，会处于待支付状态。而一般这个订单会有类似 30 分钟不支付自动取消订单的功能。 实现：这种功能的实现，可以通过定时任务，每隔 30 秒或一分钟扫描一次。但如果集群环境下，可能定时任务会执行重复。当然我们可以通过类似操作系统 PV 操作限制同一时段只能一个定时任务执行。 目标：这种情况，除了定时任务，还有没有其他好点的实现？ 解决办法1.记录下单">
+<meta name="twitter:title" content="mysqlql计算一段时间内 表中每天的数据量">
+<meta name="twitter:description" content="原sql为12345678910111213141516171819202122 SELECT   CAST(tt.startTime AS char)	  x,count(tt.id) yFROM    (        SELECT            t.id id,            date(t.start_time) startTime        FROM">
 
 
 
@@ -134,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="https://wuvsxu.github.io/2018/08/22/支付遇到的问题/"/>
+  <link rel="canonical" href="https://wuvsxu.github.io/2018/08/27/mysqlql计算一段时间内-表中每天的数据量/"/>
 
 
 
 
 
-  <title>订单支付遇到的问题 | 晚来天欲雪，能饮一杯无</title>
+  <title>mysqlql计算一段时间内 表中每天的数据量 | 晚来天欲雪，能饮一杯无</title>
   
 
 
@@ -307,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/22/支付遇到的问题/">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/27/mysqlql计算一段时间内-表中每天的数据量/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="无恤">
@@ -324,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">订单支付遇到的问题</h1>
+          <h1 class="post-title" itemprop="name headline">mysqlql计算一段时间内 表中每天的数据量</h1>
         
 
         <div class="post-meta">
@@ -336,8 +336,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T17:07:11+08:00">
-                2018-08-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-27T04:44:41+08:00">
+                2018-08-27
               </time>
             
 
@@ -346,28 +346,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/业务/" itemprop="url" rel="index">
-                    <span itemprop="name">业务</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -396,11 +374,11 @@
       
 
       
-        <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>前提：是这样的，一笔订单下单之后，如果不支付，会处于待支付状态。而一般这个订单会有类似 30 分钟不支付自动取消订单的功能。</p>
-<p>实现：这种功能的实现，可以通过定时任务，每隔 30 秒或一分钟扫描一次。但如果集群环境下，可能定时任务会执行重复。当然我们可以通过类似操作系统 PV 操作限制同一时段只能一个定时任务执行。</p>
-<p>目标：这种情况，除了定时任务，还有没有其他好点的实现？</p>
-<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>1.记录下单时间 。在用户访问订单的时候用超时时间和下单时间比较，如果超时就取消订单，用户主动触发。在加上定时任务，扫描表，过期订单改为取消状态。<br>优点：方法简单高效<br>缺点：用户自己触发的这种并不能即使恢复库存.<br>2.利用redis。将订单存入redis中，给订单设置过期时间（expire ）。支付时，去redis查询订单，不存在的话讲订单设置为已取消。</p>
-<p>3.延时队列。 可以 rabbitmq 实现的。AB 两个队列，A 队列设置消息过期时间，A 队列没有消费者，A 队列过期后自动转发到 B 队列，B 队列消费者进行取消队列。（此处是别人给的方案，对消息队列熟悉，等有时间研究）</p>
+        <h3 id="原sql为"><a href="#原sql为" class="headerlink" title="原sql为"></a>原sql为</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> SELECT</span><br><span class="line">   CAST(tt.startTime AS char)	  x,count(tt.id) y</span><br><span class="line">FROM</span><br><span class="line">    (</span><br><span class="line">        SELECT</span><br><span class="line">            t.id id,</span><br><span class="line">            date(t.start_time) startTime</span><br><span class="line">        FROM</span><br><span class="line">            sys_visit_log t</span><br><span class="line">        WHERE</span><br><span class="line">            t.prod_id IN (</span><br><span class="line">                SELECT</span><br><span class="line">                    xp.id</span><br><span class="line">                FROM</span><br><span class="line">                    xypt_production xp</span><br><span class="line">                WHERE</span><br><span class="line">                    xp.org_id = <span class="comment">#&#123;orgId,jdbcType=VARCHAR&#125;</span></span><br><span class="line">            )</span><br><span class="line">    ) tt</span><br><span class="line"><span class="built_in">where</span> tt.startTime &amp;lt; date(NOW()) and tt.startTime &amp;gt;= date( DATE_SUB(NOW(), INTERVAL 7 DAY))</span><br><span class="line">GROUP BY startTime</span><br><span class="line">ORDER BY tt.startTime ASC</span><br></pre></td></tr></table></figure>
+<h5 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2018-08-20	16</span><br><span class="line">2018-08-22	21</span><br><span class="line">2018-08-23	15</span><br><span class="line">2018-08-24	6</span><br></pre></td></tr></table></figure>
+<h3 id="修改后改为"><a href="#修改后改为" class="headerlink" title="修改后改为"></a>修改后改为</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	CAST(a.x AS CHAR) x,</span><br><span class="line">	count(tt.id) y</span><br><span class="line">FROM</span><br><span class="line">	(</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 1 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 2 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 3 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 4 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 5 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 6 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 7 DAY) ) x</span><br><span class="line">	) a</span><br><span class="line">LEFT JOIN (</span><br><span class="line">	SELECT</span><br><span class="line">		t.id id,</span><br><span class="line">		date(t.start_time) startTime</span><br><span class="line">	FROM</span><br><span class="line">		sys_visit_log t</span><br><span class="line">	WHERE</span><br><span class="line">		t.prod_id IN (</span><br><span class="line">			SELECT 	xp.id</span><br><span class="line">			FROM xypt_production xp</span><br><span class="line">			WHERE xp.org_id = <span class="string">'a4b1ccf70e4c47978e7931356ab43577'</span></span><br><span class="line">		)</span><br><span class="line">	AND date(t.start_time) &lt; date(NOW())</span><br><span class="line">	AND date(t.start_time) &gt;= date(</span><br><span class="line">		DATE_SUB(NOW(), INTERVAL 7 DAY)</span><br><span class="line">	)</span><br><span class="line">) tt ON a.x = tt.startTime</span><br><span class="line">GROUP BY a.x</span><br><span class="line">ORDER BY a.x ASC</span><br></pre></td></tr></table></figure>
+<h5 id="结果-1"><a href="#结果-1" class="headerlink" title="结果"></a>结果</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">2018-08-20	16</span><br><span class="line">2018-08-21	0</span><br><span class="line">2018-08-22	21</span><br><span class="line">2018-08-23	15</span><br><span class="line">2018-08-24	6</span><br><span class="line">2018-08-25	0</span><br><span class="line">2018-08-26	0</span><br></pre></td></tr></table></figure>
+<h3 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h3><p><a href="https://stackoverflow.com/questions/16636433/mysql-count-to-return-0-if-no-records-found" target="_blank" rel="noopener">https://stackoverflow.com/questions/16636433/mysql-count-to-return-0-if-no-records-found</a></p>
 
       
     </div>
@@ -416,6 +394,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
+      
 
       
       
@@ -425,8 +409,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/22/wz测试文章/" rel="next" title="hexo搭建">
-                <i class="fa fa-chevron-left"></i> hexo搭建
+              <a href="/2018/08/27/mybatis坑点/" rel="next" title="mybatis坑点">
+                <i class="fa fa-chevron-left"></i> mybatis坑点
               </a>
             
           </div>
@@ -434,10 +418,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/22/mysql-日期操作函数/" rel="prev" title="mysql 日期操作函数 DATE_ADD() DATE_SUB() Function">
-                mysql 日期操作函数 DATE_ADD() DATE_SUB() Function <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -584,7 +564,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决办法"><span class="nav-number">2.</span> <span class="nav-text">解决办法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#原sql为"><span class="nav-number">1.</span> <span class="nav-text">原sql为</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#结果"><span class="nav-number">1.0.1.</span> <span class="nav-text">结果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改后改为"><span class="nav-number">2.</span> <span class="nav-text">修改后改为</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#结果-1"><span class="nav-number">2.0.1.</span> <span class="nav-text">结果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考地址"><span class="nav-number">3.</span> <span class="nav-text">参考地址</span></a></li></ol></div>
             
 
           </div>
