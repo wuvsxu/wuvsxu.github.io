@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="mybatis," />
+  <meta name="keywords" content="mysql," />
 
 
 
@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="问题Mybatis出错：Error instantiating class xxx with invalid types () or values () 解决原因是JavaBean必须要有无参构造器 mybatis在创建bean映射的时候需要无参的构造其来构造对象，然后才进行赋值操作。 因此，Bean必须要有无参构造函数才能正确映射。">
-<meta name="keywords" content="mybatis">
+<meta name="description" content="在ＭySQL中，触发器可以在你执行INSERT、UPDATE或DELETE的时候，执行一些特定的操作。在创建触发器时，可以指定是在执行SQL语句之前或是之后执行这些操作。通过触发器，你可以实现一些业务逻辑或一些数据限制，在简化应用程序逻辑，优化系统性能时非常有用。但在使用MySQL触发器也有一些注意事项，否则会导致触发器不能工作或不按指定的方式工作。 1. MySQL触发器注意事项MySQL触发器">
+<meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mybatis坑点">
-<meta property="og:url" content="https://wuvsxu.github.io/2018/08/27/mybatis坑点/index.html">
+<meta property="og:title" content="mysql 触发器">
+<meta property="og:url" content="https://wuvsxu.github.io/2018/08/29/mysql-触发器/index.html">
 <meta property="og:site_name" content="晚来天欲雪，能饮一杯无">
-<meta property="og:description" content="问题Mybatis出错：Error instantiating class xxx with invalid types () or values () 解决原因是JavaBean必须要有无参构造器 mybatis在创建bean映射的时候需要无参的构造其来构造对象，然后才进行赋值操作。 因此，Bean必须要有无参构造函数才能正确映射。">
+<meta property="og:description" content="在ＭySQL中，触发器可以在你执行INSERT、UPDATE或DELETE的时候，执行一些特定的操作。在创建触发器时，可以指定是在执行SQL语句之前或是之后执行这些操作。通过触发器，你可以实现一些业务逻辑或一些数据限制，在简化应用程序逻辑，优化系统性能时非常有用。但在使用MySQL触发器也有一些注意事项，否则会导致触发器不能工作或不按指定的方式工作。 1. MySQL触发器注意事项MySQL触发器">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-26T20:07:21.944Z">
+<meta property="og:updated_time" content="2018-08-29T03:40:15.408Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mybatis坑点">
-<meta name="twitter:description" content="问题Mybatis出错：Error instantiating class xxx with invalid types () or values () 解决原因是JavaBean必须要有无参构造器 mybatis在创建bean映射的时候需要无参的构造其来构造对象，然后才进行赋值操作。 因此，Bean必须要有无参构造函数才能正确映射。">
+<meta name="twitter:title" content="mysql 触发器">
+<meta name="twitter:description" content="在ＭySQL中，触发器可以在你执行INSERT、UPDATE或DELETE的时候，执行一些特定的操作。在创建触发器时，可以指定是在执行SQL语句之前或是之后执行这些操作。通过触发器，你可以实现一些业务逻辑或一些数据限制，在简化应用程序逻辑，优化系统性能时非常有用。但在使用MySQL触发器也有一些注意事项，否则会导致触发器不能工作或不按指定的方式工作。 1. MySQL触发器注意事项MySQL触发器">
 
 
 
@@ -134,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="https://wuvsxu.github.io/2018/08/27/mybatis坑点/"/>
+  <link rel="canonical" href="https://wuvsxu.github.io/2018/08/29/mysql-触发器/"/>
 
 
 
 
 
-  <title>mybatis坑点 | 晚来天欲雪，能饮一杯无</title>
+  <title>mysql 触发器 | 晚来天欲雪，能饮一杯无</title>
   
 
 
@@ -307,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/27/mybatis坑点/">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/29/mysql-触发器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="无恤">
@@ -324,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">mybatis坑点</h1>
+          <h1 class="post-title" itemprop="name headline">mysql 触发器</h1>
         
 
         <div class="post-meta">
@@ -336,8 +336,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-27T04:06:36+08:00">
-                2018-08-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T10:35:18+08:00">
+                2018-08-29
               </time>
             
 
@@ -346,6 +346,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -374,10 +396,52 @@
       
 
       
-        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>Mybatis出错：Error instantiating class xxx with invalid types () or values ()</p>
-<h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>原因是JavaBean必须要有无参构造器</p>
-<p>mybatis在创建bean映射的时候需要无参的构造其来构造对象，然后才进行赋值操作。</p>
-<p>因此，Bean必须要有无参构造函数才能正确映射。</p>
+        <p>在ＭySQL中，触发器可以在你执行INSERT、UPDATE或DELETE的时候，执行一些特定的操作。在创建触发器时，可以指定是在执行SQL语句之前或是之后执行这些操作。通过触发器，你可以实现一些业务逻辑或一些数据限制，在简化应用程序逻辑，优化系统性能时非常有用。但在使用MySQL触发器也有一些注意事项，否则会导致触发器不能工作或不按指定的方式工作。</p>
+<h3 id="1-MySQL触发器注意事项"><a href="#1-MySQL触发器注意事项" class="headerlink" title="1. MySQL触发器注意事项"></a>1. MySQL触发器注意事项</h3><p>MySQL触发器使用非常简单，当然其功能也比较有限。当你在项目中大量使用触发器，那么你应该注意以下几点，以避免触发器不按预期效果执行：</p>
+<p>MySQL触发器能基于行触发，MySQL触发器始终时基于表中的一条记录触发，而不是一组SQL语句。因此，如果需要变动整个数据集而数据集数据量又较大时，触发器效果会非常低。<br>每一个表的一个事件只能定义一个触发器，例如：不能在AFTER INSERT上定义一个以上的触发器。</p>
+<h3 id="2-MySQL触发器可能导致的问题"><a href="#2-MySQL触发器可能导致的问题" class="headerlink" title="2. MySQL触发器可能导致的问题"></a>2. MySQL触发器可能导致的问题</h3><p>由于MySQL触发器基于行触发的特性，因此对于批量操作并不适合使用触发器，如：汇总表、缓存表等。触发器使用不当，可能会导致以下问题：</p>
+<p>一个MySQL触发器可能会关联到另外一张表或几张表的操作。因此，会导致数据库服务器负荷也会相应的增加一倍或几倍，如果出现因为触发器问题导致的性能问题，会很难定位问题位置和原因。<br>在基于锁的操作中，触发器可能会导致锁等待或死锁。触发器执行失败，原来执行的SQL语名也会执行失败。而因为触发器导致的失败结果和失败原因，往往很难排查。</p>
+<h3 id="3-MySQL触发器的好处"><a href="#3-MySQL触发器的好处" class="headerlink" title="3. MySQL触发器的好处"></a>3. MySQL触发器的好处</h3><p>对MySQL触发器有足够的认识和了解后，MySQL触发器会给我们带来极大的便利。当实现一些系统约束时，或在实现系统维护及针对操作数据的更新时，使用触发器都非常方便。在之胶我们介绍了MySQL触发器不适合做的一些工作，但MySQL触发器在以下一些应用场景中，会非常实用：</p>
+<ul>
+<li>基于行数据变更的日志记录。如：在用户订单系统中，我们可以基于用户订单数据状态的改变，使用触发器构建用户订单日志表数据。</li>
+<li>基于行数据变更的关系数据的更新。如：用户订单改变至付款或相关状态时，我们可以基于用户订单数据状态的改变，使用触发器改变用户会付款或相应状态信息。</li>
+<li>基于行数据变更的数据汇总。如：用户订单成交或失败，我们可以基于用户订单数据状态的改变，使用触发器构建用户总成交量或失败量汇总数据。</li>
+</ul>
+<p>以上仅列举了一些常用场景，合理的利用MySQL触发器会在数据库工作效率和开发效率上有很大的提高。</p>
+<p>由于MySQL触发器的种种问题，要求我们在创建触发器就应该充分考虑。避免使用不合适的触发器，并能对所有触发器有足够的了解，以便问题的定位和排查。</p>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
+<li>有begin end体，begin end;之间的语句可以写的简单或者复杂</li>
+<li>什么条件会触发：I、D、U</li>
+<li>什么时候触发：在增删改前或者后</li>
+<li>触发频率：针对每一行执行</li>
+<li>触发器定义在表上，附着在表上</li>
+</ul>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><ul>
+<li>尽量少使用触发器，不建议使用。</li>
+<li>假设触发器触发每次执行1s，insert table 500条数据，那么就需要触发500次触发器，光是触发器执行的时间就花费了500s，而insert 500条数据一共是1s，那么这个insert的效率就非常低了。因此我们特别需要注意的一点是触发器的begin end;之间的语句的执行效率一定要高，资源消耗要小。</li>
+<li>触发器尽量少的使用，因为不管如何，它还是很消耗资源，如果使用的话要谨慎的使用，确定它是非常高效的：触发器是针对每一行的；对增删改非常频繁的表上切记不要使用触发器，因为它会非常消耗资源。 <h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3></li>
+</ul>
+<h4 id="1、创建只有一个执行语句的触发器"><a href="#1、创建只有一个执行语句的触发器" class="headerlink" title="1、创建只有一个执行语句的触发器"></a>1、创建只有一个执行语句的触发器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE TRIGGER 触发器名 BEFORE|AFTER 触发事件 ON 表名 FOR EACH ROW 执行语句;</span><br></pre></td></tr></table></figure>
+<h4 id="2、创建有多个执行语句的触发器"><a href="#2、创建有多个执行语句的触发器" class="headerlink" title="2、创建有多个执行语句的触发器"></a>2、创建有多个执行语句的触发器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TRIGGER 触发器名 BEFORE|AFTER 触发事件</span><br><span class="line">ON 表名 FOR EACH ROW</span><br><span class="line">BEGIN</span><br><span class="line">        执行语句列表</span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+<p>例<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TRIGGER trig2 BEFORE DELETE</span><br><span class="line">  ON work FOR EACH ROW</span><br><span class="line">     BEGIN</span><br><span class="line">     　	INSERT INTO time VALUES(NOW());</span><br><span class="line">   　　	INSERT INTO time VALUES(NOW());</span><br><span class="line">	END</span><br></pre></td></tr></table></figure></p>
+<h4 id="3、NEW与OLD详解"><a href="#3、NEW与OLD详解" class="headerlink" title="3、NEW与OLD详解"></a>3、NEW与OLD详解</h4><p>MySQL 中定义了 NEW 和 OLD，用来表示触发器的所在表中，触发了触发器的那一行数据，来引用触发器中发生变化的记录内容，具体地：</p>
+<ul>
+<li><p>在INSERT型触发器中，NEW用来表示将要（BEFORE）或已经（AFTER）插入的新数据；</p>
+</li>
+<li><p>在UPDATE型触发器中，OLD用来表示将要或已经被修改的原数据，NEW用来表示将要或已经修改为的新数据；</p>
+</li>
+<li><p>在DELETE型触发器中，OLD用来表示将要或已经被删除的原数据；</p>
+</li>
+</ul>
+<p>另外，OLD是只读的，而NEW则可以在触发器中使用 SET 赋值，这样不会再次触发触发器，造成循环调用（如每插入一个学生前，都在其学号前加“2013”）。</p>
+<h4 id="4、查看触发器"><a href="#4、查看触发器" class="headerlink" title="4、查看触发器"></a>4、查看触发器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SHOW TRIGGERS;</span><br><span class="line">显示所有触发器的基本信息；无法查询指定的触发器。</span><br><span class="line">SELECT * FROM information_schema.triggers;</span><br><span class="line">显示所有触发器的详细信息；同时，该方法可以查询制定触发器的详细信息。</span><br></pre></td></tr></table></figure>
+<p>如果加where，可以写成<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from information_schema.triggers </span><br><span class="line">    <span class="built_in">where</span> trigger_name=<span class="string">'tri_insert_order'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>所有触发器信息都存储在information_schema数据库下的triggers表中，可以使用SELECT语句查询，如果触发器信息过多，最好通过TRIGGER_NAME字段指定查询。</p>
+<h4 id="5、删除触发器"><a href="#5、删除触发器" class="headerlink" title="5、删除触发器"></a>5、删除触发器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DROP TRIGGER [IF EXISTS] [schema_name.]trigger_name</span><br></pre></td></tr></table></figure>
+<p>删除触发器之后最好使用上面的方法查看一遍；同时，也可以使用database.trig来指定某个数据库中的触发器。</p>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>在做支付宝订单支付的时，支付宝支付接口在一个单独的项目中，在后台调取接口生成订单去支付，当完成支付时，因为回调方法在另一个项目中，没法修改，只能用触发器来实现对表数据的监控，来完成剩下的业务逻辑。</p>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">BEGIN</span><br><span class="line">  DECLARE <span class="keyword">done</span> INT DEFAULT FALSE ; /*遍历数据结束标志 */</span><br><span class="line">  <span class="built_in">declare</span> lenght_time int(5); /*时长*/</span><br><span class="line">  <span class="built_in">declare</span>  column_id varchar(32);  /*栏目id*/</span><br><span class="line">  /*定义游标 以及赋值*/</span><br><span class="line">  <span class="built_in">declare</span> column_ids cursor <span class="keyword">for</span> </span><br><span class="line">          select sod.service_id,sod.duration  from sys_order_detail sod  <span class="built_in">where</span> order_id <span class="keyword">in</span></span><br><span class="line">        (SELECT t.order_id</span><br><span class="line">        FROM sys_order_info t</span><br><span class="line">        WHERE order_number = NEW.out_trade_no);</span><br><span class="line">  DECLARE CONTINUE HANDLER FOR NOT FOUND SET <span class="keyword">done</span> = TRUE ;/* 将结束标志绑定到游标  */</span><br><span class="line">  </span><br><span class="line">   IF (NEW.trade_status = <span class="string">'TRADE_SUCCESS'</span>) THEN</span><br><span class="line">   </span><br><span class="line">   UPDATE sys_order_info </span><br><span class="line"></span><br><span class="line">   <span class="built_in">set</span> order_status = <span class="string">'2'</span></span><br><span class="line">   </span><br><span class="line">   <span class="built_in">where</span> order_number = NEW.out_trade_no;</span><br><span class="line">		/*打开游标*/</span><br><span class="line">		open  column_ids ;</span><br><span class="line">			/*循环开始*/</span><br><span class="line">			read_loop:loop</span><br><span class="line">				/*提前游标的值  */</span><br><span class="line">				fetch  column_ids into column_id ,lenght_time; </span><br><span class="line">				/*声明结束的时候*/</span><br><span class="line">				<span class="keyword">if</span> <span class="keyword">done</span> </span><br><span class="line">				<span class="keyword">then</span> leave read_loop ; end <span class="keyword">if</span> ;</span><br><span class="line">				/*根据时长和栏目id修改时长*/				</span><br><span class="line">				UPDATE xypt_column SET end_time = DATE_ADD(end_time, INTERVAL lenght_time MONTH) <span class="built_in">where</span> id =column_id	;			</span><br><span class="line">			end loop ;  /*循环结束*/</span><br><span class="line">		close column_ids ;/*关闭游标*/</span><br><span class="line">	ELSE</span><br><span class="line">     </span><br><span class="line">    UPDATE sys_order_info </span><br><span class="line"></span><br><span class="line">   <span class="built_in">set</span> order_status = <span class="string">'3'</span></span><br><span class="line">   </span><br><span class="line">   <span class="built_in">where</span> order_number = NEW.out_trade_no;</span><br><span class="line"></span><br><span class="line"> 	 END IF;</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<h4 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h4><p><a href="https://itbilu.com/database/mysql/4y77zMXel.html" target="_blank" rel="noopener">点击查看触发器概念 https://itbilu.com/database/mysql/4y77zMXel.html</a><br><a href="https://www.cnblogs.com/geaozhang/p/6819648.html" target="_blank" rel="noopener">点击查看触发器应用 https://www.cnblogs.com/geaozhang/p/6819648.html</a><br><a href="https://dev.mysql.com/doc/refman/5.5/en/trigger-syntax.html" target="_blank" rel="noopener">点击查看官网示例 https://dev.mysql.com/doc/refman/5.5/en/trigger-syntax.html</a></p>
 
       
     </div>
@@ -395,7 +459,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/mybatis/" rel="tag"># mybatis</a>
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
           
         </div>
       
@@ -408,8 +472,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/27/d3制作折线图/" rel="next" title="d3制作折线图">
-                <i class="fa fa-chevron-left"></i> d3制作折线图
+              <a href="/2018/08/29/java-List接口/" rel="next" title="java List接口">
+                <i class="fa fa-chevron-left"></i> java List接口
               </a>
             
           </div>
@@ -417,10 +481,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/27/mysqlql计算一段时间内-表中每天的数据量/" rel="prev" title="mysqlql计算一段时间内 表中每天的数据量">
-                mysqlql计算一段时间内 表中每天的数据量 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -567,7 +627,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-MySQL触发器注意事项"><span class="nav-number">1.</span> <span class="nav-text">1. MySQL触发器注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-MySQL触发器可能导致的问题"><span class="nav-number">2.</span> <span class="nav-text">2. MySQL触发器可能导致的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-MySQL触发器的好处"><span class="nav-number">3.</span> <span class="nav-text">3. MySQL触发器的好处</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特性"><span class="nav-number">4.</span> <span class="nav-text">特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#注意"><span class="nav-number">4.1.</span> <span class="nav-text">注意</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语法"><span class="nav-number">5.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、创建只有一个执行语句的触发器"><span class="nav-number">5.1.</span> <span class="nav-text">1、创建只有一个执行语句的触发器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、创建有多个执行语句的触发器"><span class="nav-number">5.2.</span> <span class="nav-text">2、创建有多个执行语句的触发器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、NEW与OLD详解"><span class="nav-number">5.3.</span> <span class="nav-text">3、NEW与OLD详解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、查看触发器"><span class="nav-number">5.4.</span> <span class="nav-text">4、查看触发器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、删除触发器"><span class="nav-number">5.5.</span> <span class="nav-text">5、删除触发器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例"><span class="nav-number">6.</span> <span class="nav-text">示例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码实现"><span class="nav-number">6.1.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考地址"><span class="nav-number">6.2.</span> <span class="nav-text">参考地址</span></a></li></ol></li></ol></div>
             
 
           </div>
