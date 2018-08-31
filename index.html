@@ -589,7 +589,159 @@
         
           
             <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>Interface List<e> 继承自Collection<e>, Iterable<e>，实现类有AbstractList, AbstractSequentialList, ArrayList, AttributeList, CopyOnWriteArrayList, LinkedList, RoleList, RoleUnresolvedList, Stack, Vector，最常用的实现类是ArrayList。</e></e></e></p>
-<h3 id="常用方法概要"><a href="#常用方法概要" class="headerlink" title="常用方法概要"></a>常用方法概要</h3><h4 id="接口方法"><a href="#接口方法" class="headerlink" title="接口方法"></a>接口方法</h4><p>| 修饰符和返回类型 | 方法和描述|<br>|——–|———–|</p>
+<h3 id="常用方法概要"><a href="#常用方法概要" class="headerlink" title="常用方法概要"></a>常用方法概要</h3><h4 id="接口方法-（有描述的为常用方法）"><a href="#接口方法-（有描述的为常用方法）" class="headerlink" title="接口方法 （有描述的为常用方法）"></a>接口方法 （有描述的为常用方法）</h4><table>
+<thead>
+<tr>
+<th>修饰符和返回类型</th>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>boolean</td>
+<td>add(E e)</td>
+<td>将指定的元素追加到此列表的末尾（可选操作）。</td>
+</tr>
+<tr>
+<td>void</td>
+<td>add(int index, E element)</td>
+<td>将指定的元素插入此列表中的指定位置（可选操作）。</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>addAll(Collection&lt;? extends E&gt; c)</td>
+<td></td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>addAll(int index, Collection&lt;? extends E&gt; c)</td>
+<td></td>
+</tr>
+<tr>
+<td>void</td>
+<td>clear()</td>
+<td>从此列表中删除所有元素（可选操作）。</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>contains(Object o)</td>
+<td>如果此列表包含指定的元素，则返回 true 。</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>containsAll(Collection&lt;?&gt; c)</td>
+<td></td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>equals(Object o)</td>
+<td></td>
+</tr>
+<tr>
+<td>E</td>
+<td>get(int index)</td>
+<td>返回此列表中指定位置的元素。</td>
+</tr>
+<tr>
+<td>int</td>
+<td>hashCode()</td>
+<td>返回此列表的哈希码值。</td>
+</tr>
+<tr>
+<td>int</td>
+<td>indexOf(Object o)</td>
+<td>返回此列表中指定元素的第一次出现的索引，如果此列表不包含元素，则返回-1</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>isEmpty()</td>
+<td></td>
+</tr>
+<tr>
+<td>Iterator<e></e></td>
+<td>iterator()</td>
+<td></td>
+</tr>
+<tr>
+<td>int</td>
+<td>lastIndexOf(Object o)</td>
+<td></td>
+</tr>
+<tr>
+<td>ListIterator<e></e></td>
+<td>listIterator()</td>
+<td></td>
+</tr>
+<tr>
+<td>ListIterator<e></e></td>
+<td>listIterator(int index)</td>
+<td></td>
+</tr>
+<tr>
+<td>E</td>
+<td>remove(int index)</td>
+<td>删除该列表中指定位置的元素（可选操作）。</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>remove(Object o)</td>
+<td>从列表中删除指定元素的第一个出现（如果存在）（可选操作）。</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>removeAll(Collection&lt;?&gt; c)</td>
+<td></td>
+</tr>
+<tr>
+<td>default void</td>
+<td>replaceAll(UnaryOperator<e> operator)</e></td>
+<td></td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>retainAll(Collection&lt;?&gt; c)</td>
+<td></td>
+</tr>
+<tr>
+<td>E</td>
+<td>set(int index, E element)</td>
+<td>用指定的元素（可选操作）替换此列表中指定位置的元素。</td>
+</tr>
+<tr>
+<td>int</td>
+<td>size()</td>
+<td></td>
+</tr>
+<tr>
+<td>default void</td>
+<td>sort(Comparator&lt;? super E&gt; c)</td>
+<td></td>
+</tr>
+<tr>
+<td>default Spliterator<e></e></td>
+<td>spliterator()</td>
+<td></td>
+</tr>
+<tr>
+<td>List<e></e></td>
+<td>subList(int fromIndex, int toIndex)</td>
+<td></td>
+</tr>
+<tr>
+<td>Object[]</td>
+<td>toArray()</td>
+<td>以正确的顺序（从第一个到最后一个元素）返回一个包含此列表中所有元素的数组。</td>
+</tr>
+<tr>
+<td><t> T[]</t></td>
+<td>toArray(T[] a)</td>
+<td>以正确的顺序返回一个包含此列表中所有元素的数组（从第一个到最后一个元素）; 返回的数组的运行时类型是指定数组的运行时类型</td>
+</tr>
+</tbody>
+</table>
+<h4 id="list去重方法"><a href="#list去重方法" class="headerlink" title="list去重方法"></a>list去重方法</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; lst1=new ArrayList&lt;&gt;();</span><br><span class="line">lst1.add(<span class="string">"aa"</span>);</span><br><span class="line">lst1.add(<span class="string">"dd"</span>);</span><br><span class="line">lst1.add(<span class="string">"ss"</span>);</span><br><span class="line">lst1.add(<span class="string">"aa"</span>);</span><br><span class="line">lst1.add(<span class="string">"ss"</span>);</span><br><span class="line">//-----------------------------------</span><br><span class="line">//方法 1.</span><br><span class="line"><span class="keyword">for</span> (int i = 0; i &lt;lst1.size()-1; i++) &#123;</span><br><span class="line">	<span class="keyword">for</span> (int j = lst1.size()-1; j &gt;i; j--) &#123;</span><br><span class="line">		<span class="keyword">if</span> (lst1.get(j).equals(lst1.get(i))) &#123;</span><br><span class="line">			lst1.remove(j);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(lst1);</span><br><span class="line">//-----------------------------------</span><br><span class="line">//方法 2.</span><br><span class="line">List&lt;String&gt; lst2=new ArrayList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (String s:lst1) &#123;</span><br><span class="line">	<span class="keyword">if</span> (Collections.frequency(lst2, s)&lt;1) &#123;</span><br><span class="line">		lst2.add(s);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(lst2);</span><br></pre></td></tr></table></figure>
+<h3 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h3><p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" target="_blank" rel="noopener">java 官方文档 https://docs.oracle.com/javase/8/docs/api/java/util/List.html</a><br><a href="http://wziyou.top:19080/download/chm/jdk_api_1.8.chm" target="_blank" rel="noopener">中文文档下载</a></p>
 
           
         
@@ -1898,7 +2050,8 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>
@@ -1907,18 +2060,18 @@
   </span>
   <span class="author" itemprop="copyrightHolder">无恤</span>
 </div>
-
-
 <div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+<i class="fa fa-user-md"></i>
+<span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>人次
+</span>
+</div>
+<div class="theme-info">
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
 </div>
 
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Gemini
-  </a>
-</div>
 
 
         

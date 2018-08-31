@@ -1069,6 +1069,9 @@
 <h3 id="搭建"><a href="#搭建" class="headerlink" title="搭建"></a>搭建</h3><p> hexo搭建：<a href="https://zhuanlan.zhihu.com/p/25729240" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/25729240</a></p>
 <h3 id="标签和分类"><a href="#标签和分类" class="headerlink" title="标签和分类"></a>标签和分类</h3><p> tags和categories用法：<a href="https://github.com/hexojs/hexo/issues/320" target="_blank" rel="noopener">https://github.com/hexojs/hexo/issues/320</a></p>
 <h3 id="增加搜索功能"><a href="#增加搜索功能" class="headerlink" title="增加搜索功能"></a>增加搜索功能</h3><p> 增加搜索功能：<a href="http://www.itfanr.cc/2017/10/27/add-search-function-to-hexo-blog/" target="_blank" rel="noopener">http://www.itfanr.cc/2017/10/27/add-search-function-to-hexo-blog/</a></p>
+<h3 id="增加本站访问统计次数"><a href="#增加本站访问统计次数" class="headerlink" title="增加本站访问统计次数"></a>增加本站访问统计次数</h3><p>使用了不蒜子 插件:<a href="http://ibruce.info/2015/04/04/busuanzi/" target="_blank" rel="noopener">http://ibruce.info/2015/04/04/busuanzi/</a></p>
+<p>修改hemes/你的主题/layout/_partial/footer.ejs文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;script async src=<span class="string">"https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">&lt;div class=<span class="string">"copyright"</span> &gt;</span><br><span class="line">  &#123;% <span class="built_in">set</span> current = date(Date.now(), <span class="string">"YYYY"</span>) %&#125;</span><br><span class="line">  &amp;copy; &#123;% <span class="keyword">if</span> theme.since and theme.since != current %&#125; &#123;&#123; theme.since &#125;&#125; - &#123;% endif %&#125;</span><br><span class="line">  &lt;span itemprop=<span class="string">"copyrightYear"</span>&gt;&#123;&#123; current &#125;&#125;&lt;/span&gt;</span><br><span class="line">  &lt;span class=<span class="string">"with-love"</span>&gt;</span><br><span class="line">    &lt;i class=<span class="string">"fa fa-&#123;&#123; theme.authoricon &#125;&#125;"</span>&gt;&lt;/i&gt;</span><br><span class="line">  &lt;/span&gt;</span><br><span class="line">  &lt;span class=<span class="string">"author"</span> itemprop=<span class="string">"copyrightHolder"</span>&gt;&#123;&#123; config.author &#125;&#125;&lt;/span&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=<span class="string">"powered-by"</span>&gt;</span><br><span class="line">&lt;i class=<span class="string">"fa fa-user-md"</span>&gt;&lt;/i&gt;</span><br><span class="line">&lt;span id=<span class="string">"busuanzi_container_site_uv"</span>&gt;</span><br><span class="line">  本站访客数:&lt;span id=<span class="string">"busuanzi_value_site_uv"</span>&gt;&lt;/span&gt;人次</span><br><span class="line">&lt;/span&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=<span class="string">"theme-info"</span>&gt;</span><br><span class="line">&lt;span id=<span class="string">"busuanzi_container_site_pv"</span>&gt;</span><br><span class="line">    本站总访问量&lt;span id=<span class="string">"busuanzi_value_site_pv"</span>&gt;&lt;/span&gt;次</span><br><span class="line">&lt;/span&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<p>我这里去掉了 “由 Hexo 强力驱动  |  主题 - NexT.Gemini“字样</p>
 <h3 id="hexo-部署后，绑定域名清空的问题"><a href="#hexo-部署后，绑定域名清空的问题" class="headerlink" title="hexo 部署后，绑定域名清空的问题"></a>hexo 部署后，绑定域名清空的问题</h3><p> hexo 部署后 git项目的 Custom domain清空：在source文件夹下面建个CNAME文件夹，里面写上自己的域名，同样的，favicon.ico也可以在里面设置。<br> 参考： <a href="https://www.zhihu.com/question/28814437" target="_blank" rel="noopener">https://www.zhihu.com/question/28814437</a></p>
 
           
@@ -1229,7 +1232,8 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>
@@ -1238,18 +1242,18 @@
   </span>
   <span class="author" itemprop="copyrightHolder">无恤</span>
 </div>
-
-
 <div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+<i class="fa fa-user-md"></i>
+<span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>人次
+</span>
+</div>
+<div class="theme-info">
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
 </div>
 
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Gemini
-  </a>
-</div>
 
 
         
