@@ -308,6 +308,125 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/09/07/js-日期操作扩展/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://wziyou.top:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/07/js-日期操作扩展/" itemprop="url">js 日期操作扩展</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-07T00:56:48+08:00">
+                2018-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Date.isLeapYear = <span class="keyword">function</span> (year) &#123;</span><br><span class="line">    <span class="built_in">return</span> (((year % 4 === 0) &amp;&amp; (year % 100 !== 0)) || (year % 400 === 0));</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Date.getDaysInMonth = <span class="keyword">function</span> (year, month) &#123;</span><br><span class="line">    <span class="built_in">return</span> [31, (Date.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Date.prototype.isLeapYear = <span class="function"><span class="title">function</span></span> () &#123;</span><br><span class="line">    <span class="built_in">return</span> Date.isLeapYear(this.getFullYear());</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Date.prototype.getDaysInMonth = <span class="function"><span class="title">function</span></span> () &#123;</span><br><span class="line">    <span class="built_in">return</span> Date.getDaysInMonth(this.getFullYear(), this.getMonth());</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Date.prototype.addMonths = <span class="keyword">function</span> (value) &#123;</span><br><span class="line">    var n = this.getDate();</span><br><span class="line">    this.setDate(1);</span><br><span class="line">    this.setMonth(this.getMonth() + value);</span><br><span class="line">    this.setDate(Math.min(n, this.getDaysInMonth()));</span><br><span class="line">    <span class="built_in">return</span> this;</span><br><span class="line">&#125;;</span><br><span class="line">Date.prototype.addDays = <span class="keyword">function</span>(days) &#123;</span><br><span class="line">    var date = new Date(this.valueOf());</span><br><span class="line">    date.setDate(date.getDate() + days);</span><br><span class="line">    <span class="built_in">return</span> date;</span><br><span class="line">&#125;</span><br><span class="line">//时间格式化 年月日时分秒</span><br><span class="line"><span class="keyword">function</span> dateymdhis(value)&#123;</span><br><span class="line">    var date = new Date(value);</span><br><span class="line">    var y = date.getFullYear();</span><br><span class="line">    var m = date.getMonth() + 1; m=(m+<span class="string">''</span>).length==2? m:<span class="string">'0'</span>+m;</span><br><span class="line">    var d = date.getDate(); d=(d+<span class="string">''</span>).length==2? d:<span class="string">'0'</span>+d;</span><br><span class="line">    var h=date.getHours(); h=(h+<span class="string">''</span>).length==2? h:<span class="string">'0'</span>+h;</span><br><span class="line">    var min=date.getMinutes(); min=(min+<span class="string">''</span>).length==2? min:<span class="string">'0'</span>+min;</span><br><span class="line">    var s=date.getSeconds(); s=(s+<span class="string">''</span>).length==2? s:<span class="string">'0'</span>+s;</span><br><span class="line">    <span class="built_in">return</span> y + <span class="string">'-'</span> +m + <span class="string">'-'</span> + d + <span class="string">' '</span>+ h + <span class="string">':'</span> +min + <span class="string">':'</span> + s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/31/pagehelper插件注意事项/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1760,149 +1879,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/23/excel转html在线工具/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://wziyou.top:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/23/excel转html在线工具/" itemprop="url">excel转html在线工具</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-23T09:18:39+08:00">
-                2018-08-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/工具/" itemprop="url" rel="index">
-                    <span itemprop="name">工具</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="链接地址：http-pressbin-com-tools-excel-to-html-table-index-html"><a href="#链接地址：http-pressbin-com-tools-excel-to-html-table-index-html" class="headerlink" title=" 链接地址：http://pressbin.com/tools/excel_to_html_table/index.html"></a><a href="http://pressbin.com/tools/excel_to_html_table/index.html" target="_blank" rel="noopener"> 链接地址：http://pressbin.com/tools/excel_to_html_table/index.html</a></h5><hr>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在makedowm中，设计表格可能会遇到需要合并两个表格的情况，但是makedown只能制作简单的表格，这时就需要直接写成html格式。</span><br><span class="line">在朋友的提示下，找到了一个可以把excel直接转换为html的工具。</span><br><span class="line">直接从excel中复制内容进来，点击 conver进行转换，然后进行修改。</span><br></pre></td></tr></table></figure>
-<h3 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">虽然这种方法可以解决问题，但是makedown原本目的是为了让文本简洁可读高效，违背了makedown的初衷，不建议用这种方式</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1953,7 +1929,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

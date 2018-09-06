@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[js 日期操作扩展]]></title>
+    <url>%2F2018%2F09%2F07%2Fjs-%E6%97%A5%E6%9C%9F%E6%93%8D%E4%BD%9C%E6%89%A9%E5%B1%95%2F</url>
+    <content type="text"><![CDATA[内容123456789101112131415161718192021222324252627282930313233343536373839Date.isLeapYear = function (year) &#123; return (((year % 4 === 0) &amp;&amp; (year % 100 !== 0)) || (year % 400 === 0));&#125;;Date.getDaysInMonth = function (year, month) &#123; return [31, (Date.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];&#125;;Date.prototype.isLeapYear = function () &#123; return Date.isLeapYear(this.getFullYear());&#125;;Date.prototype.getDaysInMonth = function () &#123; return Date.getDaysInMonth(this.getFullYear(), this.getMonth());&#125;;Date.prototype.addMonths = function (value) &#123; var n = this.getDate(); this.setDate(1); this.setMonth(this.getMonth() + value); this.setDate(Math.min(n, this.getDaysInMonth())); return this;&#125;;Date.prototype.addDays = function(days) &#123; var date = new Date(this.valueOf()); date.setDate(date.getDate() + days); return date;&#125;//时间格式化 年月日时分秒function dateymdhis(value)&#123; var date = new Date(value); var y = date.getFullYear(); var m = date.getMonth() + 1; m=(m+'').length==2? m:'0'+m; var d = date.getDate(); d=(d+'').length==2? d:'0'+d; var h=date.getHours(); h=(h+'').length==2? h:'0'+h; var min=date.getMinutes(); min=(min+'').length==2? min:'0'+min; var s=date.getSeconds(); s=(s+'').length==2? s:'0'+s; return y + '-' +m + '-' + d + ' '+ h + ':' +min + ':' + s;&#125;]]></content>
+      <tags>
+        <tag>js</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[pagehelper 插件注意事项]]></title>
     <url>%2F2018%2F08%2F31%2Fpagehelper%E6%8F%92%E4%BB%B6%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%2F</url>
     <content type="text"><![CDATA[问题 在用 pagehelper插件 时，遇到了分页数量查询出错的问题。 pagehelper和mybatis的关联结果查询冲突，在GitHub上的重要提示中有写。 解决 后续中找到了一种解决方案。 https://blog.csdn.net/u013887008/article/details/80382764 注:数据量过多时，不推荐使用，还是用一般的分页方式。]]></content>
