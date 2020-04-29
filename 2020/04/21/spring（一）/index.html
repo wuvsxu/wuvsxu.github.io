@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,spring," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="spring是一个全面的、企业应用开发一站式的解决方案，贯穿表现层、业务层、持久层。而且Spring仍然可以和其他的框架无缝整合。 Spring特点 轻量级从大小和开销两个方面而言spring都是轻量级的，完整的spring框架可以在一个大小只有1M多的jar文件中发布，并且spring所需的处理开销也是微不足道的。 控制反转spring通过一种乘坐控制反转IOC的技术促进了低耦合。当应用了IOC">
+<meta name="keywords" content="java,spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring（一）">
+<meta property="og:url" content="https://wuvsxu.github.io/2020/04/21/spring（一）/index.html">
+<meta property="og:site_name" content="晚来天欲雪，能饮一杯无">
+<meta property="og:description" content="spring是一个全面的、企业应用开发一站式的解决方案，贯穿表现层、业务层、持久层。而且Spring仍然可以和其他的框架无缝整合。 Spring特点 轻量级从大小和开销两个方面而言spring都是轻量级的，完整的spring框架可以在一个大小只有1M多的jar文件中发布，并且spring所需的处理开销也是微不足道的。 控制反转spring通过一种乘坐控制反转IOC的技术促进了低耦合。当应用了IOC">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/ED64CA45F04E49A18B8C543FF4AF263C.jpg">
+<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/9BCB874B415242FD805082D7E2366666.jpg">
+<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/110949D4375C4B34B98E8E910FE1BEF3.jpg">
+<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/B58B4B3A139547CE8DA24F463EC57D9B.jpg">
+<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/4AA1DF0D810749FB81BAD19C28658F6E.jpg">
+<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/9A72C72F3C154319A0C47428715DB955.jpg">
+<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/68DA0B644EB947529D147656EA82BA79.jpg">
+<meta property="og:updated_time" content="2020-04-24T17:30:46.747Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spring（一）">
+<meta name="twitter:description" content="spring是一个全面的、企业应用开发一站式的解决方案，贯穿表现层、业务层、持久层。而且Spring仍然可以和其他的框架无缝整合。 Spring特点 轻量级从大小和开销两个方面而言spring都是轻量级的，完整的spring框架可以在一个大小只有1M多的jar文件中发布，并且spring所需的处理开销也是微不足道的。 控制反转spring通过一种乘坐控制反转IOC的技术促进了低耦合。当应用了IOC">
+<meta name="twitter:image" content="http://www.wziyou.xyz:19080/image-handle/ED64CA45F04E49A18B8C543FF4AF263C.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wuvsxu.github.io/2020/04/21/spring（一）/"/>
+
+
+
+
+
+  <title>spring（一） | 晚来天欲雪，能饮一杯无</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">晚来天欲雪，能饮一杯无</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人记录</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/分类/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/04/21/spring（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">spring（一）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-21T23:39:20+08:00">
+                2020-04-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>spring是一个全面的、企业应用开发一站式的解决方案，贯穿表现层、业务层、持久层。而且Spring仍然可以和其他的框架无缝整合。</p>
+<h1 id="Spring特点"><a href="#Spring特点" class="headerlink" title="Spring特点"></a>Spring特点</h1><ul>
+<li>轻量级<br>从大小和开销两个方面而言spring都是轻量级的，完整的spring框架可以在一个大小只有1M多的jar文件中发布，并且spring所需的处理开销也是微不足道的。</li>
+<li>控制反转<br>spring通过一种乘坐控制反转IOC的技术促进了低耦合。当应用了IOC,一个对象依赖的其他对象会通过被动的方式传递进来，而不是这对象资金创建或者查找一栏对象。</li>
+<li>面向切面<br>spring支持面向切面的编程，并且把应用业务逻辑和系统服务分开。</li>
+<li>容器<br>spring包含并管理应用对象的配置和生命周期，在这个意义上它是一种容器，你可以配置你的每个bean如何被创建—基于一个可配置的原型，你的bean可以创建一个单独的实例或者每次需要时都生成一个新的实例–以及它们是如何互相关联的。</li>
+<li>框架集合<br>spring可以将简单的组件配置，组合成复杂的应用。在spring中，应用对象被声明式的组合，典型的是在一个xml文件中。spring也提供了很多基础功能（事务管理，持久化框架集成等），将应用逻辑的开发留给开发者。</li>
+<li>方便解耦，简化开发</li>
+<li>声明式事务的支持</li>
+<li>降低Java EE API的使用难度</li>
+</ul>
+<p><img src="http://www.wziyou.xyz:19080/image-handle/ED64CA45F04E49A18B8C543FF4AF263C.jpg" alt="avatar"></p>
+<h1 id="Spring核心组件"><a href="#Spring核心组件" class="headerlink" title="Spring核心组件"></a>Spring核心组件</h1><p><img src="http://www.wziyou.xyz:19080/image-handle/9BCB874B415242FD805082D7E2366666.jpg" alt="avatar"></p>
+<h1 id="Spring常用模块"><a href="#Spring常用模块" class="headerlink" title="Spring常用模块"></a>Spring常用模块</h1><ul>
+<li>核心容器<br>核心容器提供spring框架的基本功能，核心容器的主要组件是BeanFactory,他是工厂模式的实现，BeanFactory使用控制反转模式将应用程序的配置和依赖性规范与实际的应用程序代码分开。</li>
+<li>Spring上下文<br>Spring上下文是一个配置文件，向Spring框架提供上下文信息，Spring上下文包括企业服务，例如：JNDI,EJB,电子邮件，国际化，校验和调度功能。</li>
+<li>Spring AOP<br>通过配置管理特性，SpringAOP模块直接向面向切面的编程功能集成到了Spring框架中，可以将一些通用任务，如安全，事物，日志，等集中进行管理，提高了复用性和管理的便捷性。</li>
+<li>Spring DAO<br>为JDBC DAO抽象层提供了有意义的异常层次结构，可用该结构来管理异常处理和不同数据库供应商抛出的错误消息，异常层次结构简化了错误处理，并且极大的降低了需要便携的异常代码数量，SpringDAO的面向JDBC的异常存从通用的DAO异常层次结构。</li>
+<li>Spring ORM<br>spring框架插入了若干和ORM框架，从而提供了ORM的对象关系工具，其中包括JDO，Hibernate,IBatista SQL Map。所有这些都遵从了Spring的通用实物和DAO的异常曾子结构。</li>
+<li>Sping Web 模块<br>Web上下文模块创建在应用程序上下文模块之上，为基于Web的应用程序创建了提供上下文，所以Srping框架支持Jakarta Struts的集成，Web模块还减缓了处理多部分请求以及将请求参数绑定到域对象的工作。</li>
+<li>Spring MVC框架<br>MVC框架是衣蛾全功能的构建Web应用程序的MVC实现，通过策略接口，MVC框架编程了高度可配置的，MVC容纳了大量的视图技术，其中包括JSP，Velocity,Ties，iTest和POI。</li>
+</ul>
+<p><img src="http://www.wziyou.xyz:19080/image-handle/110949D4375C4B34B98E8E910FE1BEF3.jpg" alt="avatar"></p>
+<h1 id="Spring主要包"><a href="#Spring主要包" class="headerlink" title="Spring主要包"></a>Spring主要包</h1><p><strong>core</strong>—-Spring核心工具包，其他包依赖此包<br><strong>beans</strong>—-所有应用都用到，包含访问配置文件，创建和管理bean等。<br><strong>aop</strong>—-Spring的面向切面编程，提供AOP（面向切面编程）的实现<br><strong>context</strong>—-提供在基础IOC功能上的扩展服务，此外还提供许多企业级服务的支持，有邮件服务、任务调度。JNDI定位，EJB集成，远程访问，缓存以及多种视图层框架的支持。<br><strong>web.mvc</strong>—-包含SpringMVC应用开发时所需的核心类。<br><strong>transaction</strong>—-为JDBC,Hibernate，JDO,JPA提供一致的声明式和编程式事务管理<br><strong>web</strong>—–包含Web应用开发时，用到Spring关键时所需的核心类。<br><strong>aspects</strong>—-Spring提供的对AspectJ框架的整合<br><strong>test</strong>—-对JUNIT等测试框架的简单封装<br><strong>asm</strong>—-spring3.0开始提供自己独立的asm jar包<br><strong>context.support</strong>—-spring context的扩展支持，用于MVC方面<br><strong>expression</strong>—-Spring表达式语言<br><strong>instrument.tomcat</strong>—-Spring对tomcat连接池的集成<br><strong>instrument</strong>—-Spring对服务器的代理接口<br><strong>jdbc</strong>—-为JDBC的简单封装<br><strong>jms</strong>—-为简化jms api的使用而做的简单封装<br><strong>orm</strong>—-整合第三方的orm实现，如hibernate,ibatis,jdo,jpa等<br><strong>oxm</strong>—-Spring对于object/xml映射的支持，可以让java与xml来回切换<br><strong>web.portlet</strong>—-Spring MVC的增强<br><strong>web.servlet</strong>—-对J2EE6.0 servlet3.0的支持<br><strong>web.struts</strong>—-整合对struts框架的支持，更方便更容易的集成Struts框架。<br><img src="http://www.wziyou.xyz:19080/image-handle/B58B4B3A139547CE8DA24F463EC57D9B.jpg" alt="avatar"></p>
+<h1 id="Spring-常用注解"><a href="#Spring-常用注解" class="headerlink" title="Spring 常用注解"></a>Spring 常用注解</h1><p>bean注入与装配的的方式有很多种，可以通过xml，get set方式，构造函数或者注解等。简单易用的方式就是使用Spring的注解了，Spring提供了大量的注解方式。<br>【1】<br><strong>@Controller </strong><br>用于标注控制层组件，用于标记在一个类上，使用它标记的类就是一个SpringMVC Controller对象，分发处理器将会扫描使用了该注解的类的方法，并检测该方法是否使用了@RequestMapping注解，可以把Request请求header部分的值绑定到方法的参数上<br><strong>@RestController</strong><br>相当于@Controller和ResponseBody的组合效果<br><strong>@Component</strong><br>泛指组件，当组件不好归类的时候，我们可以使用这个注解进行标注。<br><strong>@Respository</strong><br>用于注解dao，在daoimpl类上注解。<br><strong>@Service</strong><br>用于标注业务层组件<br>【2】<br><strong>@ResponseBody</strong><br>异步请求，该注解用于将Controller的方法返回的对象。通过适当的HttpMessageConverter转换为指定格式后，写入Response对象的body数据区。返回的数据不是html标签的页面，而是其他某种格式的数据时（如json、xml）使用<br><strong>@RequestMapping</strong><br>一个用来处理请求地址映射的注解，可用于类或方法上，用于类上，表示类中的所有响应请求的方法都是以该地址作为父路径<br><strong>@Aurowired</strong><br>可以对类成员变量、方法及构造函数进行标注、完成自动装配的工作，通过@Autowired的使用来消除setget方法<br><strong>@PathValiable</strong><br>用于将请求URL中的模板变量映射到功能处理方法的参数上，即去除url模板中的变量作为参数<br><strong>@RequestParam</strong><br>主要用于在SpringMVC后台控制层获取参数，类似一种是request.getParameter(“name”)<br><strong>@RequestHeader</strong><br>而言吧Request请求header部分的值绑定到方法的参数上<br>【3】<br><strong>@ModelAttribute</strong><br>该Controller的所有方法在调用前，先执行此@ModelAttribute方法，可用于注解和方法参数中，可以把这个@ModelAttribute特征，应用在BaseController当中，所有Controller继承BaseController,即可实现在调用Controller时，先执行@ModelAttibute方法。<br><strong>@SessionAttributes</strong><br>即将值放在session作用域中，卸载class上面。<br><strong>@Valid</strong><br>实体数据校验，可以结合hibernate validator以前使用<br><strong>@CookieValue</strong><br>用来获取Cookie中的值<br><img src="http://www.wziyou.xyz:19080/image-handle/4AA1DF0D810749FB81BAD19C28658F6E.jpg" alt="avatar"></p>
+<h1 id="装配注解比较"><a href="#装配注解比较" class="headerlink" title="装配注解比较"></a>装配注解比较</h1><p><strong>【包区别】</strong><br>@Resource     javax.annotation      java<br>@Inject        javax.inject        java<br>@Qualifier    javax.inject        java<br>@Autowired     org.springframework.bean.factory    java<br><strong>【@Autowored和@Inject】</strong><br>二者基本相同，但@Autowird不能离开spring环境<br>1.按照类型匹配 2.按照限定符进行类型限定 3.按照名称匹配<br><strong>【@Resource】</strong><br>1.按照名称匹配，2.按照类型匹配 3.按照限定符进行类型限定（但如果名称匹配成功的话这条会被忽略）<br><img src="http://www.wziyou.xyz:19080/image-handle/9A72C72F3C154319A0C47428715DB955.jpg" alt="avatar"></p>
+<h1 id="Spring-第三方结合"><a href="#Spring-第三方结合" class="headerlink" title="Spring 第三方结合"></a>Spring 第三方结合</h1><p><strong>【权限】</strong><br>shiro,java的一个安全框架，认证，授权，加密，会话管理，与Web集成，缓存以及多种视图层框架的支持。<br><strong>【缓存】</strong><br>redis：一个开源的使用ANSI C语言填写，支持网络，可基于内存亦可持久化的日志型，Key-value数据库<br><strong>【持久化框架】</strong><br>Mybatis:是支持普通Sql查询，存储过程和高级映射的优秀持久层框架<br><strong>【定时任务】</strong><br>quartz:一个开源的作业调度框架，由java编写，在.NET平台为Quartz.net通过Quart可以快速的完成任务调度的工作。<br>Spring-Task:轻量型的Quartz，而且使用起来简单，除spring相关的包外不需要额外的包，而且支持注解和配置文件两种形式。<br><strong>【校验框架】</strong><br>Oval：oval是一个可扩展的的java对象数据验证框架，验证的规则可以通过配置文件，Annotation,POJOs进行设定，可以使用纯java语言，javaScript,Groovy，BeanShell等进行规则的编写。<br><img src="http://www.wziyou.xyz:19080/image-handle/68DA0B644EB947529D147656EA82BA79.jpg" alt="avatar"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/spring/" rel="tag"># spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/20/java基础（五）/" rel="next" title="java基础（五）">
+                <i class="fa fa-chevron-left"></i> java基础（五）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/26/Spring原理（二）/" rel="prev" title="Spring原理（二）--IOC 原理">
+                Spring原理（二）--IOC 原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://www.wziyou.xyz:19080/title.jpg"
+               alt="无恤" />
+          <p class="site-author-name" itemprop="name">无恤</p>
+           
+              <p class="site-description motion-element" itemprop="description">java博客</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">77</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/分类/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wuvsxu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring特点"><span class="nav-number">1.</span> <span class="nav-text">Spring特点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring核心组件"><span class="nav-number">2.</span> <span class="nav-text">Spring核心组件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring常用模块"><span class="nav-number">3.</span> <span class="nav-text">Spring常用模块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring主要包"><span class="nav-number">4.</span> <span class="nav-text">Spring主要包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-常用注解"><span class="nav-number">5.</span> <span class="nav-text">Spring 常用注解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#装配注解比较"><span class="nav-number">6.</span> <span class="nav-text">装配注解比较</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-第三方结合"><span class="nav-number">7.</span> <span class="nav-text">Spring 第三方结合</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="http://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy;  2018 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">无恤</span>
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i>
+<span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>人次
+</span>
+</div>
+<div class="theme-info">
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,spring," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="概念　　Spring通过一个配置文件描述Bean及Bean之间的依赖关系，利用Java语言的反射功能实例化Bean并建立Bean之间的依赖关系。Spring的IoC容器在完成这些底层工作的基础上，还提供了Bean实例缓存、生命周期管理、Bean实例代理、事件发布、资源装载等高级服务。 Spring容器高层视图　　Spring启动时读取应用程序提供的Bean配置信息，并在Spring容器中生成一份相">
+<meta name="keywords" content="java,spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring原理（二）--IOC 原理">
+<meta property="og:url" content="https://wuvsxu.github.io/2020/04/26/Spring原理（二）/index.html">
+<meta property="og:site_name" content="晚来天欲雪，能饮一杯无">
+<meta property="og:description" content="概念　　Spring通过一个配置文件描述Bean及Bean之间的依赖关系，利用Java语言的反射功能实例化Bean并建立Bean之间的依赖关系。Spring的IoC容器在完成这些底层工作的基础上，还提供了Bean实例缓存、生命周期管理、Bean实例代理、事件发布、资源装载等高级服务。 Spring容器高层视图　　Spring启动时读取应用程序提供的Bean配置信息，并在Spring容器中生成一份相">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/1E2F83312ECA4C7885035C11BE5369D8.png">
+<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/1A572B72BD654996A03618BD31D227E3.png">
+<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/334E9D00EEAD4802B505CC700E4A9B76.png">
+<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/E773698E488D4B5E92EABCDE572F401A.png">
+<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/CE9E5DB3B51A4255BB7B4B5FFE53F883.png">
+<meta property="og:updated_time" content="2020-04-26T16:19:45.070Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring原理（二）--IOC 原理">
+<meta name="twitter:description" content="概念　　Spring通过一个配置文件描述Bean及Bean之间的依赖关系，利用Java语言的反射功能实例化Bean并建立Bean之间的依赖关系。Spring的IoC容器在完成这些底层工作的基础上，还提供了Bean实例缓存、生命周期管理、Bean实例代理、事件发布、资源装载等高级服务。 Spring容器高层视图　　Spring启动时读取应用程序提供的Bean配置信息，并在Spring容器中生成一份相">
+<meta name="twitter:image" content="http://www.wziyou.xyz:19080/image-handle/1E2F83312ECA4C7885035C11BE5369D8.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wuvsxu.github.io/2020/04/26/Spring原理（二）/"/>
+
+
+
+
+
+  <title>Spring原理（二）--IOC 原理 | 晚来天欲雪，能饮一杯无</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">晚来天欲雪，能饮一杯无</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人记录</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/分类/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/04/26/Spring原理（二）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring原理（二）--IOC 原理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-26T00:26:08+08:00">
+                2020-04-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>　　Spring通过一个配置文件描述Bean及Bean之间的依赖关系，利用Java语言的反射功能实例化Bean并建立Bean之间的依赖关系。Spring的IoC容器在完成这些底层工作的基础上，还提供了Bean实例缓存、生命周期管理、Bean实例代理、事件发布、资源装载等高级服务。</p>
+<h1 id="Spring容器高层视图"><a href="#Spring容器高层视图" class="headerlink" title="Spring容器高层视图"></a>Spring容器高层视图</h1><p>　　Spring启动时读取应用程序提供的Bean配置信息，并在Spring容器中生成一份相应的Bean配置注册表，然后根据这张注册表实例化Bean，装配好Bean之间的依赖关系，为上层应用提供准备就绪的运行环境。其中Bean缓存池为HashMap实现。<br><img src="http://www.wziyou.xyz:19080/image-handle/1E2F83312ECA4C7885035C11BE5369D8.png" alt="avatar"></p>
+<h2 id="IOC容器实现"><a href="#IOC容器实现" class="headerlink" title="IOC容器实现"></a>IOC容器实现</h2><h3 id="BeanFactory-框架基础设施"><a href="#BeanFactory-框架基础设施" class="headerlink" title="BeanFactory-框架基础设施"></a>BeanFactory-框架基础设施</h3><p>　　BeanFactory是Spring框架的基础设施，面向Spring本身；ApplicationContext面向使用Spring框架的开发者，几乎所有的应用场合我们都直接使用ApplicationContext而非底层的BeanFactory。<br><img src="http://www.wziyou.xyz:19080/image-handle/1A572B72BD654996A03618BD31D227E3.png" alt="avatar"></p>
+<h4 id="BeanDefinitionRegistry注册表"><a href="#BeanDefinitionRegistry注册表" class="headerlink" title="BeanDefinitionRegistry注册表"></a>BeanDefinitionRegistry注册表</h4><p>　　Spring配置文件中每一个节点元素在Spring容器里都通过一个BeanDefinition对象表示，它描述了Bean的配置信息。而BeanDefinitionRegistry接口提供了向容器手工注册BeanDefinition对象的方法。</p>
+<h4 id="BeanFactory顶层接口"><a href="#BeanFactory顶层接口" class="headerlink" title="BeanFactory顶层接口"></a>BeanFactory顶层接口</h4><p>　　位于类结构树的顶端，它最主要的方法就是getBean(String beanName)，该方法从容器中返回特定名称的Bean，BeanFactory的功能通过其他的接口得到不断扩展。</p>
+<h4 id="ListableBeanFactory"><a href="#ListableBeanFactory" class="headerlink" title="ListableBeanFactory"></a>ListableBeanFactory</h4><p>　　该接口定义了访问容器中Bean基本信息的若干方法，如查看Bean的个数、获取某一类型Bean的配置名、查看容器中是否包括某一Bean等方法。</p>
+<h4 id="HierarchicalBeanFactory父子级联"><a href="#HierarchicalBeanFactory父子级联" class="headerlink" title="HierarchicalBeanFactory父子级联"></a>HierarchicalBeanFactory父子级联</h4><p>　　父子级联IoC容器的接口，子容器可以通过接口方法访问父容器；通过HierarchicalBeanFactory接口，Spring的IoC容器可以建立父子层级关联的容器体系，子容器可以访问父容器中的Bean，但父容器不能访问子容器的Bean。Spring使用父子容器实现了很多功能，比如在SpringMVC中，展现层Bean位于一个子容器中，而业务层和持久层的Bean位于父容器中。这样，展现层Bean就可以引用业务层和持久层的Bean，而业务层和持久层的Bean则看不到展现层的Bean。</p>
+<h4 id="ConfigurableBeanFactory"><a href="#ConfigurableBeanFactory" class="headerlink" title="ConfigurableBeanFactory"></a>ConfigurableBeanFactory</h4><p>　　ConfigurableBeanFactory是一个重要的接口，增强了IoC容器的可定制性，它定义了设置类装载器、属性编辑器、容器初始化后置处理器等方法；</p>
+<h4 id="AutowireCapableBeanFactory自动装配"><a href="#AutowireCapableBeanFactory自动装配" class="headerlink" title="AutowireCapableBeanFactory自动装配"></a>AutowireCapableBeanFactory自动装配</h4><p>　　定义了将容器中的Bean按某种规则（如按名字匹配、按类型匹配等）进行自动装配的方法。</p>
+<h4 id="SingletonBeanRegistry运行期间注册单例Bean"><a href="#SingletonBeanRegistry运行期间注册单例Bean" class="headerlink" title="SingletonBeanRegistry运行期间注册单例Bean"></a>SingletonBeanRegistry运行期间注册单例Bean</h4><p>　　定义了允许在运行期间向容器注册单实例Bean的方法；对于单实例（singleton）的Bean来说，BeanFactory会缓存Bean实例，所以第二次使用getBean()获取Bean时将直接从IoC容器的缓存中获取Bean实例。Spring在DefaultSingletonBeanRegistry类中提供了一个用于缓存单实例Bean的缓存器，它是一个用HashMap实现的缓存器，单实例的Bean以beanName为键保存在这个HashMap中。</p>
+<h4 id="依赖日志框框"><a href="#依赖日志框框" class="headerlink" title="依赖日志框框"></a>依赖日志框框</h4><p>　　在初始化BeanFactory时，必须为其提供一种日志框架，比如使用Log4J，即在类路径下提供Log4J配置文件，这样启动Spring容器才不会报错。</p>
+<h3 id="ApplicationContext面向开发应用"><a href="#ApplicationContext面向开发应用" class="headerlink" title="ApplicationContext面向开发应用"></a>ApplicationContext面向开发应用</h3><p>　　ApplicationContext由BeanFactory派生而来，提供了更多面向实际应用的功能。ApplicationContext继承了HierarchicalBeanFactory和ListableBeanFactory接口，在此基础上，还通过多个其他的接口扩展了BeanFactory的功能。</p>
+<ol>
+<li>ClassPathXmlApplicationContext：默认从类路径加载配置文件</li>
+<li>FileSystemXmlApplicationContext：默认从文件系统中装载配置文件</li>
+<li>ApplicationEventPublisher：让容器拥有发布应用上下文事件的功能，包括容器启动事件、关闭事件等。</li>
+<li>MessageSource：为应用提供i18n国际化消息访问的功能；</li>
+<li>ResourcePatternResolver：所有ApplicationContext实现类都实现了类似于PathMatchingResourcePatternResolver的功能，可以通过带前缀的Ant风格的资源文件路径装载Spring的配置文件。</li>
+<li>LifeCycle：该接口是Spring2.0加入的，该接口提供了start()和stop()两个方法，主要用于控制异步处理过程。在具体使用时，该接口同时被 ApplicationContext实现及具体Bean实现，ApplicationContext会将start/stop的信息传递给容器中所有实现了该接口的Bean，以达到管理和控制JMX、任务调度等目的。</li>
+<li>ConfigurableApplicationContext扩展于ApplicationContext，它新增加了两个主要的方法：refresh()和close()，让ApplicationContext具有启动、刷新和关闭应用上下文的能力。在应用上下文关闭的情况下调用refresh()即可启动应用上下文，在已经启动的状态下，调用refresh()则清除缓存并重新装载配置信息，而调用close()则可关闭应用上下文。</li>
+</ol>
+<p><img src="http://www.wziyou.xyz:19080/image-handle/334E9D00EEAD4802B505CC700E4A9B76.png" alt="avatar"></p>
+<h3 id="WebApplication体系架构"><a href="#WebApplication体系架构" class="headerlink" title="WebApplication体系架构"></a>WebApplication体系架构</h3><p>　　WebApplicationContext是专门为Web应用准备的，它允许从相对于Web根目录的路径中装载配置文件完成初始化工作。从WebApplicationContext中可以获得ServletContext的引用，整个Web应用上下文对象将作为属性放置到ServletContext中，以便Web应用环境可以访问Spring应用上下文。<br><img src="http://www.wziyou.xyz:19080/image-handle/E773698E488D4B5E92EABCDE572F401A.png" alt="avatar"></p>
+<h2 id="SpringBean作用域"><a href="#SpringBean作用域" class="headerlink" title="SpringBean作用域"></a>SpringBean作用域</h2><p>　　Spring中为Bean定义了5种作用域，分别为singleton（单例）、prototype（原型）、request、session和global session。</p>
+<h3 id="singleton：单例模式（多线程下不安全）"><a href="#singleton：单例模式（多线程下不安全）" class="headerlink" title="singleton：单例模式（多线程下不安全）"></a>singleton：单例模式（多线程下不安全）</h3><p>　　singleton：单例模式，Spring IoC容器中只会存在一个共享的Bean实例，无论有多少个Bean引用它，始终指向同一对象。该模式在多线程下是不安全的。Singleton作用域是Spring中的缺省作用域，也可以显示的将Bean定义为singleton模式，配置为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;userDao&quot; class=&quot;com.ioc.UserDaoImpl&quot; scope=&quot;singleton&quot;/&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="prototype-原型模式每次使用时创建"><a href="#prototype-原型模式每次使用时创建" class="headerlink" title="prototype:原型模式每次使用时创建"></a>prototype:原型模式每次使用时创建</h3><p>　　prototype:原型模式，每次通过Spring容器获取prototype 定义的bean时，容器都将创建一个新的Bean实例，每个Bean实例都有自己的属性和状态，而singleton全局只有一个对象。根据经验，对有状态的bean使用prototype作用域，而对无状态的bean使用singleton作用域。</p>
+<h3 id="Request：一次request一个实例"><a href="#Request：一次request一个实例" class="headerlink" title="Request：一次request一个实例"></a>Request：一次request一个实例</h3><p>　　request：在一次 Http 请求中，容器会返回该Bean的同一实例。而对不同的Http请求则会产生新的Bean，而且该bean仅在当前Http Request内有效,当前Http 请求结束，该bean实例也将会被销毁。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;loginAction&quot; class=&quot;com.cnblogs.Login&quot; scope=&quot;request&quot;/&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="session"><a href="#session" class="headerlink" title="session"></a>session</h3><p>　　session：在一次Http Session中，容器会返回该Bean的同一实例。而对不同的Session请求则会创建新的实例，该bean实例仅在当前Session内有效。同Http请求相同，每一次session请求创建新的实例，而不同的实例之间不共享属性，且实例仅在自己的session请求内有效，请求结束，则实例将被销毁。</p>
+<h3 id="global-Session"><a href="#global-Session" class="headerlink" title="global Session"></a>global Session</h3><p>　　global Session：在一个全局的Http Session中，容器会返回该Bean的同一个实例，仅在使用portlet context时有效。</p>
+<h2 id="Spring-Bean生命周期"><a href="#Spring-Bean生命周期" class="headerlink" title="Spring Bean生命周期"></a>Spring Bean生命周期</h2><ol>
+<li>实例化一个Bean，也就是我们常说的new。</li>
+<li>按照Spring上下文对实例化的Bean进行配置，也就是<strong>IOC注入</strong>。</li>
+<li>如果这个Bean已经实现了BeanNameAware接口，会调用它实现的<strong>setBeanName</strong>(String)方法，此处传递的就是Spring 配置文件中Bean的id值。</li>
+<li>如果这个Bean已经实现了BeanFactoryAware接口，会调用它实现的<strong>setBeanFactory</strong>，setBeanFactory(BeanFactory)传递的是 Spring 工厂自身（可以用这个方式来获取其它 Bean，只需在Spring配置文件中配置一个普通的Bean就可以）。</li>
+<li>如果这个Bean已经实现了ApplicationContextAware接口，会调用<strong>setApplicationContext</strong>(ApplicationContext)方法，传入Spring上下文（同样这个方式也可以实现步骤4的内容，但比4更好，因为ApplicationContext是BeanFactory的子接口，有更多的实现方法）</li>
+<li>如果这个Bean关联了BeanPostProcessor接口，将会调用<strong>postProcessBeforeInitialization</strong>(Object obj, String s)方法，BeanPostProcessor经常被用作是Bean内容的更改，并且由于这个是在Bean初始化结束时调用那个的方法，也可以被应用于内存或缓存技术。</li>
+<li>如果这个Bean在Spring配置文件中配置了<strong>init-method</strong>属性会自动调用其配置的初始化方法。</li>
+<li>如果这个Bean关联了BeanPostProcessor接口，将会调用<strong>postProcessAfterInitialization</strong>(Object obj, String s)方法。<br>注：以上工作完成以后就可以应用这个Bean了，那这个Bean是一个Singleton的，所以一般情况下我们调用同一个id的Bean会是在内容地址相同的实例，当然在Sprin 配置文件中也可以配置非Singleton。</li>
+<li>当Bean不再需要时，会经过清理阶段，如果Bean实现了<strong>DisposableBean</strong>这个接口，会调用那个其实现的destroy()方法；</li>
+<li>最后，如果这个Bean的Spring配置中配置了<strong>destroy-method</strong>属性，会自动调用其配置的销毁方法。</li>
+<li>bean标签有两个重要的属性（init-method 和destroy-method）。用它们你可以自己定制初始化和注销方法。它们也有相应的注解（@PostConstruct和@PreDestroy）。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;&quot; class=&quot;&quot; init-method=&quot;初始化方法&quot; destroy-method=&quot;销毁方法&quot;&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="http://www.wziyou.xyz:19080/image-handle/CE9E5DB3B51A4255BB7B4B5FFE53F883.png" alt="avatar"></p>
+<h2 id="Spring依赖注入四种方式"><a href="#Spring依赖注入四种方式" class="headerlink" title="Spring依赖注入四种方式"></a>Spring依赖注入四种方式</h2><ol>
+<li><p>构造器注入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/*带参数，方便利用构造器进行注入*/</span><br><span class="line">public CatDaoImpl(String message)&#123;</span><br><span class="line">	this. message = message;</span><br><span class="line">&#125; </span><br><span class="line">&lt;bean id=&quot;CatDaoImpl&quot; class=&quot;com.CatDaoImpl&quot;&gt;</span><br><span class="line">	&lt;constructor-arg value=&quot; message &quot;&gt;&lt;/constructor-arg&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>setter方法注入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public class Id &#123;</span><br><span class="line">	private int id;</span><br><span class="line">	public int getId() &#123; return id; &#125;</span><br><span class="line">	public void setId(int id) &#123; this.id = id; &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;bean id=&quot;id&quot; class=&quot;com.id &quot;&gt; &lt;property name=&quot;id&quot; value=&quot;123&quot;&gt;&lt;/property&gt; &lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>静态工厂注入<br>　　静态工厂顾名思义，就是通过调用静态工厂的方法来获取自己需要的对象，为了让spring管理所有对象，我们不能直接通过”工程类.静态方法()”来获取对象，而是依然通过spring注入的形式获取。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class DaoFactory &#123; //静态工厂</span><br><span class="line">	public static final FactoryDao getStaticFactoryDaoImpl()&#123;</span><br><span class="line">		return new StaticFacotryDaoImpl();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">public class SpringAction &#123;</span><br><span class="line">	private FactoryDao staticFactoryDao; //注入对象</span><br><span class="line">	//注入对象的 set 方法</span><br><span class="line">	public void setStaticFactoryDao(FactoryDao staticFactoryDao) &#123;</span><br><span class="line">		this.staticFactoryDao = staticFactoryDao;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">//factory-method=&quot;getStaticFactoryDaoImpl&quot;指定调用哪个工厂方法</span><br><span class="line">&lt;bean name=&quot;springAction&quot; class=&quot; SpringAction&quot; &gt;</span><br><span class="line">	&lt;!--使用静态工厂的方法注入对象,对应下面的配置文件--&gt;</span><br><span class="line">	&lt;property name=&quot;staticFactoryDao&quot; ref=&quot;staticFactoryDao&quot;&gt;&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line">&lt;!--此处获取对象的方式是从工厂类中获取静态方法--&gt;</span><br><span class="line">&lt;bean name=&quot;staticFactoryDao&quot; class=&quot;DaoFactory&quot; factory-method=&quot;getStaticFactoryDaoImpl&quot;&gt;&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实例工厂<br>　　实例工厂的意思是获取对象实例的方法不是静态的，所以你需要首先new工厂类，再调用普通的实例方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class DaoFactory &#123; //实例工厂</span><br><span class="line">	public FactoryDao getFactoryDaoImpl()&#123;</span><br><span class="line">		return new FactoryDaoImpl(); </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">public class SpringAction &#123;</span><br><span class="line">	private FactoryDao factoryDao; //注入对象</span><br><span class="line">	public void setFactoryDao(FactoryDao factoryDao) &#123;</span><br><span class="line">		this.factoryDao = factoryDao;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;bean name=&quot;springAction&quot; class=&quot;SpringAction&quot;&gt;</span><br><span class="line">	&lt;!--使用实例工厂的方法注入对象,对应下面的配置文件--&gt;</span><br><span class="line">	&lt;property name=&quot;factoryDao&quot; ref=&quot;factoryDao&quot;&gt;&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line">&lt;!--此处获取对象的方式是从工厂类中获取实例方法--&gt;</span><br><span class="line">&lt;bean name=&quot;daoFactory&quot; class=&quot;com.DaoFactory&quot;&gt;&lt;/bean&gt;</span><br><span class="line">&lt;bean name=&quot;factoryDao&quot; factory-bean=&quot;daoFactory&quot; factory-method=&quot;getFactoryDaoImpl&quot;&gt;&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="5种不同方式的自动装配"><a href="#5种不同方式的自动装配" class="headerlink" title="5种不同方式的自动装配"></a>5种不同方式的自动装配</h2><p>　　Spring装配包括手动装配和自动装配，手动装配是有基于xml装配、构造方法、setter方法等自动装配有五种自动装配的方式，可以用来指导Spring容器用自动装配方式来进行依赖注入。</p>
+<ol>
+<li>no：默认的方式是不进行自动装配，通过显式设置 ref 属性来进行装配。</li>
+<li>byName：通过参数名 自动装配，Spring容器在配置文件中发现bean的autowire属性被设置成byname，之后容器试图匹配、装配和该bean的属性具有相同名字的bean。</li>
+<li>byType：通过参数类型自动装配，Spring容器在配置文件中发现bean的autowire属性被设置成byType，之后容器试图匹配、装配和该bean的属性具有相同类型的bean。如果有多个bean符合条件，则抛出错误。</li>
+<li>constructor：这个方式类似于byType，但是要提供给构造器参数，如果没有确定的带参数的构造器参数类型，将会抛出异常。</li>
+<li>autodetect：首先尝试使用constructor来自动装配，如果无法工作，则使用byType方式。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/spring/" rel="tag"># spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/21/spring（一）/" rel="next" title="spring（一）">
+                <i class="fa fa-chevron-left"></i> spring（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/27/Spring原理（三）/" rel="prev" title="Spring原理（三）---AOP">
+                Spring原理（三）---AOP <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://www.wziyou.xyz:19080/title.jpg"
+               alt="无恤" />
+          <p class="site-author-name" itemprop="name">无恤</p>
+           
+              <p class="site-description motion-element" itemprop="description">java博客</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">77</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/分类/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wuvsxu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring容器高层视图"><span class="nav-number">2.</span> <span class="nav-text">Spring容器高层视图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IOC容器实现"><span class="nav-number">2.1.</span> <span class="nav-text">IOC容器实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BeanFactory-框架基础设施"><span class="nav-number">2.1.1.</span> <span class="nav-text">BeanFactory-框架基础设施</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BeanDefinitionRegistry注册表"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">BeanDefinitionRegistry注册表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BeanFactory顶层接口"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">BeanFactory顶层接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ListableBeanFactory"><span class="nav-number">2.1.1.3.</span> <span class="nav-text">ListableBeanFactory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HierarchicalBeanFactory父子级联"><span class="nav-number">2.1.1.4.</span> <span class="nav-text">HierarchicalBeanFactory父子级联</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ConfigurableBeanFactory"><span class="nav-number">2.1.1.5.</span> <span class="nav-text">ConfigurableBeanFactory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AutowireCapableBeanFactory自动装配"><span class="nav-number">2.1.1.6.</span> <span class="nav-text">AutowireCapableBeanFactory自动装配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SingletonBeanRegistry运行期间注册单例Bean"><span class="nav-number">2.1.1.7.</span> <span class="nav-text">SingletonBeanRegistry运行期间注册单例Bean</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#依赖日志框框"><span class="nav-number">2.1.1.8.</span> <span class="nav-text">依赖日志框框</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ApplicationContext面向开发应用"><span class="nav-number">2.1.2.</span> <span class="nav-text">ApplicationContext面向开发应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WebApplication体系架构"><span class="nav-number">2.1.3.</span> <span class="nav-text">WebApplication体系架构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBean作用域"><span class="nav-number">2.2.</span> <span class="nav-text">SpringBean作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#singleton：单例模式（多线程下不安全）"><span class="nav-number">2.2.1.</span> <span class="nav-text">singleton：单例模式（多线程下不安全）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prototype-原型模式每次使用时创建"><span class="nav-number">2.2.2.</span> <span class="nav-text">prototype:原型模式每次使用时创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Request：一次request一个实例"><span class="nav-number">2.2.3.</span> <span class="nav-text">Request：一次request一个实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#session"><span class="nav-number">2.2.4.</span> <span class="nav-text">session</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#global-Session"><span class="nav-number">2.2.5.</span> <span class="nav-text">global Session</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Bean生命周期"><span class="nav-number">2.3.</span> <span class="nav-text">Spring Bean生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring依赖注入四种方式"><span class="nav-number">2.4.</span> <span class="nav-text">Spring依赖注入四种方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5种不同方式的自动装配"><span class="nav-number">2.5.</span> <span class="nav-text">5种不同方式的自动装配</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="http://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy;  2018 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">无恤</span>
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i>
+<span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>人次
+</span>
+</div>
+<div class="theme-info">
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
