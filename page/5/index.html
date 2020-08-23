@@ -308,7 +308,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/08/22/AK-SK认证方式/">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/03/27/JVM（四）--收集算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="无恤">
@@ -327,7 +327,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/08/22/AK-SK认证方式/" itemprop="url">AK/SK认证方式</a></h1>
+                <a class="post-title-link" href="/2020/03/27/JVM（四）--收集算法/" itemprop="url">JVM（四）--收集算法和GC垃圾收集器</a></h1>
         
 
         <div class="post-meta">
@@ -339,8 +339,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-22T23:43:33+08:00">
-                2019-08-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-27T23:34:03+08:00">
+                2020-03-27
               </time>
             
 
@@ -379,10 +379,31 @@
       
         
           
-            <p>AK/SK认证是对请求消息按照一定规则生成签名信息，服务器对签名信息进行安全认证，主要作用是保证请求的可靠性，完整性。</p>
-<p>ak表示公钥，sk表示私钥。ak与sk一一对应，不同的域使用不同的aksk.</p>
-<p>下面提供一个简单的签名认证方式。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">public class AKSKImpl &#123;</span><br><span class="line"></span><br><span class="line">    private static String AK=&quot;123456789&quot;;</span><br><span class="line"></span><br><span class="line">    private static String SK=&quot;012345&quot;;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">      String str=  sign(&quot;1234.do&quot;,&quot;11111111&quot;,&quot;11111&quot;,AK,SK);</span><br><span class="line">      System.out.println(str);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static String sign(String url,String dateTime,String numNoice,String ak,String sk) throws Exception&#123;</span><br><span class="line">        String data= ak+url +numNoice+dateTime;</span><br><span class="line"></span><br><span class="line">        String sign=hamcsha1(data.getBytes(&quot;UTF-8&quot;),sk.getBytes(&quot;UTF-8&quot;));</span><br><span class="line"></span><br><span class="line">        return sign;</span><br><span class="line">    &#125;</span><br><span class="line">    public static String hamcsha1(byte[] data, byte[] key)</span><br><span class="line">    &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            SecretKeySpec signingKey = new SecretKeySpec(key, &quot;HmacSHA1&quot;);</span><br><span class="line">            Mac mac = Mac.getInstance(&quot;HmacSHA1&quot;);</span><br><span class="line">            mac.init(signingKey);</span><br><span class="line">            return byte2hex(mac.doFinal(data));</span><br><span class="line">        &#125; catch (NoSuchAlgorithmException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    //二行制转字符串</span><br><span class="line">    public static String byte2hex(byte[] b)</span><br><span class="line">    &#123;</span><br><span class="line">        StringBuilder hs = new StringBuilder();</span><br><span class="line">        String stmp;</span><br><span class="line">        for (int n = 0; b!=null &amp;&amp; n &lt; b.length; n++) &#123;</span><br><span class="line">            stmp = Integer.toHexString(b[n] &amp; 0XFF);</span><br><span class="line">            if (stmp.length() == 1)</span><br><span class="line">                hs.append(&apos;0&apos;);</span><br><span class="line">            hs.append(stmp);</span><br><span class="line">        &#125;</span><br><span class="line">        return hs.toString().toUpperCase();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <h3 id="GC-分代收集算法-VS-分区收集算法"><a href="#GC-分代收集算法-VS-分区收集算法" class="headerlink" title="GC 分代收集算法 VS 分区收集算法"></a>GC 分代收集算法 VS 分区收集算法</h3><h4 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h4><p>当前主流 VM 垃圾收集都采用”分代收集”(Generational Collection)算法, 这种算法会根据对象存活周期的不同将内存划分为几块, 如 JVM 中的 新生代、老年代、永久代，这样就可以根据各年代特点分别采用最适当的 GC 算法。<br><strong>在新生代-复制算法</strong><br>每次垃圾收集都能发现大批对象已死, 只有少量存活. 因此选用复制算法, 只需要付出少量存活对象的复制成本就可以完成收集。<br><strong>在老年代-标记整理算法</strong><br>因为对象存活率高、没有额外空间对它进行分配担保, 就必须采用“标记—清理”或“标记—整理”算法来进行回收, 不必进行内存复制, 且直接腾出空闲内存。</p>
+<h4 id="分区收集算法"><a href="#分区收集算法" class="headerlink" title="分区收集算法"></a>分区收集算法</h4><p>分区算法则将整个堆空间划分为连续的不同小区间, 每个小区间独立使用, 独立回收. 这样做的好处是可以控制一次回收多少个小区间 , 根据目标停顿时间, 每次合理地回收若干个小区间(而不是整个堆), 从而减少一次 GC 所产生的停顿。</p>
+<h3 id="GC垃圾收集器"><a href="#GC垃圾收集器" class="headerlink" title="GC垃圾收集器"></a>GC垃圾收集器</h3><p>Java堆内存被划分为新生代和年老代两部分，新生代主要使用复制和标记-清除垃圾回收算法；年老代主要使用标记-整理垃圾回收算法，因此java虚拟中针对新生代和年老代分别提供了多种不同的垃圾收集器。</p>
+<h4 id="Serial垃圾收集器（单线程、复制算法）"><a href="#Serial垃圾收集器（单线程、复制算法）" class="headerlink" title="Serial垃圾收集器（单线程、复制算法）"></a>Serial垃圾收集器（单线程、复制算法）</h4><p>Serial（英文连续）是最基本垃圾收集器，使用复制算法，曾经是JDK1.3.1之前新生代唯一的垃圾收集器。Serial是一个单线程的收集器，它不但只会使用一个 CPU 或一条线程去完成垃圾收集工作，并且在进行垃圾收集的同时，必须暂停其他所有的工作线程，直到垃圾收集结束。Serial 垃圾收集器虽然在收集垃圾过程中需要暂停所有其他的工作线程，但是它简单高效，对于限定单个 CPU 环境来说，没有线程交互的开销，可以获得最高的单线程垃圾收集效率，因此 Serial垃圾收集器依然是 java 虚拟机运行在 Client 模式下默认的新生代垃圾收集器。</p>
+<h4 id="ParNew垃圾收集器（Serial-多线程）"><a href="#ParNew垃圾收集器（Serial-多线程）" class="headerlink" title="ParNew垃圾收集器（Serial+多线程）"></a>ParNew垃圾收集器（Serial+多线程）</h4><p>ParNew垃圾收集器其实是 Serial 收集器的多线程版本，也使用复制算法，除了使用多线程进行垃圾收集之外，其余的行为和 Serial 收集器完全一样，ParNew 垃圾收集器在垃圾收集过程中同样也要暂停所有其他的工作线程。<br>ParNew收集器默认开启和 CPU 数目相同的线程数，可以通过-XX:ParallelGCThreads 参数来限制垃圾收集器的线程数。【Parallel：平行的】<br>ParNew虽然是除了多线程外和Serial收集器几乎完全一样，但是ParNew垃圾收集器是很多java虚拟机运行在Server模式下新生代的默认垃圾收集器。</p>
+<h4 id="Parallel-Scavenge收集器（多线程复制算法、高效）"><a href="#Parallel-Scavenge收集器（多线程复制算法、高效）" class="headerlink" title="Parallel Scavenge收集器（多线程复制算法、高效）"></a>Parallel Scavenge收集器（多线程复制算法、高效）</h4><p>Parallel Scavenge收集器也是一个新生代垃圾收集器，同样使用复制算法，也是一个多线程的垃圾收集器，它重点关注的是程序达到一个可控制的吞吐量（Thoughput，CPU 用于运行用户代码的时间/CPU 总消耗时间，即吞吐量=运行用户代码时间/(运行用户代码时间+垃圾收集时间)），高吞吐量可以最高效率地利用 CPU 时间，尽快地完成程序的运算任务，主要适用于在后台运算而不需要太多交互的任务。自适应调节策略也是 ParallelScavenge 收集器与 ParNew 收集器的一个重要区别。</p>
+<h4 id="Serial-Old收集器（单线程标记整理算法-）"><a href="#Serial-Old收集器（单线程标记整理算法-）" class="headerlink" title="Serial Old收集器（单线程标记整理算法 ）"></a>Serial Old收集器（单线程标记整理算法 ）</h4><p>Serial Old是Serial垃圾收集器年老代版本，它同样是个单线程的收集器，使用标记-整理算法，这个收集器也主要是运行在Client默认的java虚拟机默认的年老代垃圾收集器。<br>在Server 模式下，主要有两个用途：</p>
+<ol>
+<li>在JDK1.5之前版本中与新生代的Parallel Scavenge收集器搭配使用。</li>
+<li>作为年老代中使用CMS收集器的后备垃圾收集方案。</li>
+</ol>
+<h4 id="Parallel-Old-收集器（多线程标记整理算法）"><a href="#Parallel-Old-收集器（多线程标记整理算法）" class="headerlink" title="Parallel Old 收集器（多线程标记整理算法）"></a>Parallel Old 收集器（多线程标记整理算法）</h4><p>Parallel Old收集器是Parallel Scavenge的年老代版本，使用多线程的标记-整理算法，在JDK1.6才开始提供。<br>在JDK1.6之前，新生代使用ParallelScavenge收集器只能搭配年老代的 Serial Old收集器，只能保证新生代的吞吐量优先，无法保证整体的吞吐量，Parallel Old正是为了在年老代同样提供吞吐量优先的垃圾收集器，如果系统对吞吐量要求比较高，可以优先考虑新生代Parallel Scavenge和年老代Parallel Old收集器的搭配策略。</p>
+<h4 id="CMS-收集器（多线程标记清除算法）"><a href="#CMS-收集器（多线程标记清除算法）" class="headerlink" title="CMS 收集器（多线程标记清除算法）"></a>CMS 收集器（多线程标记清除算法）</h4><p>Concurrent mark sweep(CMS)收集器是一种年老代垃圾收集器，其最主要目标是获取最短垃圾回收停顿时间，和其他年老代使用标记-整理算法不同，它使用多线程的标记-清除算法。最短的垃圾收集停顿时间可以为交互比较高的程序提高用户体验。<br>CMS工作机制相比其他的垃圾收集器来说更复杂，整个过程分为以下 4 个阶段：</p>
+<ol>
+<li>初始标记<br>只是标记一下GC Roots能直接关联的对象，速度很快，仍然需要暂停所有的工作线程。</li>
+<li>并发标记<br>进行GC Roots跟踪的过程，和用户线程一起工作，不需要暂停工作线程。</li>
+<li>重新标记<br>为了修正在并发标记期间，因用户程序继续运行而导致标记产生变动的那一部分对象的标记记录，仍然需要暂停所有的工作线程。</li>
+<li>并发清除<br>清除GC Roots不可达对象，和用户线程一起工作，不需要暂停工作线程。由于耗时最长的并发标记和并发清除过程中，垃圾收集线程可以和用户现在一起并发工作，所以总体上来看CMS 收集器的内存回收和用户线程是一起并发地执行。</li>
+</ol>
+<h4 id="G1-收集器"><a href="#G1-收集器" class="headerlink" title="G1 收集器"></a>G1 收集器</h4><p>Garbage first垃圾收集器是目前垃圾收集器理论发展的最前沿成果，相比与CMS收集器，G1收集器两个最突出的改进是：</p>
+<ol>
+<li>基于标记-整理算法，不产生内存碎片。</li>
+<li>可以非常精确控制停顿时间，在不牺牲吞吐量前提下，实现低停顿垃圾回收。<br>G1收集器避免全区域垃圾收集，它把堆内存划分为大小固定的几个独立区域，并且跟踪这些区域的垃圾收集进度，同时在后台维护一个优先级列表，每次根据所允许的收集时间，优先回收垃圾最多的区域。区域划分和优先级区域回收机制，确保G1收集器可以在有限时间获得最高的垃圾收集效率。</li>
+</ol>
+
           
         
       
@@ -430,7 +451,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/04/09/新公司的体验/">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/03/26/JVM（三）--java四种引用类型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="无恤">
@@ -449,7 +470,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/09/新公司的体验/" itemprop="url">新公司的体验</a></h1>
+                <a class="post-title-link" href="/2020/03/26/JVM（三）--java四种引用类型/" itemprop="url">JVM（三）--java四种引用类型</a></h1>
         
 
         <div class="post-meta">
@@ -461,8 +482,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-09T00:46:17+08:00">
-                2019-04-09
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-26T21:25:02+08:00">
+                2020-03-26
               </time>
             
 
@@ -501,17 +522,1009 @@
       
         
           
-            <p>新入职公司快两个月的时间了，中间因为搬家还有入职后的乱七八糟的事情，感觉周末过的一直不怎么舒服。现在抽出点时间来记录下新公司与之前公司的区别。</p>
+            <p><strong>强引用</strong><br>在 Java 中最常见的就是强引用，把一个对象赋给一个引用变量，这个引用变量就是一个强引用。当一个对象被强引用变量引用时，它处于可达状态，它是不可能被垃圾回收机制回收的，即使该对象以后永远都不会被用到 JVM 也不会回收。因此强引用是造成 Java 内存泄漏的主要原因之一。</p>
+<p><strong>软引用</strong><br>软引用需要用 SoftReference 类来实现，对于只有软引用的对象来说，当系统内存足够时它不会被回收，当系统内存空间不足时它会被回收。软引用通常用在对内存敏感的程序中。</p>
+<p><strong>弱引用</strong><br>弱引用需要用 WeakReference 类来实现，它比软引用的生存期更短，对于只有弱引用的对象来说，只要垃圾回收机制一运行，不管 JVM 的内存空间是否足够，总会回收该对象占用的内存。</p>
+<p><strong>虚引用</strong><br>虚引用需要 PhantomReference 类来实现，它不能单独使用，必须和引用队列联合使用。虚引用的主要作用是跟踪对象被垃圾回收的状态。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/03/25/JVM（二）--JVM运行时内存/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/25/JVM（二）--JVM运行时内存/" itemprop="url">JVM（二）--JVM运行时内存</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-25T23:39:17+08:00">
+                2020-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Java堆从GC的角度可以细分为: 新生代(Eden区、From Survivor区和 To Survivor区)和老年代。</p>
+<h4 id="新生代"><a href="#新生代" class="headerlink" title="新生代"></a>新生代</h4><p>新生代是用来存放新生的对象。一般占据堆的 1/3 空间。由于频繁创建对象，所以新生代会频繁触发MinorGC进行垃圾回收。新生代又分为 Eden 区、ServivorFrom、ServivorTo 三个区。</p>
+<p><strong>Eden 区</strong><br>Java新对象的出生地（如果新创建的对象占用内存很大，则直接分配到老年代）。当Eden区内存不够的时候就会触发 MinorGC，对新生代区进行一次垃圾回收。</p>
+<p><strong>ServivorFrom</strong><br>上一次 GC 的幸存者，作为这一次 GC 的被扫描者。</p>
+<p><strong>ServivorTo</strong><br>   保留了一次 MinorGC 过程中的幸存者。</p>
+<hr>
+<h4 id="MinorGC的过程（复制-gt-清空-gt-互换）"><a href="#MinorGC的过程（复制-gt-清空-gt-互换）" class="headerlink" title="MinorGC的过程（复制-&gt;清空-&gt;互换）"></a>MinorGC的过程（复制-&gt;清空-&gt;互换）</h4><p><strong>MinorGC 采用复制算法</strong></p>
+<ol>
+<li>eden、servicorFrom 复制到 ServicorTo，年龄+1<br>首先，把Eden和ServivorFrom 区域中存活的对象复制到ServicorTo区域（如果有对象的年龄以及达到了老年的标准，则赋值到老年代区），同时把这些对象的年龄+1（如果 ServicorTo 不够位置了就放到老年区）；</li>
+<li>清空 eden、servicorFrom<br>然后，清空 Eden 和 ServicorFrom 中的对象；</li>
+<li>ServicorTo 和 ServicorFrom 互换<br>最后，ServicorTo 和 ServicorFrom 互换，原 ServicorTo 成为下一次 GC 时的 ServicorFrom区。</li>
+</ol>
+<hr>
+<h4 id="老年代"><a href="#老年代" class="headerlink" title="老年代"></a>老年代</h4><ol>
+<li>主要存放应用程序中生命周期长的内存对象。</li>
+<li>老年代的对象比较稳定，所以 MajorGC 不会频繁执行。在进行 MajorGC 前一般都先进行了一次 MinorGC，使得有新生代的对象晋身入老年代，导致空间不够用时才触发。当无法找到足够大的连续空间分配给新创建的较大对象时也会提前触发一次 MajorGC 进行垃圾回收腾出空间。</li>
+<li>MajorGC 采用标记清除算法：首先扫描一次所有老年代，标记出存活的对象，然后回收没有标记的对象。MajorGC的耗时比较长，因为要扫描再回收。MajorGC 会产生内存碎片，为了减少内存损耗，我们一般需要进行合并或者标记出来方便下次直接分配。当老年代也满了装不下的时候，就会抛出 OOM（Out of Memory）异常。</li>
+</ol>
+<hr>
+<h4 id="永久代"><a href="#永久代" class="headerlink" title="永久代"></a>永久代</h4><ol>
+<li>指内存的永久保存区域，主要存放 Class和Meta（元数据）的信息,Class 在被加载的时候被放入永久区域，它和和存放实例的区域不同,GC 不会在主程序运行期对永久区域进行清理。所以这也导致了永久代的区域会随着加载的 Class 的增多而胀满，最终抛出 OOM 异常。</li>
+<li>在Java8中，永久代已经被移除，被一个称为“元数据区”（元空间）的区域所取代。元空间的本质和永久代类似，元空间与永久代之间最大的区别在于：元空间并不在虚拟机中，而是使用本地内存。因此，默认情况下，元空间的大小仅受本地内存限制。类的元数据放入 nativememory, 字符串池和类的静态变量放入 java 堆中，这样可以加载多少类的元数据就不再由MaxPermSize 控制, 而由系统的实际可用空间来控制。</li>
+</ol>
+<hr>
+<h4 id="如何确定垃圾"><a href="#如何确定垃圾" class="headerlink" title="如何确定垃圾"></a>如何确定垃圾</h4><p><strong>引用计数法</strong><br>在 Java 中，引用和对象是有关联的。如果要操作对象则必须用引用进行。因此，很显然一个简单的办法是通过引用计数来判断一个对象是否可以回收。简单说，即一个对象如果没有任何与之关联的引用，即他们的引用计数都不为0，则说明对象不太可能再被用到，那么这个对象就是可回收对象。</p>
+<p><strong>可达性分析</strong><br>为了解决引用计数法的循环引用问题，Java 使用了可达性分析的方法。通过一系列的“GC roots”对象作为起点搜索。如果在“GC roots”和一个对象之间没有可达路径，则称该对象是不可达的。要注意的是，不可达对象不等价于可回收对象，不可达对象变为可回收对象至少要经过两次标记过程。两次标记后仍然是可回收对象，则将面临回收。</p>
+<p><strong>标记清除算法（Mark-Sweep）</strong><br>最基础的垃圾回收算法，分为两个阶段，标注和清除。标记阶段标记出所有需要回收的对象，清除阶段回收被标记的对象所占用的空间。该算法最大的问题是内存碎片化严重，后续可能发生大对象不能找到可利用空间的问题。</p>
+<p><strong>复制算法（copying）</strong><br>为了解决 Mark-Sweep 算法内存碎片化的缺陷而被提出的算法。按内存容量将内存划分为等大小的两块。每次只使用其中一块，当这一块内存满后将尚存活的对象复制到另一块上去，把已使用的内存清掉。这种算法虽然实现简单，内存效率高，不易产生碎片，但是最大的问题是可用内存被压缩到了原本的一半。且存活对象增多的话，Copying 算法的效率会大大降低。</p>
+<p><strong>标记整理算法(Mark-Compact)</strong><br>结合了以上两个算法，为了避免缺陷而提出。标记阶段和 Mark-Sweep 算法相同，标记后不是清理对象，而是将存活对象移向内存的一端。然后清除端边界外的对象。</p>
+<p><strong>分代收集算法</strong><br>分代收集法是目前大部分 JVM 所采用的方法，其核心思想是根据对象存活的不同生命周期将内存划分为不同的域，一般情况下将 GC 堆划分为老生代(Tenured/Old Generation)和新生代(YoungGeneration)。老生代的特点是每次垃圾回收时只有少量对象需要被回收，新生代的特点是每次垃圾回收时都有大量垃圾需要被回收，因此可以根据不同区域选择不同的算法。</p>
+<p><strong>新生代与复制算法</strong><br>目前大部分 JVM 的 GC 对于新生代都采取 Copying 算法，因为新生代中每次垃圾回收都要回收大部分对象，即要复制的操作比较少，但通常并不是按照 1:1 来划分新生代。一般将新生代划分为一块较大的 Eden 空间和两个较小的 Survivor 空间(From Space, To Space)，每次使用Eden 空间和其中的一块 Survivor 空间，当进行回收时，将该两块空间中还存活的对象复制到另一块 Survivor 空间中。</p>
+<p><strong>老年代与标记复制算法</strong><br>而老年代因为每次只回收少量对象，因而采用 Mark-Compact 算法。</p>
+<ol>
+<li>JAVA 虚拟机提到过的处于方法区的永生代(Permanet Generation)，它用来存储 class 类，常量，方法描述等。对永生代的回收主要包括废弃常量和无用的类。</li>
+<li>对象的内存分配主要在新生代的 Eden Space 和 Survivor Space 的 From Space(Survivor 目前存放对象的那一块)，少数情况会直接分配到老生代。</li>
+<li>当新生代的 Eden Space 和 From Space 空间不足时就会发生一次 GC，进行 GC 后，EdenSpace 和 From Space区的存活对象会被挪到 To Space，然后将 Eden Space 和 FromSpace 进行清理。</li>
+<li>如果 To Space 无法足够存储某个对象，则将这个对象存储到老生代。</li>
+<li>在进行 GC 后，使用的便是 Eden Space 和 To Space 了，如此反复循环。</li>
+<li>当对象在 Survivor 区躲过一次 GC 后，其年龄就会+1。默认情况下年龄到达 15 的对象会被移到老生代中。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/03/24/JVM（一）--JVM的内存模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/24/JVM（一）--JVM的内存模型/" itemprop="url">JVM（一）--JVM的内存模型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-24T23:34:12+08:00">
+                2020-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p><strong>JVM</strong><br>JVM是可运行 Java 代码的假想计算机 ，包括一套字节码指令集、一组寄存器、一个栈、一个垃圾回收，堆和一个存储方法域。  JVM 是运行在操作系统之上的，它与硬件没有直接的交互。  </p>
+<p><strong>程序计数器(线程私有)</strong><br>一块较小的内存空间, 是当前线程所执行的字节码的行号指示器，每条线程都要有一个独立的程序计数器，这类内存也称为“线程私有”的内存。正在执行 java 方法的话，计数器记录的是虚拟机字节码指令的地址（当前指令的地址）。如果还是 Native 方法，则为空。这个内存区域是唯一一个在虚拟机中没有规定任何 OutOfMemoryError 情况的区域。</p>
+<p><strong>虚拟机栈(线程私有)</strong><br>虚拟机栈是描述java方法执行的内存模型，每个方法在执行的同时都会创建一个栈帧（Stack Frame）用于存储局部变量表、操作数栈、动态链接、方法出口等信息。每一个方法从调用直至执行完成的过程，就对应着一个栈帧在虚拟机栈中入栈到出栈的过程。栈帧（ Frame）是用来存储数据和部分过程结果的数据结构，同时也被用来处理动态链接(Dynamic Linking)、 方法返回值和异常分派（ Dispatch Exception）。栈帧随着方法调用而创建，随着方法结束而销毁——无论方法是正常完成还是异常完成（抛出了在方法内未被捕获的异常）都算作方法结束。</p>
+<p><strong>本地方法区(线程私有)</strong><br>本地方法区和 Java Stack 作用类似, 区别是虚拟机栈为执行 Java 方法服务, 而本地方法栈则为Native 方法服务,如果一个 VM 实现使用 C-linkage 模型来支持 Native 调用, 那么该栈将会是一个C 栈，但 HotSpot VM 直接就把本地方法栈和虚拟机栈合二为一。</p>
+<p><strong>堆（Heap-线程共享）-运行时数据区</strong><br>堆是被线程共享的一块内存区域，创建的对象和数组都保存在 Java 堆内存中，也是垃圾收集器进行垃圾收集的最重要的内存区域。由于现代VM 采用分代收集算法, 因此 Java 堆从 GC 的角度还可以细分为: 新生代(Eden 区、From Survivor区和To Survivor区)和老年代。</p>
+<p><strong>方法区/永久代（线程共享）</strong></p>
+<ol>
+<li>我们常说的永久代(Permanent Generation), 用于存储被 JVM 加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。</li>
+<li>HotSpot VM把GC分代收集扩展至方法区, 即使用Java堆的永久代来实现方法区, 这样 HotSpot 的垃圾收集器就可以像管理 Java 堆一样管理这部分内存,而不必为方法区开发专门的内存管理器(永久带的内存回收的主要目标是针对常量池的回收和类型的卸载, 因此收益一般很小)。运行时常量池（Runtime Constant Pool）是方法区的一部分。</li>
+<li>Class 文件中除了有类的版本、字段、方法、接口等描述等信息外，还有一项信息是常量池（Constant Pool Table），用于存放编译期生成的各种字面量和符号引用，这部分内容将在类加载后存放到方法区的运行时常量池中。</li>
+<li>Java 虚拟机对 Class 文件的每一部分（自然也包括常量池）的格式都有严格的规定，每一个字节用于存储哪种数据都必须符合规范上的要求，这样才会被虚拟机认可、装载和执行。</li>
+</ol>
+<h3 id="java转换流程"><a href="#java转换流程" class="headerlink" title="java转换流程"></a>java转换流程</h3><p>Java 源文件—-&gt;编译器—-&gt;字节码文件—-&gt;JVM—-&gt;机器码</p>
+<h3 id="运行时数据区-gt-类加载器子系统"><a href="#运行时数据区-gt-类加载器子系统" class="headerlink" title="运行时数据区===&gt;类加载器子系统"></a>运行时数据区===&gt;类加载器子系统</h3><p><strong>方法区，虚拟机栈，本地方法栈,堆，程序计数器</strong></p>
+<ol>
+<li>JVM 内存区域主要分为线程私有区域【程序计数器、虚拟机栈、本地方法区】、线程共享区域【JAVA 堆、方法区】、直接内存。</li>
+<li>线程私有数据区域生命周期与线程相同, 依赖用户线程的启动/结束 而 创建/销毁(在 HotspotVM 内, 每个线程都与操作系统的本地线程直接映射, 因此这部分内存区域的存/否跟随本地线程的生/死对应)。</li>
+<li>线程共享区域随虚拟机的启动/关闭而创建/销毁。</li>
+<li>直接内存并不是 JVM 运行时数据区的一部分, 但也会被频繁的使用: 在 JDK 1.4 引入的 NIO 提供了基于 Channel与Buffer的IO方式, 它可以使用 Native 函数库直接分配堆外内存, 然后使用DirectByteBuffer 对象作为这块内存的引用进行操作(详见: Java I/O 扩展),这样就避免了在 Java堆和 Native 堆中来回复制数据, 因此在一些场景中可以显著提高性能。</li>
+</ol>
+<h3 id="执行引擎-gt-本地方法库"><a href="#执行引擎-gt-本地方法库" class="headerlink" title="执行引擎==&gt;本地方法库"></a>执行引擎==&gt;本地方法库</h3><p>   即时编译器，垃圾收集</p>
+<h3 id="线程定义"><a href="#线程定义" class="headerlink" title="线程定义"></a>线程定义</h3><p>这里所说的线程指程序执行过程中的一个线程实体。JVM 允许一个应用并发执行多个线程。Hotspot JVM 中的 Java 线程与原生操作系统线程  有直接的映射关系。当线程本地存储、缓冲区分配、同步对象、栈、程序计数器等准备好以后，就会创建一个操作系统原生线程。Java 线程结束，原生线程随之被回收。操作系统负责调度所有线程，并把它们分配到任何可用的 CPU 上。当原生线程初始化完毕，就会调用 Java 线程的 run()方法。当线程结束时，会释放原生线程和 Java 线程的所有资源。</p>
+<h3 id="Hotspot-JVM"><a href="#Hotspot-JVM" class="headerlink" title="Hotspot JVM"></a>Hotspot JVM</h3><p><strong>jvm和hotspot的联系与区别:</strong><br>    JVM是虚拟机，总的来说是一种标准规范，虚拟机有很多实现版本。主要作用就是运行java的类文件的。<br>    而HotSpot是虚拟机的一种实现,它是sun公司开发的,是sun jdk和open jdk中自带的虚拟机，也是目前使用范围最广的虚拟机。<br>    HotSpot，顾名思义，它是基于热点代码探测的，有JIT即时编译功能，能提供更高质量的本地代码。<br>    二者区别是一个是标准，一个是实现方式。<br>    hotspot是jvm的一种具体实现。</p>
+<h3 id="Hotspot-JVM-后台运行的系统线程主要有下面几个："><a href="#Hotspot-JVM-后台运行的系统线程主要有下面几个：" class="headerlink" title="Hotspot JVM 后台运行的系统线程主要有下面几个："></a>Hotspot JVM 后台运行的系统线程主要有下面几个：</h3><table>
+<thead>
+<tr>
+<th>进程</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>虚拟机线程（VM thread）</td>
+<td>这个线程等待 JVM 到达安全点操作出现。这些操作必须要在独立的线程里执行，因为当堆修改无法进行时，线程都需要 JVM 位于安全点。这些操作的类型有：stop-theworld 垃圾回收、线程栈 dump、线程暂停、线程偏向锁（biased locking）解除。</td>
+</tr>
+<tr>
+<td>周期性任务线程</td>
+<td>这线程负责定时器事件（也就是中断），用来调度周期性操作的执行。</td>
+</tr>
+<tr>
+<td>GC 线程</td>
+<td>这些线程支持 JVM 中不同的垃圾回收活动。</td>
+</tr>
+<tr>
+<td>编译器线程</td>
+<td>这些线程在运行时将字节码动态编译成本地平台相关的机器码。</td>
+</tr>
+<tr>
+<td>信号分发线程</td>
+<td>这个线程接收发送到 JVM 的信号并调用适当的 JVM 方法处理</td>
+</tr>
+</tbody>
+</table>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/02/28/synchronized、锁、同步/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/28/synchronized、锁、同步/" itemprop="url">synchronized、锁、同步</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-28T01:14:17+08:00">
+                2020-02-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="synchronized介绍"><a href="#synchronized介绍" class="headerlink" title="synchronized介绍"></a>synchronized介绍</h3><p>synchronized是Java中的关键字，是一种同步锁。它修饰的对象有以下几种：</p>
+<ol>
+<li>修饰一个代码块，被修饰的代码块称为同步语句块，其作用的范围是大括号{}括起来的代码，作用的对象是调用这个代码块的对象；</li>
+<li>修饰一个方法，被修饰的方法称为同步方法，其作用的范围是整个方法，作用的对象是调用这个方法的对象；</li>
+<li>修改一个静态的方法，其作用的范围是整个静态方法，作用的对象是这个类的所有对象；</li>
+<li>修改一个类，其作用的范围是synchronized后面括号括起来的部分，作用主的对象是这个类的所有对象。</li>
+</ol>
+<h5 id="在用synchronized修饰方法时要注意以下几点："><a href="#在用synchronized修饰方法时要注意以下几点：" class="headerlink" title="在用synchronized修饰方法时要注意以下几点："></a>在用synchronized修饰方法时要注意以下几点：</h5><ol>
+<li>synchronized关键字不能继承。如果在父类中的某个方法使用了synchronized关键字，而在子类中覆盖了这个方法，在子类中的这个方法默认情况下并不是同步的，而必须显式地在子类的这个方法中加上synchronized关键字才可以。</li>
+<li>定义接口方法时不能使用synchronized关键字。</li>
+<li>构造方法不能使用synchronized关键字，但可以使用synchronized代码块来进行同步。</li>
+</ol>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><ol>
+<li>无论synchronized关键字加在方法上还是对象上，如果它作用的对象是非静态的，则它取得的锁是对象；如果synchronized作用的对象是一个静态方法或一个类，则它取得的锁是对类，该类所有的对象同一把锁。</li>
+<li>每个对象只有一个锁（lock）与之相关联，谁拿到这个锁谁就可以运行它所控制的那段代码。</li>
+<li>实现同步是要很大的系统开销作为代价的，甚至可能造成死锁，所以尽量避免无谓的同步控制</li>
+</ol>
+<hr>
+<h3 id="synchronized与Lock的区别"><a href="#synchronized与Lock的区别" class="headerlink" title="synchronized与Lock的区别"></a>synchronized与Lock的区别</h3><ol>
+<li>首先synchronized是java内置关键字，在jvm层面，Lock是个java类；</li>
+<li>synchronized无法判断是否获取锁的状态，Lock可以判断是否获取到锁；</li>
+<li>synchronized会自动释放锁(a 线程执行完同步代码会释放锁 ；b 线程执行过程中发生异常会释放锁)，Lock需在finally中手工释放锁（unlock()方法释放锁），否则容易造成线程死锁；</li>
+<li>用synchronized关键字的两个线程1和线程2，如果当前线程1获得锁，线程2线程等待。如果线程1阻塞，线程2则会一直等待下去，而Lock锁就不一定会等待下去，如果尝试获取不到锁，线程可以不用一直等待就结束了；</li>
+<li>synchronized的锁可重入、不可中断、非公平，而Lock锁可重入、可判断、可公平（两者皆可）</li>
+<li>Lock锁适合大量同步的代码的同步问题，synchronized锁适合代码少量的同步问题。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/02/12/valatile/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/12/valatile/" itemprop="url">valatile关键字</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-12T15:23:46+08:00">
+                2020-02-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>起两个作用</strong></p>
+<ol>
+<li>内存的可见性<br>在程序工作的过程中，会存在工作内存（比如多线程工作时的变量内存）和主内存，在修改完这个线程对象的一瞬间，该线程的工作内存已经改变，主内存还没有改变，其他线程可能存在数据不一致的问题<br>使用valatile修饰后，该对象会立刻刷新到主内存和其他工内存。</li>
+<li>顺序性，<br>防止指令重排序。java在重新编译后，为了优化，字节码的顺序可能和我们所定义的顺序不一致，加上valatile，可以避免这种情况。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/02/12/装饰模式vs继承/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/12/装饰模式vs继承/" itemprop="url">装饰模式vs继承</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-12T15:22:52+08:00">
+                2020-02-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>装饰模式又名包装（Wrapper）模式</p>
+<ol>
+<li>装饰模式以对客户端透明的方式扩展对象的功能，是继承关系的一个替代方案</li>
+<li>装饰模式以对客户透明的方式动态的给一个对象附加更多的责任。换言之，客户端并不会觉得对象在装饰前和装饰后有什么不同。</li>
+<li>装饰模式可以在不创造更多子类的情况下。将对象的功能甲乙扩展。</li>
+<li>装饰模式吧客户端的调用委派到被装饰类。装饰模式的关键在于这种扩展完全是透明的</li>
+<li>装饰模式是在不必改变原类文件和使用继承的情况下，动态的扩展一个对象的功能。他是通过创建一个包装对象，也就是装饰来包裹真实的对象。</li>
+</ol>
+<h3 id="装饰模式的角色："><a href="#装饰模式的角色：" class="headerlink" title="装饰模式的角色："></a>装饰模式的角色：</h3><ol>
+<li>抽象构建角色（component）：给出一个抽象接口，以规范准备接受附加责任的对象。</li>
+<li>具体构建角色（concrete Component）：定义一个将要接受附加责任的类。</li>
+<li>装饰角色（Devorator）：持有一个构建对象的引用，并定义一个与抽象构建接口一致的接口。</li>
+<li>具体装饰角色（Concrete Decorator）:负责给构建对象“贴上”附加的责任。</li>
+</ol>
+<h3 id="装饰模式的特点："><a href="#装饰模式的特点：" class="headerlink" title="装饰模式的特点："></a>装饰模式的特点：</h3><ol>
+<li>装饰对象和真实对象有相同的接口。这样客户端对象就可以以和真实对象相同的方式和装饰对象交互。</li>
+<li>装饰对象包含一个真实对象的引用。</li>
+<li>装饰对象接受所有来自客户端的请求。它把这些请求转发给真实的对象。</li>
+<li>装饰对象可以在转发这些请求以前或者以后增加一些附加功能。这样就确保了在运行时，不用修改给定对象的结构就可以在外部增加附加的功能。在面向对象的设计中，通常是通过继承来是想对给定类的功能扩展。</li>
+</ol>
+<h3 id="核心代码："><a href="#核心代码：" class="headerlink" title="核心代码："></a>核心代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public interface Component&#123;</span><br><span class="line">	void doSomething();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Decoraror implements Component&#123;</span><br><span class="line"></span><br><span class="line">	private Component component;</span><br><span class="line">	</span><br><span class="line">	public Decorator(Component component)&#123;</span><br><span class="line">		this.component = component;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void doSomething()&#123;</span><br><span class="line">		component.doSomething();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/02/10/开发经验总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/10/开发经验总结/" itemprop="url">开发经验总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-10T10:02:43+08:00">
+                2020-02-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li>接口返回的数据在数据库对应字符串，最好不好返回boolean类型，返回int或者string，考虑到安全的话，不要讲数据库代表的数字含义直接返回，<br>如： 数据库是 1：成功；0：失败，返回时可以返回”success”:成功 ; “failure”:失败，返回时可以返回</li>
+<li>对于数据库内容一定要有追溯性，不能为了业务方便，直接按照业务执行。 如查询记录一些日志，与其他冲突时，先删除以前全部的相关日志，再新增。（属于设计问题）</li>
+<li>魔鬼数字，不要写成 STRING_1=”1” ,这种写法还是属于魔鬼数字，STRING_1代表什么含义还是不知道，不能偷懒。</li>
+<li>对于if条件，如果是两种情况，且确认值的情况下，需要全部判断(特别复杂的除外，如多个条件同时判断，多个条件结果重复)。<br>如： 字符串str可能是1或者2，请写成if(str == ‘1’){}else if(str ==’2’ ){}else{}不要写成 if(str ==’1’ ){}else{}</li>
+<li>命名最好不要简写，最终目标是，看见变量名就能知道这个变量是做什么用的，不要让别人猜，产生歧义。</li>
+<li>遇见代码格式变化较大或者较多时，将原版代码格式化提交后，再讲自己代码提交，这样方便对比追溯。</li>
+<li>不要使用反歧义的boolean。<br>如： 用true表示未完成，false表示完成。</li>
+<li>对于稍长的字符串，使用时如果不是自动生成，请复制后使用，不建议手打，容易出错。<br>如： mabatis中mapper.xml和mapper.java对应的表名，空间名。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/12/28/PreparedStatement/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/28/PreparedStatement/" itemprop="url">PreparedStatement</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-28T01:14:40+08:00">
+                2019-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>PreparedStatement 是一个特殊的Statement对象，如果我们只是来查询或者更新数据的话，最好用PreparedStatement代替Statement，因为它有以下有点：</p>
 <ul>
-<li>新公司比以前公司要累很多（事情多，没人带，新东西没人教，很多人推三阻四），以前的公司以业务为主，能实现就行，新公司的要求更高，代码质量，文档，需求确认，安全，</li>
-<li>新公司的流程更加规范，体现在代码提交规范，业务开发流程，测试流程，提交各种电子流流程（请假，转正，补签到等）。虽然刚开始可能会不习惯，弄着弄那的觉得很烦，但是因为流程规范，实施起来是绝对遵从的（比如年假制度，工资发放，调休制度）。</li>
-<li>除了上班时间，下班离开公司后很少烦你。</li>
-<li>与大佬接触的更多，可能学到的东西更多。</li>
-<li>能专注于java后端，前端服务器维护这些不用再了解过深，有更多的时间去钻研一个方向。</li>
-<li>开发的产品是绝对有市场需求的，不会突然暴死，遇到的实际问题更多，对自己成长有益。</li>
-<li><p>团队更大，有助于增加协作经验。</p>
-<p>  希望自己能在这里发展的更好。</p>
-</li>
+<li>简化Statement中的操作</li>
+<li>提高执行语句的性能</li>
+<li>可读性和可维护性更好</li>
+<li>安全性更好。</li>
+<li>使用PreparedStatement能够预防SQL注入攻击，所谓SQL注入，指的是通过把SQL命令插入到Web表单提交或者输入域名或者页面请求的查询字符串，最终达到欺骗服务器，达到执行恶意SQL命令的目的。注入只对SQL语句的编译过程有破坏作用，而执行阶段只是把输入串作为数据处理，不再需要对SQL语句进行解析，因此也就避免了类似select * from user where name=’aa’ and password=’bb’ or 1=1的sql注入问题的发生。</li>
+</ul>
+<h5 id="Statement-和-PreparedStatement之间的关系和区别"><a href="#Statement-和-PreparedStatement之间的关系和区别" class="headerlink" title="Statement 和 PreparedStatement之间的关系和区别."></a>Statement 和 PreparedStatement之间的关系和区别.</h5><ul>
+<li>关系：PreparedStatement继承自Statement,都是接口</li>
+<li>区别：PreparedStatement可以使用占位符，是预编译的，批处理比Statement效率高</li>
 </ul>
 
           
@@ -561,7 +1574,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/03/30/【请停用以开发者模式运行的扩展程序】取消/">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/11/28/遮蔽obscure/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="无恤">
@@ -580,7 +1593,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/03/30/【请停用以开发者模式运行的扩展程序】取消/" itemprop="url">【请停用以开发者模式运行的扩展程序】取消</a></h1>
+                <a class="post-title-link" href="/2019/11/28/遮蔽obscure/" itemprop="url">隐藏（hide）和重写（override）和遮掩（obscure）遮蔽（shadow）和重载（overload）</a></h1>
         
 
         <div class="post-meta">
@@ -592,8 +1605,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-30T19:52:21+08:00">
-                2019-03-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-28T01:13:39+08:00">
+                2019-11-28
               </time>
             
 
@@ -632,907 +1645,19 @@
       
         
           
-            <p>作为程序员，chrome的使用必不可少，Chrome应用商店的扩展更是chrome的一大特色，但是经常使用这些扩展的，如果不是从应用商店下载的，每次启动的时候总会会有一个烦人的<strong>请停用以开发者模式运行的扩展程序</strong>提示。<br>虽然他不影响自己的工作，每次启动后随手点击下就可关闭，但是每次启动都要点击一下也挺费事，下面提供了一个一劳永逸的办法。</p>
-<h3 id="2020-03-28-更新"><a href="#2020-03-28-更新" class="headerlink" title="2020-03-28 更新"></a>2020-03-28 更新</h3><p>大约从Chrome79开始，使用上面的 version.dll替换会导致Chrome浏览器直接崩溃掉，需要换成这个更新的：version_v79.dll ，使用方法还是一样，解压后找到指定系统位数的version.dll放在和Chrome.exe同目录后重启Chrome即可。</p>
-<h3 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h3><p><a href="http://file.haoji.me/detail/27" target="_blank" rel="noopener">http://file.haoji.me/detail/27</a></p>
-<h3 id="2020-04-05-更新"><a href="#2020-04-05-更新" class="headerlink" title="2020-04-05 更新"></a>2020-04-05 更新</h3><p>如果是wind10的话，推荐安装微软的chrome内核的edge,和chrome基本一样，功能上更好用一些。<br>下载地址：<a href="https://www.microsoft.com/zh-cn/edge" target="_blank" rel="noopener">https://www.microsoft.com/zh-cn/edge</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/01/05/www-google-com网站打开一直显示证书无效，指向vmware/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/05/www-google-com网站打开一直显示证书无效，指向vmware/" itemprop="url">www.google.com网站打开一直显示证书无效，指向vmware</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-05T03:13:35+08:00">
-                2019-01-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近打开google搜索时，一直打不开<a href="http://www.google.com域名下的所有网页（其他的网页都可以打开，把默认搜索网址改为了https://ipv4.google.com/search），显示不是安全的链接，点开域名前的锁，显示域名无效。" target="_blank" rel="noopener">www.google.com域名下的所有网页（其他的网页都可以打开，把默认搜索网址改为了https://ipv4.google.com/search），显示不是安全的链接，点开域名前的锁，显示域名无效。</a><br>近期也安装了vmWare,然后<a href="http://www.google.com的颁发者和颁布者全部指向了VMWare。" target="_blank" rel="noopener">www.google.com的颁发者和颁布者全部指向了VMWare。</a><br>然后一直以为是VMWare的问题或者是<a href="http://www.google.com的证书问题。" target="_blank" rel="noopener">www.google.com的证书问题。</a><br>在网上重新安装了<a href="http://www.google.com的证书，VMWare也重新卸载安装，还是一直不行。" target="_blank" rel="noopener">www.google.com的证书，VMWare也重新卸载安装，还是一直不行。</a><br>后来无意间ping <a href="http://www.google.com时，发现ip竟然指向了" target="_blank" rel="noopener">www.google.com时，发现ip竟然指向了</a> 127.0.0.1,查询下本地hosts文件，并没有 定义<a href="http://www.google.com的ip。" target="_blank" rel="noopener">www.google.com的ip。</a><br>最后在网上查了下问题，可能是dns劫持的问题，修改dns为114然后在网上查了下问题，可能是dns劫持的问题，修改dns为114.114.114.114，备用为8.8.8.8。<br>问题得以解决</p>
-<p>就这个问题，在网上找到的有以下解决办法，都可以试一试。</p>
-<h5 id="办法-一"><a href="#办法-一" class="headerlink" title="办法 一"></a>办法 一</h5><p>安装了<a href="http://www.google.com的证书。" target="_blank" rel="noopener">www.google.com的证书。</a><br>下载地址：<a href="https://pki.google.com/GIAG2.crt" target="_blank" rel="noopener">https://pki.google.com/GIAG2.crt</a></p>
-<h5 id="办法-二"><a href="#办法-二" class="headerlink" title="办法 二"></a>办法 二</h5><p>重新安装或者修复VMWare，chrome。</p>
-<h5 id="办法-三"><a href="#办法-三" class="headerlink" title="办法 三"></a>办法 三</h5><p>ping <a href="http://www.google.com，如果ip为127.0.0.1。则将自动获取dns服务地址，改为选用下面的dns服务地址。" target="_blank" rel="noopener">www.google.com，如果ip为127.0.0.1。则将自动获取dns服务地址，改为选用下面的dns服务地址。</a><br>首选dns服务器：114.114.114.114<br>备用dns服务器：8.8.8.8</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/12/30/TortoiseSVN在win10安装后-svn地址获取的文件没有对勾感叹号/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/30/TortoiseSVN在win10安装后-svn地址获取的文件没有对勾感叹号/" itemprop="url">TortoiseSVN在win10安装后,svn地址获取的文件没有对勾感叹号</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-30T01:31:04+08:00">
-                2018-12-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天在新电脑上安装TortoiseSVN后，根据svn地址获取代码，但是获取的代码文件前没有显示对勾感叹号等。<br>后来在网上寻找解决方案。</p>
-<h5 id="方案1"><a href="#方案1" class="headerlink" title="方案1"></a>方案1</h5><p>在注册表中查询ShellIconOverlayIdentifiers文件下内容<br>看一下名字中带有Tortoise的文件夹是否排在最前面，如果不是的话，修改文件名（在文件名前面加空格就行），使带有Tortoise的文件夹排在最前面。<br>具体操作如下：<br>在运行里 输入 regedit 进入 注册表界面,<br>HKEY_LOCAL_MACHINE-&gt;SOFTWARE-&gt;Microsoft-&gt;Windows-&gt;CurrentVersion-&gt;Explorer-&gt;ShellIconOverlayIdentifiers<br>打开后发现Tortoise 系列（1TortoiseNormal,2TortoiseAdded等）前面有好多项,Tortoise系列排到了15名之后,难怪不显示。<br>现在的任务就是把它们提到前面了,修改一下它们的名字就好（我是看第一项的前缀是空格,说明空格的字符排序在前面,我就加了几个空格）,<br>我改后的名字如（ TortoiseNormal,TortoiseAdded等）,然后关闭再打开注册表,发现Tortoise系列系列图标已经排到前面了。<br>最后重启电脑，再看下svn获取文件，发下左下角图标已经显示了。</p>
-<h5 id="方案2"><a href="#方案2" class="headerlink" title="方案2"></a>方案2</h5><p>第二个方法是在svn获取地址的文件下<br>右键文件夹—&gt;TortoiseSVN—&gt;Settings—&gt;Icon Overlays（图标覆盖） —&gt;（  Status cache下—&gt;Shell前打对勾，Drives Types下—&gt;Fixed drives前面打对勾   ）<br>这样就可以了。</p>
-<p>我是通过第一种方法解决问题的。第二种情况应该很少出现。</p>
-<h5 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h5><p>参考地址1：<a href="https://blog.csdn.net/shichuwu/article/details/79808560" target="_blank" rel="noopener">https://blog.csdn.net/shichuwu/article/details/79808560</a><br>参考地址2：<a href="https://blog.csdn.net/Love_Legain/article/details/68489912" target="_blank" rel="noopener">https://blog.csdn.net/Love_Legain/article/details/68489912</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/12/05/mysql中遇到的奇怪问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/05/mysql中遇到的奇怪问题/" itemprop="url">mysql中遇到的奇怪问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-05T18:25:37+08:00">
-                2018-12-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>创建表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `testtable` (</span><br><span class="line">  `id` varchar(32) DEFAULT NULL,</span><br><span class="line">  `num` int(10) DEFAULT NULL</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8;</span><br></pre></td></tr></table></figure></p>
-<p>插入数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO `testtable` VALUES (&apos;111111111111&apos;, &apos;1&apos;);</span><br><span class="line">INSERT INTO `testtable` VALUES (&apos;222222222222&apos;, &apos;0&apos;);</span><br><span class="line">INSERT INTO `testtable` VALUES (&apos;333333333333&apos;, &apos;0&apos;);</span><br><span class="line">INSERT INTO `testtable` VALUES (&apos;444444444444&apos;, &apos;0&apos;);</span><br><span class="line">INSERT INTO `testtable` VALUES (&apos;555555555555&apos;, &apos;1&apos;);</span><br></pre></td></tr></table></figure></p>
-<p>查询语句<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">--语句1</span><br><span class="line">select * from testtable where num =&quot;r&quot;=&quot;fff&quot;;</span><br><span class="line">--语句2</span><br><span class="line">select &quot;r&quot;=&quot;t&quot; ;</span><br></pre></td></tr></table></figure></p>
-<p>语句1中 查询结果为</p>
-<table>
-<thead>
-<tr>
-<th>id</th>
-<th>num</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>111111111111</td>
-<td>1</td>
-</tr>
-<tr>
-<td>555555555555</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<p>语句2结果为</p>
-<table>
-<thead>
-<tr>
-<th>“r”=”t”</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>分析：按照网上查找的说法<br>select <em> from testtable where num =”r”=”fff”;<br>中会执行顺序为先执行括号中的<br> select </em> from testtable where num = (“r”=”fff”);<br>select “r”=”t” ;查询结果为 0；<br>按理说语句1应该对应 select <em> from testtable where num = 0；<br>但是查出来的结果为 select </em> from testtable where num = 1；的执行结果。</p>
-<p>这种问题是什么原因？</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/12/05/oracle-注册表字符集/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/05/oracle-注册表字符集/" itemprop="url">oracle 注册表字符集</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-05T17:57:50+08:00">
-                2018-12-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Oracle中字符集的问题。有些数据库中存的特殊字符，在读出来后，有的电脑上显示为问号。</p>
-<p>解决办法：<br>在注册表中搜索NLS_LANG，设置为 SIMPLIFIED CHINESE_CHINA.ZHS16GBK</p>
-<p>可以在oracle中查询 NLS_LANG<br>select userenv(‘language’) from dual ；<br>SIMPLIFIED CHINESE_CHINA.AL32UTF8。</p>
-<p>好吧。最后发现的问题是，导出脚本为sql,数据库存的特殊字符没法识别，转换为？。<br>最后的解决办法是，将含有特殊字符的表导出为dmp格式。重新导入就好了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/12/03/sqlserver数据库sa用户密码设置/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/03/sqlserver数据库sa用户密码设置/" itemprop="url">sqlserver数据库sa用户密码设置</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-03T11:20:05+08:00">
-                2018-12-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>sql server 客户端登录数据库有两种方式。一种是 windows 身份验证。一种是使用sql server 身份验证（登录名，密码），这种一般是写程序连接时使用的方式。</p>
-<p>有些用户装数据库时，直接默认一步一步点下来，这样sqlserver 装好后，只有windows 身份验证这一种登录方式。</p>
-<p>在程序连接的时候，这个时候就需要sql server 身份验证，需要重新启用sa用户。</p>
-<p>这下改如何设置？</p>
-<p>先使用 windows 身份验证登录上。<br>对象资源管理器中，树菜单，右击根节点–》属性–》安全性–》服务器身份验证，改为sql server 和windows身份验证。</p>
-<p>树菜单的二级菜单中点击安全性–》登录名–》右击sa–》属性–》常规中，设置密码。状态中，设置为已启用。</p>
-<p>右键根节点–》重新启动。</p>
-<p>使用sql server 登录 ，如果成功登录，即完成。</p>
-<p>如果遇到登录没有权限，注意上面步骤中的sa属性状态设置为 已启用。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/12/02/windows下界面的快捷键/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/02/windows下界面的快捷键/" itemprop="url">windows下界面的快捷命令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-02T12:01:32+08:00">
-                2018-12-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>一些常用的windows界面的快捷命令，通过运行（windows+R 键打开）来执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">cmd						dos命令窗口</span><br><span class="line">regedit					打开注册表</span><br><span class="line">msconfig				系统配置（包括启动项，服务等）</span><br><span class="line">calc					打开计算器</span><br><span class="line">notepad					打开记事本</span><br><span class="line">compmgmt.msc 			计算机管理</span><br><span class="line">mstsc					打开windows远程桌面连接</span><br><span class="line">at 01:30 shutdown -s	在1点30分自动关机</span><br><span class="line">shutdown -s				关机（默认1分钟后关）</span><br><span class="line">shutdown -s -t 3600		一小时后自动关机</span><br><span class="line">shutdown -r				重启</span><br><span class="line">shutdown -a 			取消定时任务</span><br><span class="line">services.msc			打开服务</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/11/26/sql多表多条件查询技巧/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/26/sql多表多条件查询技巧/" itemprop="url">sql多表多条件查询技巧</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-26T20:33:38+08:00">
-                2018-11-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>具体代码如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">sql = @&quot;select A.JID,A.JH,A.CX,A.CZ,B.HZB HZZ,B.ZZB FROM DEF_WELL_TAG A  left JOIN sc_well_location B ON A.JID=B.JID &#123;1&#125; WHERE A.QTID=&apos;&#123;0&#125;&apos;</span><br><span class="line">AND  A.JID IN   (SELECT CC.JID</span><br><span class="line">			   FROM   SC_WILD_ZONATION CC  ,</span><br><span class="line">				   SC_LAYER_T       DD                 </span><br><span class="line">			  WHERE 1 = 1</span><br><span class="line">				AND DD.JID = CC.JID)&quot;;</span><br><span class="line">string filterStr = string.Empty;</span><br><span class="line">foreach (string filter in filterCondition)</span><br><span class="line">&#123;</span><br><span class="line">  filterStr = filterStr + filter + &quot;,&quot;;</span><br><span class="line">&#125;</span><br><span class="line">string oldChart = &quot;B&quot;;</span><br><span class="line">string inserSQL = string.Empty;</span><br><span class="line">if (filterStr.IndexOf(&quot;有设计报告,&quot;) &gt;= 0)</span><br><span class="line">&#123;</span><br><span class="line">  inserSQL += @&quot; JOIN (select distinct jingid as JID from DOC_DOCUMENT_TARGET where path=&apos;单井资料\钻井资料\地质设计&apos; and JINGID is not null) C ON &#123;0&#125;.JID=C.JID&quot;;</span><br><span class="line">  inserSQL=string.Format(inserSQL,oldChart);</span><br><span class="line">  oldChart=&quot;C&quot;;</span><br><span class="line">&#125;</span><br><span class="line">if (filterStr.IndexOf(&quot;有日产数据,&quot;) &gt;= 0)</span><br><span class="line">&#123;</span><br><span class="line">  inserSQL += @&quot; JOIN (select CC.JID FROM DEF_WELL_TAG CC JOIN (SELECT distinct BB.ZJMC FROM DC_GAS_WELL_VOL_DAILY AA JOIN DEF_WELL_TAG BB ON AA.JID=BB.JID)DD ON CC.JH=DD.ZJMC) D ON &#123;0&#125;.JID=D.JID&quot;;</span><br><span class="line">  inserSQL = string.Format(inserSQL, oldChart);</span><br><span class="line">  oldChart = &quot;D&quot;;</span><br><span class="line">&#125;</span><br><span class="line">if (filterStr.IndexOf(&quot;有测井解释,&quot;) &gt;= 0)</span><br><span class="line">&#123;</span><br><span class="line">  inserSQL += @&quot; JOIN (select distinct JID from SC_LOG_INTERPRET_RESULT) E ON &#123;0&#125;.JID=E.JID&quot;;</span><br><span class="line">  inserSQL = string.Format(inserSQL, oldChart);</span><br><span class="line">  oldChart = &quot;E&quot;;</span><br><span class="line">&#125;</span><br><span class="line">if (filterStr.IndexOf(&quot;有井斜数据,&quot;) &gt;= 0)</span><br><span class="line">&#123;</span><br><span class="line">  inserSQL += @&quot; JOIN (select distinct JID from SC_INDINATION) F ON &#123;0&#125;.JID=F.JID&quot;;</span><br><span class="line">  inserSQL = string.Format(inserSQL, oldChart);</span><br><span class="line">  oldChart = &quot;F&quot;;</span><br><span class="line">&#125;</span><br><span class="line">if (filterStr.IndexOf(&quot;有压恢数据,&quot;) &gt;= 0)</span><br><span class="line">&#123;</span><br><span class="line">  inserSQL += @&quot; JOIN ((select distinct JID from  DC_TEST_GAS) union (select distinct JID from  DC_TEST_GATHER)) G ON &#123;0&#125;.JID=G.JID&quot;;</span><br><span class="line">  inserSQL = string.Format(inserSQL, oldChart);</span><br><span class="line">  oldChart = &quot;G&quot;;</span><br><span class="line">&#125;</span><br><span class="line">if (filterStr.IndexOf(&quot;有射孔数据,&quot;) &gt;= 0)</span><br><span class="line">&#123;</span><br><span class="line">  inserSQL += @&quot; JOIN (select distinct JID from DC_PERFORATE_T) H ON &#123;0&#125;.JID=H.JID&quot;;</span><br><span class="line">  inserSQL = string.Format(inserSQL, oldChart);</span><br><span class="line">  oldChart = &quot;H&quot;;</span><br><span class="line">&#125;</span><br><span class="line">if (filterStr.IndexOf(&quot;有大分层数据,&quot;) &gt;= 0)</span><br><span class="line">&#123;</span><br><span class="line">  inserSQL += @&quot; JOIN (select distinct JID from SC_WILD_ZONATION) I ON &#123;0&#125;.JID=I.JID&quot;;</span><br><span class="line">  inserSQL = string.Format(inserSQL, oldChart);</span><br><span class="line">  oldChart = &quot;I&quot;;</span><br><span class="line">&#125;</span><br><span class="line">if (filterStr.IndexOf(&quot;有FMT/RFT数据,&quot;) &gt;= 0)</span><br><span class="line">&#123;</span><br><span class="line">  inserSQL += @&quot; JOIN ((select distinct JID from SC_FMT_LOG_RESULT) union (select distinct JID from SC_RFT_LOG_RESULT)) J ON &#123;0&#125;.JID=J.JID&quot;;</span><br><span class="line">  inserSQL = string.Format(inserSQL, oldChart);</span><br><span class="line">  oldChart = &quot;J&quot;;</span><br><span class="line">&#125;</span><br><span class="line">if (filterStr.IndexOf(&quot;有复杂情况数据,&quot;) &gt;= 0)</span><br><span class="line">&#123;</span><br><span class="line">  inserSQL += @&quot; JOIN (select distinct JID from SC_COMPLEX_EXPLAIN) K ON &#123;0&#125;.JID=K.JID&quot;;</span><br><span class="line">  inserSQL = string.Format(inserSQL, oldChart);</span><br><span class="line">  oldChart = &quot;K&quot;;</span><br><span class="line">&#125;</span><br><span class="line">if (filterStr.IndexOf(&quot;有气测录井数据,&quot;) &gt;= 0)</span><br><span class="line">&#123;</span><br><span class="line">  inserSQL += @&quot; JOIN (select distinct JID from SC_OILINESS_SHOW) L ON &#123;0&#125;.JID=L.JID&quot;;</span><br><span class="line">  inserSQL = string.Format(inserSQL, oldChart);</span><br><span class="line">  oldChart = &quot;L&quot;;</span><br><span class="line">&#125;</span><br><span class="line">if (filterStr.IndexOf(&quot;有钻井液使用数据,&quot;) &gt;= 0)</span><br><span class="line">&#123;</span><br><span class="line">  inserSQL += @&quot; JOIN (select distinct JID from SC_FLUID_CAPABILITY) M ON &#123;0&#125;.JID=M.JID&quot;;</span><br><span class="line">  inserSQL = string.Format(inserSQL, oldChart);</span><br><span class="line">  oldChart = &quot;M&quot;;</span><br><span class="line">&#125;</span><br><span class="line">sql = string.Format(sql, zyqID, inserSQL);</span><br></pre></td></tr></table></figure></p>
-<p>例2<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">sql = @&quot;select distinct A.JID,A.JH,A.CX,A.CZ,B.HZB HZZ,B.ZZB FROM DEF_WELL_TAG A  left JOIN sc_well_location B ON A.JID=B.JID &#123;1&#125; WHERE A.QTID=&apos;&#123;0&#125;&apos;</span><br><span class="line"> AND  A.JID IN   (SELECT CC.JID</span><br><span class="line">                 FROM   SC_WILD_ZONATION CC  ,</span><br><span class="line">                     SC_LAYER_T       DD                 </span><br><span class="line">                WHERE 1 = 1</span><br><span class="line">                  AND DD.JID = CC.JID)</span><br><span class="line">  &#123;2&#125; &quot;;</span><br><span class="line"></span><br><span class="line">string oldChart = &quot;B&quot;;</span><br><span class="line">string inserSQL = string.Empty;</span><br><span class="line">string inserSQL2 = string.Empty;</span><br><span class="line">if (filterCondition[&quot;ceDafencengshuju&quot;].Equals(&quot;1&quot;))</span><br><span class="line">&#123;//大分层数据</span><br><span class="line">    inserSQL += @&quot; JOIN ( select  distinct jid from SC_WILD_ZONATION ) C ON &#123;0&#125;.JID=C.JID &quot;;</span><br><span class="line">    inserSQL = string.Format(inserSQL, oldChart);</span><br><span class="line">    oldChart = &quot;C&quot;;</span><br><span class="line">&#125;</span><br><span class="line">if (filterCondition[&quot;ceXifencengshuju&quot;].Equals(&quot;1&quot;))</span><br><span class="line">&#123;//细分层数据</span><br><span class="line">    inserSQL += @&quot; JOIN ( select  distinct jid from SC_LAYER_T ) D ON &#123;0&#125;.JID=D.JID &quot;;</span><br><span class="line">    inserSQL = string.Format(inserSQL, oldChart);</span><br><span class="line">    oldChart = &quot;D&quot;;</span><br><span class="line">&#125;</span><br><span class="line">if (filterCondition[&quot;ceFanwei&quot;].Equals(&quot;1&quot;))</span><br><span class="line">&#123;//半径范围</span><br><span class="line">    if (!string.IsNullOrEmpty(filterCondition[&quot;teRadius&quot;]))</span><br><span class="line">    &#123;</span><br><span class="line">        string x=filterCondition[&quot;x&quot;];</span><br><span class="line">        string y=filterCondition[&quot;y&quot;];</span><br><span class="line">        string radius = filterCondition[&quot;teRadius&quot;];</span><br><span class="line">           // t.ZZB - &#123;1&#125;) * (t.ZZB - &#123;1&#125;) + (t.HZB - &#123;2&#125;) * (t.HZB - &#123;2&#125;);</span><br><span class="line">        inserSQL += @&quot; JOIN ( select   jid ,zzb,hzb from sc_well_location ) E ON &#123;0&#125;.JID=E.JID and </span><br><span class="line">                     (E.ZZB - &#123;1&#125;) * (E.ZZB - &#123;1&#125;) + (E.HZB - &#123;2&#125;) * (E.HZB - &#123;2&#125;)  &lt;  &#123;3&#125;*&#123;3&#125;     &quot;;</span><br><span class="line">        inserSQL = string.Format(inserSQL, oldChart,y,x,radius);</span><br><span class="line">        oldChart = &quot;E&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">if (filterCondition[&quot;ceGuanxixuanjing&quot;].Equals(&quot;1&quot;))</span><br><span class="line">&#123;//层系层组选井</span><br><span class="line">    inserSQL += @&quot; JOIN ( select distinct jid, CX, CZ from DEF_WELL_TAG ) F ON &#123;0&#125;.JID=F.JID &quot;;</span><br><span class="line">    if (!string.IsNullOrEmpty(filterCondition[&quot;cbCengxi&quot;]))</span><br><span class="line">    &#123;</span><br><span class="line">        inserSQL += &quot;AND F.CX in (select dm from DEF_STRATUM_SYSTEM_TAG where cxjc= &apos;&quot; + filterCondition[&quot;cbCengxi&quot;] + &quot;&apos;) &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    if (!string.IsNullOrEmpty(filterCondition[&quot;cbCengzu&quot;]))</span><br><span class="line">    &#123;</span><br><span class="line">        inserSQL += &quot;AND F.CZ in (select dm from DEF_STRATUM_ORGANISE where czjc= &apos;&quot; + filterCondition[&quot;cbCengzu&quot;] + &quot;&apos;) &quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    inserSQL = string.Format(inserSQL, oldChart);</span><br><span class="line">    oldChart = &quot;F&quot;;</span><br><span class="line">&#125;</span><br><span class="line">if (filterCondition[&quot;ceJinghao&quot;].Equals(&quot;1&quot;))</span><br><span class="line">&#123;//井号</span><br><span class="line">    if(!string.IsNullOrEmpty(filterCondition[&quot;teJinghao&quot;]))</span><br><span class="line">    &#123;</span><br><span class="line">        inserSQL2 += @&quot; AND A.JH LIKE &apos;%&quot; + filterCondition[&quot;teJinghao&quot;] + &quot;%&apos; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">sql = string.Format(sql, zyqID, inserSQL, inserSQL2);</span><br></pre></td></tr></table></figure></p>
+            <h3 id="重写（override）"><a href="#重写（override）" class="headerlink" title="重写（override）"></a>重写（override）</h3><p>一个实例方法可以overide在其超类中可以访问到的具有相同签名的所有方法，从而可以动态分派（dynamic dispatch），VM基于运行时类型来选择要调用的覆写方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Base &#123;</span><br><span class="line">	public void f() &#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">class Derived extends Base &#123;</span><br><span class="line">	public void f() &#123;</span><br><span class="line">	&#125; // overrides Base.f()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="隐藏-hide"><a href="#隐藏-hide" class="headerlink" title="隐藏 hide"></a>隐藏 hide</h3><p>一个域，静态方法，或成员类型可以分别被隐藏（hide）在其超类可以访问到的具有相同名字的所有域、静态方法或成员类型。hide几个成员将阻止其被继承。<br>// 错误样例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Base &#123;</span><br><span class="line">	public static void f() &#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">class Derived extends Base &#123;</span><br><span class="line">	private static void f() &#123;</span><br><span class="line">	&#125; // hides Base.f()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>// 正确样例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Base &#123;</span><br><span class="line">	static int a = 1;</span><br><span class="line">	int b = 3;</span><br><span class="line">	public static void f() &#123;</span><br><span class="line">		System.out.println(&quot;Base&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">class Derived extends Base &#123;</span><br><span class="line">	static int a = 2;</span><br><span class="line">	int b = 4;</span><br><span class="line">	public static void f() &#123;</span><br><span class="line">		System.out.println(&quot;Derived&quot;);</span><br><span class="line">	&#125; // hides Base.f()</span><br><span class="line">&#125;</span><br><span class="line">public class Hide &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Base.f();</span><br><span class="line">		Derived.f();</span><br><span class="line">		System.out.println(Base.a);</span><br><span class="line">		System.out.println(Derived.a);</span><br><span class="line">		System.out.println((new Base()).b);</span><br><span class="line">		System.out.println((new Derived()).b);</span><br><span class="line">		System.out.println(((Base) (new Derived())).b);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="重载（overload）"><a href="#重载（overload）" class="headerlink" title="重载（overload）"></a>重载（overload）</h3><p>在某个类中的方法可以重载（overload）另一个方法，只要它们具有相同的名字和不同的签名。由调用所指定的重载方法是在编译期选定的。</p>
+<h3 id="遮蔽（shadow）"><a href="#遮蔽（shadow）" class="headerlink" title="遮蔽（shadow）"></a>遮蔽（shadow）</h3><p>一个变量、方法或类型可以分别遮蔽（shadow）在一个闭合的文本范围内的具有相同名字的所有变量、方法或类型。如果一个实体被遮蔽了，那么你用它的简单名是无法引用到它的；根据实体的不同，有时你根本就无法引用到它。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class WhoKnows &#123;</span><br><span class="line">	static String sentence = &quot;I don&apos;t know.&quot;;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		String sentence = &quot;I know!&quot;; // shadows static field</span><br><span class="line">		System.out.println(sentence); // prints local variable</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>编译器在选择在运行期被调用的方法时，所做的第一件事就是在肯定能找到该方法的范围内挑选。编译器将在包含具有恰当名字的方法的最小闭合范围内挑选，下例中就是ImportDuty类，它包含了从Object继承的方法toString。</li>
+<li>导入的toString方法被继承的toString方法所遮蔽（shadow）</li>
+<li>本身就属于某个范围的成员在该范围内与静态导入相比具有优先权。<br>以下代码无法被编译通过<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import static java.util.Arrays.toString;</span><br><span class="line">class ImportDuty &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		printArgs(1, 2, 3, 4, 5);</span><br><span class="line">	&#125;</span><br><span class="line">	static void printArgs(Object... args) &#123;</span><br><span class="line">		System.out.println(toString(args));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="遮掩（obscure）"><a href="#遮掩（obscure）" class="headerlink" title="遮掩（obscure）"></a>遮掩（obscure）</h3><p>一个变量可以遮掩具有相同名字的一个类型，只要它们都在同一个范围内：如果这个名字被用于变量与类型都被许可的范围，那么它将引用到变量上。相似地，一个变量或一个类型可以遮掩一个包。遮掩是唯一一种两个名字位于不同的名字空间的名字重用形式，这些名字空间包括：变量、包、方法或类型。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 变量遮掩了类型</span><br><span class="line">public class Obscure &#123;</span><br><span class="line">	static String System; // Obscures type java.lang.System</span><br><span class="line">	public static void main(String[ ] args) &#123;</span><br><span class="line">	// Next line won&apos;t compile: System refers to static field</span><br><span class="line">	System.out.println(”hello, obscure world!“);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当一个变量和一个类型具有相同的名字，并且他们位于相同的作用域时，变量名具有优先权 JLS 6.5.2，变量将遮掩（obscure）类型名。相似地，变量名和类型名可以遮掩包名。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class ShadowOfGray &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		System.out.println(X.Y.Z); // 输出结果White</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">class X &#123;</span><br><span class="line">	static class Y &#123;</span><br><span class="line">		static String Z = &quot;Black&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">	static C Y = new C();</span><br><span class="line">&#125;</span><br><span class="line">class C &#123;</span><br><span class="line">	String Z = &quot;White&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
           
         
@@ -1572,7 +1697,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1618,7 +1743,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">77</span>
+                <span class="site-state-item-count">90</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1640,7 +1765,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

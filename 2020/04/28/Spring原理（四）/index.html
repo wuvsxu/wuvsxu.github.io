@@ -104,7 +104,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/1C57A7F73E5648F399D34C41D1303D43.png">
 <meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/34BC604C82B74AD18CB0F11E6E7D9563.png">
-<meta property="og:updated_time" content="2020-04-28T16:49:15.834Z">
+<meta property="og:updated_time" content="2020-04-28T16:50:44.669Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring原理（四）--MVC流程和注解">
 <meta name="twitter:description" content="Spring的模型-视图-控制器（MVC）框架是围绕一个DispatcherServlet来设计的，这个Servlet会把请求分发给各个处理器，并支持可配置的处理器映射、视图渲染、本地化、时区与主题渲染等，甚至还能支持文件上传。 MVC流程　　Http请求到DispatcherServlet(1)客户端请求提交到DispatcherServlet。　　HandlerMapping寻找处理器(2">
@@ -379,7 +379,7 @@
       
         <p>　　Spring的模型-视图-控制器（MVC）框架是围绕一个DispatcherServlet来设计的，这个Servlet会把请求分发给各个处理器，并支持可配置的处理器映射、视图渲染、本地化、时区与主题渲染等，甚至还能支持文件上传。</p>
 <h1 id="MVC流程"><a href="#MVC流程" class="headerlink" title="MVC流程"></a>MVC流程</h1><p><img src="http://www.wziyou.xyz:19080/image-handle/1C57A7F73E5648F399D34C41D1303D43.png" alt="avatar"><br>　　Http请求到DispatcherServlet(1)客户端请求提交到DispatcherServlet。<br>　　HandlerMapping寻找处理器(2)由DispatcherServlet控制器查询一个或多个HandlerMapping，找到处理请求的Controller。<br>　　调用处理器Controller(3)DispatcherServlet将请求提交到Controller。Controller调用业务逻辑处理后，返回ModelAndView。<br>　　(4)(5)调用业务处理和返回结果：Controller调用业务逻辑处理后，返回ModelAndView。DispatcherServlet查询ModelAndView<br>　　(6)(7)处理视图映射并返回模型：DispatcherServlet查询一个或多个ViewResoler视图解析器，找到ModelAndView指定的视图。ModelAndView反馈浏览器HTTP<br>　　(8)Http响应：视图负责将结果显示到客户端。</p>
-<h1 id="MVC-常用注解"><a href="#MVC-常用注解" class="headerlink" title="MVC 常用注解"></a>MVC 常用注解</h1><p><img src="http://www.wziyou.xyz:19080/image-handle/34BC604C82B74AD18CB0F11E6E7D9563.png" alt="avatar"><br><strong>【类上的标注】</strong><br><strong>@Controller </strong><br>　　用于标注控制层组件，标记在一个类上，使用它标记的类就是一个SpringMVC Controller对象，分发处理器将会扫描使用了该注解的类的方法，并检测该方法是否使用了@RequestMapping注解，可以吧Request请求header部分的值绑定到方法的参数上。<br><strong>@RestController</strong><br>　　相当于@Controller和@reponseBody的组合效果<br><strong>@Conmponent</strong><br>　　泛指组件，当组件不好归类的时候，我们可以使用这个注解进行标注<br><strong>@Repository</strong><br>　　用于注解dao层，在daoImpl类上面注解<br><strong>@Service</strong><br>　　用于标注业务层组件<br><strong>【类内的标注】</strong><br><strong>@ResponseBody</strong><br>　　异步请求，用于将Controller的方法返回的对象，通过适当单独HTTPMessageConverter转换为指定格式后，写入到Response对象的body数据区。返回的数据不是html标签的页面，而是其他某种格式的数据（json,xml）时使用<br><strong>@RequestMapping </strong><br>　　一个用来处理请求地址映射的注解，可用于类或者方法上，用于类上，表示类中的所有响应请求的方法都是以该地址作为父路径。<br><strong>@Aurtowired</strong><br>　　他对类成员变量，方法及构造函数进行标注，完成自动装配的工作，通过@Autowired的使用来消除setget方法。<br><strong>@PathVariable</strong><br>　　用于将请求url中的模板变量映射到功能处理方法的参数上，即取出url模板中的变量作为参数<br><strong>@RequestParam</strong><br>　　主要用于在SpringMVC后台控制层获取参数，类似一种request.getParameter(“name”)<br><strong>@RequestHeader</strong><br>　　可以把request请求header部分父值绑定到方法的参数上。</p>
+<h1 id="MVC-常用注解"><a href="#MVC-常用注解" class="headerlink" title="MVC 常用注解"></a>MVC 常用注解</h1><p><img src="http://www.wziyou.xyz:19080/image-handle/34BC604C82B74AD18CB0F11E6E7D9563.png" alt="avatar"><br><strong>【类上的标注】</strong><br><strong>@Controller </strong><br>　　用于标注控制层组件，标记在一个类上，使用它标记的类就是一个SpringMVC Controller对象，分发处理器将会扫描使用了该注解的类的方法，并检测该方法是否使用了@RequestMapping注解，可以吧Request请求header部分的值绑定到方法的参数上。<br><strong>@RestController</strong><br>　　相当于@Controller和@reponseBody的组合效果<br><strong>@Conmponent</strong><br>　　泛指组件，当组件不好归类的时候，我们可以使用这个注解进行标注<br><strong>@Repository</strong><br>　　用于注解dao层，在daoImpl类上面注解<br><strong>@Service</strong><br>　　用于标注业务层组件<br><strong>【类内的标注】</strong><br><strong>@ResponseBody</strong><br>　　异步请求，用于将Controller的方法返回的对象，通过适当单独HTTPMessageConverter转换为指定格式后，写入到Response对象的body数据区。返回的数据不是html标签的页面，而是其他某种格式的数据（json,xml）时使用<br><strong>@RequestMapping </strong><br>　　一个用来处理请求地址映射的注解，可用于类或者方法上，用于类上，表示类中的所有响应请求的方法都是以该地址作为父路径。<br><strong>@Autowired</strong><br>　　他对类成员变量，方法及构造函数进行标注，完成自动装配的工作，通过@Autowired的使用来消除setget方法。<br><strong>@PathVariable</strong><br>　　用于将请求url中的模板变量映射到功能处理方法的参数上，即取出url模板中的变量作为参数<br><strong>@RequestParam</strong><br>　　主要用于在SpringMVC后台控制层获取参数，类似一种request.getParameter(“name”)<br><strong>@RequestHeader</strong><br>　　可以把request请求header部分父值绑定到方法的参数上。</p>
 
       
     </div>
@@ -421,6 +421,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/30/Springboot-一/" rel="prev" title="Springboot(一)">
+                Springboot(一) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -497,7 +501,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">77</span>
+                <span class="site-state-item-count">90</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -519,7 +523,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

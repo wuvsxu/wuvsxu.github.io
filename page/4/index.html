@@ -308,7 +308,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/03/24/JVM（一）--JVM的内存模型/">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/04/08/java多线程（五）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="无恤">
@@ -327,7 +327,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/03/24/JVM（一）--JVM的内存模型/" itemprop="url">JVM（一）--JVM的内存模型</a></h1>
+                <a class="post-title-link" href="/2020/04/08/java多线程（五）/" itemprop="url">java多线程（五）</a></h1>
         
 
         <div class="post-meta">
@@ -339,8 +339,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-24T23:34:12+08:00">
-                2020-03-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-08T00:10:23+08:00">
+                2020-04-08
               </time>
             
 
@@ -379,59 +379,35 @@
       
         
           
-            <h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p><strong>JVM</strong><br>JVM是可运行 Java 代码的假想计算机 ，包括一套字节码指令集、一组寄存器、一个栈、一个垃圾回收，堆和一个存储方法域。  JVM 是运行在操作系统之上的，它与硬件没有直接的交互。  </p>
-<p><strong>程序计数器(线程私有)</strong><br>一块较小的内存空间, 是当前线程所执行的字节码的行号指示器，每条线程都要有一个独立的程序计数器，这类内存也称为“线程私有”的内存。正在执行 java 方法的话，计数器记录的是虚拟机字节码指令的地址（当前指令的地址）。如果还是 Native 方法，则为空。这个内存区域是唯一一个在虚拟机中没有规定任何 OutOfMemoryError 情况的区域。</p>
-<p><strong>虚拟机栈(线程私有)</strong><br>虚拟机栈是描述java方法执行的内存模型，每个方法在执行的同时都会创建一个栈帧（Stack Frame）用于存储局部变量表、操作数栈、动态链接、方法出口等信息。每一个方法从调用直至执行完成的过程，就对应着一个栈帧在虚拟机栈中入栈到出栈的过程。栈帧（ Frame）是用来存储数据和部分过程结果的数据结构，同时也被用来处理动态链接(Dynamic Linking)、 方法返回值和异常分派（ Dispatch Exception）。栈帧随着方法调用而创建，随着方法结束而销毁——无论方法是正常完成还是异常完成（抛出了在方法内未被捕获的异常）都算作方法结束。</p>
-<p><strong>本地方法区(线程私有)</strong><br>本地方法区和 Java Stack 作用类似, 区别是虚拟机栈为执行 Java 方法服务, 而本地方法栈则为Native 方法服务,如果一个 VM 实现使用 C-linkage 模型来支持 Native 调用, 那么该栈将会是一个C 栈，但 HotSpot VM 直接就把本地方法栈和虚拟机栈合二为一。</p>
-<p><strong>堆（Heap-线程共享）-运行时数据区</strong><br>堆是被线程共享的一块内存区域，创建的对象和数组都保存在 Java 堆内存中，也是垃圾收集器进行垃圾收集的最重要的内存区域。由于现代VM 采用分代收集算法, 因此 Java 堆从 GC 的角度还可以细分为: 新生代(Eden 区、From Survivor区和To Survivor区)和老年代。</p>
-<p><strong>方法区/永久代（线程共享）</strong></p>
+            <h1 id="线程基本方法"><a href="#线程基本方法" class="headerlink" title="线程基本方法"></a>线程基本方法</h1><p>　　线程相关的基本方法有wait，notify，notifyAll，sleep，join，yield等。</p>
+<h2 id="线程等待（wait）"><a href="#线程等待（wait）" class="headerlink" title="线程等待（wait）"></a>线程等待（wait）</h2><p>　　调用该方法的线程进入WAITING状态，只有等待另外线程的通知或被中断才会返回，需要注意的是调用wait()方法后，会释放对象的锁。因此，wait方法一般用在同步方法或同步代码块中。</p>
+<h2 id="线程睡眠（sleep）"><a href="#线程睡眠（sleep）" class="headerlink" title="线程睡眠（sleep）"></a>线程睡眠（sleep）</h2><p>　　sleep导致当前线程休眠，与wait方法不同的是sleep不会释放当前占有的锁,sleep(long)会导致线程进入 TIMED-WATING 状态，而wait()方法会导致当前线程进入WATING状态</p>
+<h2 id="线程让步（yield）"><a href="#线程让步（yield）" class="headerlink" title="线程让步（yield）"></a>线程让步（yield）</h2><p>　　yield会使当前线程让出CPU执行时间片，与其他线程一起重新竞争CPU时间片。一般情况下，优先级高的线程有更大的可能性成功竞争得到CPU时间片，但这又不是绝对的，有的操作系统对线程优先级并不敏感。</p>
+<h2 id="线程中断（interrupt）"><a href="#线程中断（interrupt）" class="headerlink" title="线程中断（interrupt）"></a>线程中断（interrupt）</h2><p>　　中断一个线程，其本意是给这个线程一个通知信号，会影响这个线程内部的一个中断标识位。这个线程本身并不会因此而改变状态(如阻塞，终止等)。</p>
 <ol>
-<li>我们常说的永久代(Permanent Generation), 用于存储被 JVM 加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。</li>
-<li>HotSpot VM把GC分代收集扩展至方法区, 即使用Java堆的永久代来实现方法区, 这样 HotSpot 的垃圾收集器就可以像管理 Java 堆一样管理这部分内存,而不必为方法区开发专门的内存管理器(永久带的内存回收的主要目标是针对常量池的回收和类型的卸载, 因此收益一般很小)。运行时常量池（Runtime Constant Pool）是方法区的一部分。</li>
-<li>Class 文件中除了有类的版本、字段、方法、接口等描述等信息外，还有一项信息是常量池（Constant Pool Table），用于存放编译期生成的各种字面量和符号引用，这部分内容将在类加载后存放到方法区的运行时常量池中。</li>
-<li>Java 虚拟机对 Class 文件的每一部分（自然也包括常量池）的格式都有严格的规定，每一个字节用于存储哪种数据都必须符合规范上的要求，这样才会被虚拟机认可、装载和执行。</li>
+<li>调用interrupt()方法并不会中断一个正在运行的线程。也就是说处于Running状态的线程并不会因为被中断而被终止，仅仅改变了内部维护的中断标识位而已。</li>
+<li>若调用sleep()而使线程处于TIMED-WATING状态，这时调用interrupt()方法，会抛出InterruptedException,从而使线程提前结束TIMED-WATING状态。</li>
+<li>许多声明抛出InterruptedException的方法(如Thread.sleep(long mills 方法))，抛出异常前，都会清除中断标识位，所以抛出异常后，调用isInterrupted()方法将会返回false。</li>
+<li>中断状态是线程固有的一个标识位，可以通过此标识位安全的终止线程。比如,你想终止一个线程thread 的时候，可以调用thread.interrupt()方法，在线程的run方法内部可以根据thread.isInterrupted()的值来优雅的终止线程。</li>
 </ol>
-<h3 id="java转换流程"><a href="#java转换流程" class="headerlink" title="java转换流程"></a>java转换流程</h3><p>Java 源文件—-&gt;编译器—-&gt;字节码文件—-&gt;JVM—-&gt;机器码</p>
-<h3 id="运行时数据区-gt-类加载器子系统"><a href="#运行时数据区-gt-类加载器子系统" class="headerlink" title="运行时数据区===&gt;类加载器子系统"></a>运行时数据区===&gt;类加载器子系统</h3><p><strong>方法区，虚拟机栈，本地方法栈,堆，程序计数器</strong></p>
-<ol>
-<li>JVM 内存区域主要分为线程私有区域【程序计数器、虚拟机栈、本地方法区】、线程共享区域【JAVA 堆、方法区】、直接内存。</li>
-<li>线程私有数据区域生命周期与线程相同, 依赖用户线程的启动/结束 而 创建/销毁(在 HotspotVM 内, 每个线程都与操作系统的本地线程直接映射, 因此这部分内存区域的存/否跟随本地线程的生/死对应)。</li>
-<li>线程共享区域随虚拟机的启动/关闭而创建/销毁。</li>
-<li>直接内存并不是 JVM 运行时数据区的一部分, 但也会被频繁的使用: 在 JDK 1.4 引入的 NIO 提供了基于 Channel与Buffer的IO方式, 它可以使用 Native 函数库直接分配堆外内存, 然后使用DirectByteBuffer 对象作为这块内存的引用进行操作(详见: Java I/O 扩展),这样就避免了在 Java堆和 Native 堆中来回复制数据, 因此在一些场景中可以显著提高性能。</li>
+<h2 id="Join等待其他线程终止"><a href="#Join等待其他线程终止" class="headerlink" title="Join等待其他线程终止"></a>Join等待其他线程终止</h2><p>　　join()方法，等待其他线程终止，在当前线程中调用一个线程的join()方法，则当前线程转为阻塞状态，回到另一个线程结束，当前线程再由阻塞状态变为就绪状态，等待cpu的宠幸。</p>
+<h2 id="为什么要用join-方法？"><a href="#为什么要用join-方法？" class="headerlink" title="为什么要用join()方法？"></a>为什么要用join()方法？</h2><p>　　很多情况下，主线程生成并启动了子线程，需要用到子线程返回的结果，也就是需要主线程需要在子线程结束后再结束，这时候就要用到join()方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(Thread.currentThread().getName() + &quot;线程运行开始!&quot;);</span><br><span class="line"> Thread6 thread1 = new Thread6();</span><br><span class="line"> thread1.setName(&quot;线程 B&quot;);</span><br><span class="line"> thread1.join();</span><br><span class="line">System.out.println(&quot;这时 thread1 执行完毕之后才能执行主线程&quot;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="线程唤醒（notify）"><a href="#线程唤醒（notify）" class="headerlink" title="线程唤醒（notify）"></a>线程唤醒（notify）</h2><p>　　Object类中的notify()方法，唤醒在此对象监视器上等待的单个线程，如果所有线程都在此对象上等待，则会选择唤醒其中一个线程，选择是任意的，并在对实现做出决定时发生，线程通过调用其中一个wait()方法，在对象的监视器上等待，直到当前的线程放弃此对象上的锁定，才能继续执行被唤醒的线程，被唤醒的线程将以常规方式与在该对象上主动同步的其他所有线程进行竞争。类似的方法还有notifyAll()，唤醒再次监视器上等待的所有线程。</p>
+<h2 id="其他方法："><a href="#其他方法：" class="headerlink" title="其他方法："></a>其他方法：</h2><ol>
+<li>sleep()：强迫一个线程睡眠Ｎ毫秒。</li>
+<li>isAlive()：判断一个线程是否存活。</li>
+<li>join()：等待线程终止。</li>
+<li>activeCount()：程序中活跃的线程数。</li>
+<li>enumerate()：枚举程序中的线程。</li>
+<li>currentThread()：得到当前线程。</li>
+<li>isDaemon()：一个线程是否为守护线程。</li>
+<li>setDaemon()：设置一个线程为守护线程。(用户线程和守护线程的区别在于，是否等待主线程依赖于主线程结束而结束)</li>
+<li>setName()：为线程设置一个名称。</li>
+<li>wait()：强迫一个线程等待。</li>
+<li>notify()：通知一个线程继续运行。</li>
+<li>setPriority()：设置一个线程的优先级。</li>
+<li>getPriority():获得一个线程的优先级。</li>
 </ol>
-<h3 id="执行引擎-gt-本地方法库"><a href="#执行引擎-gt-本地方法库" class="headerlink" title="执行引擎==&gt;本地方法库"></a>执行引擎==&gt;本地方法库</h3><p>   即时编译器，垃圾收集</p>
-<h3 id="线程定义"><a href="#线程定义" class="headerlink" title="线程定义"></a>线程定义</h3><p>这里所说的线程指程序执行过程中的一个线程实体。JVM 允许一个应用并发执行多个线程。Hotspot JVM 中的 Java 线程与原生操作系统线程  有直接的映射关系。当线程本地存储、缓冲区分配、同步对象、栈、程序计数器等准备好以后，就会创建一个操作系统原生线程。Java 线程结束，原生线程随之被回收。操作系统负责调度所有线程，并把它们分配到任何可用的 CPU 上。当原生线程初始化完毕，就会调用 Java 线程的 run()方法。当线程结束时，会释放原生线程和 Java 线程的所有资源。</p>
-<h3 id="Hotspot-JVM"><a href="#Hotspot-JVM" class="headerlink" title="Hotspot JVM"></a>Hotspot JVM</h3><p><strong>jvm和hotspot的联系与区别:</strong><br>    JVM是虚拟机，总的来说是一种标准规范，虚拟机有很多实现版本。主要作用就是运行java的类文件的。<br>    而HotSpot是虚拟机的一种实现,它是sun公司开发的,是sun jdk和open jdk中自带的虚拟机，也是目前使用范围最广的虚拟机。<br>    HotSpot，顾名思义，它是基于热点代码探测的，有JIT即时编译功能，能提供更高质量的本地代码。<br>    二者区别是一个是标准，一个是实现方式。<br>    hotspot是jvm的一种具体实现。</p>
-<h3 id="Hotspot-JVM-后台运行的系统线程主要有下面几个："><a href="#Hotspot-JVM-后台运行的系统线程主要有下面几个：" class="headerlink" title="Hotspot JVM 后台运行的系统线程主要有下面几个："></a>Hotspot JVM 后台运行的系统线程主要有下面几个：</h3><table>
-<thead>
-<tr>
-<th>进程</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>虚拟机线程（VM thread）</td>
-<td>这个线程等待 JVM 到达安全点操作出现。这些操作必须要在独立的线程里执行，因为当堆修改无法进行时，线程都需要 JVM 位于安全点。这些操作的类型有：stop-theworld 垃圾回收、线程栈 dump、线程暂停、线程偏向锁（biased locking）解除。</td>
-</tr>
-<tr>
-<td>周期性任务线程</td>
-<td>这线程负责定时器事件（也就是中断），用来调度周期性操作的执行。</td>
-</tr>
-<tr>
-<td>GC 线程</td>
-<td>这些线程支持 JVM 中不同的垃圾回收活动。</td>
-</tr>
-<tr>
-<td>编译器线程</td>
-<td>这些线程在运行时将字节码动态编译成本地平台相关的机器码。</td>
-</tr>
-<tr>
-<td>信号分发线程</td>
-<td>这个线程接收发送到 JVM 的信号并调用适当的 JVM 方法处理</td>
-</tr>
-</tbody>
-</table>
 
           
         
@@ -480,7 +456,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/02/28/synchronized、锁、同步/">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/04/06/java多线程（四）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="无恤">
@@ -499,7 +475,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/02/28/synchronized、锁、同步/" itemprop="url">synchronized、锁、同步</a></h1>
+                <a class="post-title-link" href="/2020/04/06/java多线程（四）/" itemprop="url">java多线程（四）</a></h1>
         
 
         <div class="post-meta">
@@ -511,8 +487,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-28T01:14:17+08:00">
-                2020-02-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-06T22:15:35+08:00">
+                2020-04-06
               </time>
             
 
@@ -551,32 +527,113 @@
       
         
           
-            <h3 id="synchronized介绍"><a href="#synchronized介绍" class="headerlink" title="synchronized介绍"></a>synchronized介绍</h3><p>synchronized是Java中的关键字，是一种同步锁。它修饰的对象有以下几种：</p>
+            <h1 id="JAVA锁"><a href="#JAVA锁" class="headerlink" title="JAVA锁"></a>JAVA锁</h1><h2 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h2><p>　　乐观锁是一种乐观思想，即认为读多写少，遇到并发写的可能性低，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，采取在写时先读出当前版本号，然后加锁操作（比较跟上一次的版本号，如果一样则更新），如果失败则要重复读-比较-写的操作。<br>　　java中的乐观锁基本都是通过 CAS 操作实现的，CAS是一种更新的原子操作，比较当前值跟传入值是否一样，一样则更新，否则失败。<br>　　<strong>即只有在写的时候才加锁</strong></p>
+<h2 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h2><p>　　悲观锁是就是悲观思想，即认为写多，遇到并发写的可能性高，每次去拿数据的时候都认为别人会修改，所以每次在读写数据的时候都会上锁，这样别人想读写这个数据就会block直到拿到锁。<br>　　java中的悲观锁就是Synchronized,AQS框架下的锁则是先尝试cas乐观锁去获取锁，获取不到，才会转换为悲观锁，如RetreenLock。<br>　　<strong>无论读写，对象都要加锁</strong></p>
+<h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><p>　　自旋锁原理非常简单，如果持有锁的线程能在很短时间内释放锁资源，那么那些等待竞争锁的线程就不需要做内核态和用户态之间的切换进入阻塞挂起状态，它们只需要等一等（自旋），等持有锁的线程释放锁后即可立即获取锁，这样就避免用户线程和内核的切换的消耗。<br>　　线程自旋是需要消耗cup的，说白了就是让cup在做无用功，如果一直获取不到锁，那线程也不能一直占用cup自旋做无用功，所以需要设定一个自旋等待的最大时间。<br>　　如果持有锁的线程执行的时间超过自旋等待的最大时间扔没有释放锁，就会导致其它争用锁的线程在最大等待时间内还是获取不到锁，这时争用线程会停止自旋进入阻塞状态。</p>
+<h3 id="自旋锁的优缺点"><a href="#自旋锁的优缺点" class="headerlink" title="自旋锁的优缺点"></a>自旋锁的优缺点</h3><p>　　自旋锁尽可能的减少线程的阻塞，这对于锁的竞争不激烈，且占用锁时间非常短的代码块来说性能能大幅度的提升，因为自旋的消耗会小于线程阻塞挂起再唤醒的操作的消耗，这些操作会导致线程发生两次上下文切换！<br>　　但是如果锁的竞争激烈，或者持有锁的线程需要长时间占用锁执行同步块，这时候就不适合使用自旋锁了，因为自旋锁在获取锁前一直都是占用cpu做无用功，占着茅坑不拉屎，同时有大量线程在竞争一个锁，会导致获取锁的时间很长，线程自旋的消耗大于线程阻塞挂起操作的消耗，其它需要cup的线程又不能获取到cpu，造成cpu的浪费。所以这种情况下我们要关闭自旋锁；</p>
+<h3 id="自旋锁时间阈值（1-6-引入了适应性自旋锁）"><a href="#自旋锁时间阈值（1-6-引入了适应性自旋锁）" class="headerlink" title="自旋锁时间阈值（1.6 引入了适应性自旋锁）"></a>自旋锁时间阈值（1.6 引入了适应性自旋锁）</h3><p>　　自旋锁的目的是为了占着CPU的资源不释放，等到获取到锁立即进行处理。但是如何去选择自旋的执行时间呢？如果自旋执行时间太长，会有大量的线程处于自旋状态占用CPU资源，进而会影响整体系统的性能。因此自旋的周期选的额外重要！<br>　　JVM对于自旋周期的选择，jdk1.5 这个限度是一定的写死的，在1.6引入了适应性自旋锁，适应性自旋锁意味着自旋的时间不在是固定的了，而是由前一次在同一个锁上的自旋时间以及锁的拥有者的状态来决定，基本认为一个线程上下文切换的时间是最佳的一个时间，同时 JVM 还针对当前CPU的负荷情况做了较多的优化，如果平均负载小于 CPUs 则一直自旋，如果有超过(CPUs/2)个线程正在自旋，则后来线程直接阻塞，如果正在自旋的线程发现 Owner 发生了变化则延迟自旋时间（自旋计数）或进入阻塞，如果 CPU 处于节电模式则停止自旋，自旋时间的最坏情况是CPU的存储延迟（CPU A存储了一个数据，到CPU B得知这个数据直接的时间差），自旋时会适当放弃线程优先级之间的差异。</p>
+<h3 id="自旋锁的开启"><a href="#自旋锁的开启" class="headerlink" title="自旋锁的开启"></a>自旋锁的开启</h3><p>JDK1.6 中-XX:+UseSpinning 开启；<br>-XX:PreBlockSpin=10 为自旋次数；<br>JDK1.7 后，去掉此参数，由 jvm 控制。</p>
+<h2 id="Synchronized-同步锁"><a href="#Synchronized-同步锁" class="headerlink" title="Synchronized 同步锁"></a>Synchronized 同步锁</h2><p>　　synchronized它可以把任意一个非NULL的对象当作锁。他属于独占式的悲观锁，同时属于可重入锁。</p>
+<h3 id="Synchronized-作用范围"><a href="#Synchronized-作用范围" class="headerlink" title="Synchronized 作用范围"></a>Synchronized 作用范围</h3><ol>
+<li>作用于方法时，锁住的是对象的实例(this)；</li>
+<li>当作用于静态方法时，锁住的是Class实例，又因为Class的相关数据存储在永久带PermGen（jdk1.8 则是 metaspace），永久带是全局共享的，因此静态方法锁相当于类的一个全局锁，会锁所有调用该方法的线程；</li>
+<li>synchronized作用于一个对象实例时，锁住的是所有以该对象为锁的代码块。它有多个队列，当多个线程一起访问某个对象监视器的时候，对象监视器会将这些线程存储在不同的容器中。</li>
+</ol>
+<h3 id="Synchronized-核心组件"><a href="#Synchronized-核心组件" class="headerlink" title="Synchronized 核心组件"></a>Synchronized 核心组件</h3><ol>
+<li>Wait Set：哪些调用wait方法被阻塞的线程被放置在这里；</li>
+<li>Contention List：竞争队列，所有请求锁的线程首先被放在这个竞争队列中；</li>
+<li>Entry List：Contention List中那些有资格成为候选资源的线程被移动到Entry List中；</li>
+<li>OnDeck：任意时刻，最多只有一个线程正在竞争锁资源，该线程被成为OnDeck；</li>
+<li>Owner：当前已经获取到所资源的线程被称为Owner；</li>
+<li>!Owner：当前释放锁的线程。</li>
+</ol>
+<h3 id="Synchronized-实现"><a href="#Synchronized-实现" class="headerlink" title="Synchronized 实现"></a>Synchronized 实现</h3><ol>
+<li>JVM 每次从队列的尾部取出一个数据用于锁竞争候选者（OnDeck），但是并发情况下，ContentionList会被大量的并发线程进行CAS访问，为了降低对尾部元素的竞争，JVM会将一部分线程移动到EntryList中作为候选竞争线程。</li>
+<li>Owner线程会在unlock时，将ContentionList中的部分线程迁移到EntryList中，并指定EntryList中的某个线程为OnDeck线程（一般是最先进去的那个线程）。</li>
+<li>Owner线程并不直接把锁传递给OnDeck线程，而是把锁竞争的权利交给OnDeck，OnDeck需要重新竞争锁。这样虽然牺牲了一些公平性，但是能极大的提升系统的吞吐量，在JVM中，也把这种选择行为称之为“竞争切换”。</li>
+<li>OnDeck线程获取到锁资源后会变为Owner线程，而没有得到锁资源的仍然停留在EntryList中。如果Owner线程被wait方法阻塞，则转移到WaitSet队列中，直到某个时刻通过notify或者notifyAll唤醒，会重新进去EntryList中。</li>
+<li>处于 ContentionList、EntryList、WaitSet中的线程都处于阻塞状态，该阻塞是由操作系统来完成的（Linux内核下采用pthread_mutex_lock内核函数实现的）。</li>
+<li>Synchronized是非公平锁。Synchronized在线程进入ContentionList时，等待的线程会先尝试自旋获取锁，如果获取不到就进入ContentionList，这明显对于已经进入队列的线程是不公平的，还有一个不公平的事情就是自旋获取锁的线程还可能直接抢占OnDeck线程的锁资源。<br>参考：<a href="https://blog.csdn.net/zqz_zqz/article/details/70233767" target="_blank" rel="noopener">https://blog.csdn.net/zqz_zqz/article/details/70233767</a></li>
+<li>每个对象都有个monitor对象，加锁就是在竞争monitor对象，代码块加锁是在前后分别加上monitorenter和monitorexit指令来实现的，方法加锁是通过一个标记位来判断的</li>
+<li>synchronized是一个重量级操作，需要调用操作系统相关接口，性能是低效的，有可能给线程加锁消耗的时间比有用操作消耗的时间更多。</li>
+<li>Java1.6，synchronized进行了很多的优化，有适应自旋、锁消除、锁粗化、轻量级锁及偏向锁等，效率有了本质上的提高。在之后推出的 Java1.7与1.8中，均对该关键字的实现机理做了优化。引入了偏向锁和轻量级锁。都是在对象头中有标记位，不需要经过操作系统加锁。</li>
+<li>锁可以从偏向锁升级到轻量级锁，再升级到重量级锁。这种升级过程叫做锁膨胀；</li>
+<li>JDK1.6中默认是开启偏向锁和轻量级锁，可以通过-XX:-UseBiasedLocking来禁用偏向锁。</li>
+</ol>
+<h2 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h2><p>　　ReentantLock继承接口Lock并实现了接口中定义的方法，他是一种可重入锁，除了能完成synchronized所能完成的所有工作外，还提供了诸如可响应中断锁、可轮询锁请求、定时锁等避免多线程死锁的方法。</p>
+<h3 id="Lock-接口的主要方法"><a href="#Lock-接口的主要方法" class="headerlink" title="Lock 接口的主要方法"></a>Lock 接口的主要方法</h3><ol>
+<li>void lock(): 执行此方法时, 如果锁处于空闲状态, 当前线程将获取到锁. 相反, 如果锁已经被其他线程持有, 将禁用当前线程, 直到当前线程获取到锁.</li>
+<li>boolean tryLock()：如果锁可用, 则获取锁, 并立即返回 true, 否则返回 false. 该方法和lock()的区别在于,tryLock()只是”试图”获取锁, 如果锁不可用, 不会导致当前线程被禁用,当前线程仍然继续往下执行代码. 而 lock()方法则是一定要获取到锁, 如果锁不可用, 就一直等待, 在未获得锁之前,当前线程并不继续向下执行.</li>
+<li>void unlock()：执行此方法时, 当前线程将释放持有的锁. 锁只能由持有者释放, 如果线程并不持有锁, 却执行该方法, 可能导致异常的发生.</li>
+<li>Condition newCondition()：条件对象，获取等待通知组件。该组件和当前的锁绑定，当前线程只有获取了锁，才能调用该组件的await()方法，而调用后，当前线程将缩放锁。</li>
+<li>getHoldCount() ：查询当前线程保持此锁的次数，也就是执行此线程执行lock方法的次数。</li>
+<li>getQueueLength（）：返回正等待获取此锁的线程估计数，比如启动10个线程，1个线程获得锁，此时返回的是9</li>
+<li>getWaitQueueLength：（Condition condition）返回等待与此锁相关的给定条件的线程估计数。比如10个线程，用同一个condition对象，并且此时这10个线程都执行了condition对象的await方法，那么此时执行此方法返回10</li>
+<li>hasWaiters(Condition condition)：查询是否有线程等待与此锁有关的给定条件(condition)，对于指定contidion对象，有多少线程执行了condition.await方法</li>
+<li>hasQueuedThread(Thread thread)：查询给定线程是否等待获取此锁</li>
+<li>hasQueuedThreads()：是否有线程等待此锁</li>
+<li>isFair()：该锁是否公平锁</li>
+<li>isHeldByCurrentThread()：当前线程是否保持锁锁定，线程的执行lock方法的前后分别是false和true</li>
+<li>isLock()：此锁是否有任意线程占用</li>
+<li>lockInterruptibly（）：如果当前线程未被中断，获取锁</li>
+<li>tryLock（）：尝试获得锁，仅在调用时锁未被线程占用，获得锁</li>
+<li>tryLock(long timeout TimeUnit unit)：如果锁在给定等待时间内没有被另一个线程保持，则获取该锁。</li>
+</ol>
+<h2 id="非公平锁"><a href="#非公平锁" class="headerlink" title="非公平锁"></a>非公平锁</h2><p>　　JVM按随机、就近原则分配锁的机制则称为不公平锁，ReentrantLock在构造函数中提供了是否公平锁的初始化方式，默认为非公平锁。非公平锁实际执行的效率要远远超出公平锁，除非程序有特殊需要，否则最常用非公平锁的分配机制。</p>
+<h2 id="公平锁"><a href="#公平锁" class="headerlink" title="公平锁"></a>公平锁</h2><p>　　公平锁指的是锁的分配机制是公平的，通常先对锁提出获取请求的线程会先被分配到锁，ReentrantLock在构造函数中提供了是否公平锁的初始化方式来定义公平锁。</p>
+<h3 id="ReentrantLock-与-synchronized"><a href="#ReentrantLock-与-synchronized" class="headerlink" title="ReentrantLock 与 synchronized"></a>ReentrantLock 与 synchronized</h3><ol>
+<li>ReentrantLock通过方法 lock()与unlock()来进行加锁与解锁操作，与synchronized会被JVM自动解锁机制不同，ReentrantLock加锁后需要手动进行解锁。为了避免程序出现异常而无法正常解锁的情况，使用ReentrantLock必须在finally控制块中进行解锁操作。</li>
+<li>ReentrantLock相比synchronized的优势是可中断、公平锁、多个锁。这种情况下需要使用ReentrantLock。</li>
+</ol>
+<h4 id="锁的实现："><a href="#锁的实现：" class="headerlink" title="锁的实现："></a>锁的实现：</h4><p>　　Synchronized是依赖于JVM实现的，而ReenTrantLock是JDK实现的，有什么区别，说白了就类似于操作系统来控制实现和用户自己敲代码实现的区别。前者的实现是比较难见到的，后者有直接的源码可供阅读。</p>
+<h4 id="性能的区别："><a href="#性能的区别：" class="headerlink" title="性能的区别："></a>性能的区别：</h4><p>　　在Synchronized优化以前，synchronized的性能是比ReenTrantLock差很多的，但是自从Synchronized引入了偏向锁，轻量级锁（自旋锁）后，两者的性能就差不多了，在两种方法都可用的情况下，官方甚至建议使用synchronized，其实synchronized的优化我感觉就借鉴了ReenTrantLock中的CAS技术。都是试图在用户态就把加锁问题解决，避免进入内核态的线程阻塞。</p>
+<h4 id="功能区别："><a href="#功能区别：" class="headerlink" title="功能区别："></a>功能区别：</h4><p>　　便利性：很明显Synchronized的使用比较方便简洁，并且由编译器去保证锁的加锁和释放，而ReenTrantLock需要手工声明来加锁和释放锁，为了避免忘记手工释放锁造成死锁，所以最好在finally中声明释放锁。<br>　　锁的细粒度和灵活度：很明显ReenTrantLock优于Synchronized</p>
+<h4 id="ReenTrantLock独有的能力："><a href="#ReenTrantLock独有的能力：" class="headerlink" title="ReenTrantLock独有的能力："></a>ReenTrantLock独有的能力：</h4><ol>
+<li>ReenTrantLock可以指定是公平锁还是非公平锁。而synchronized只能是非公平锁。所谓的公平锁就是先等待的线程先获得锁。</li>
+<li>ReenTrantLock提供了一个Condition（条件）类，用来实现分组唤醒需要唤醒的线程们，而不是像synchronized要么随机唤醒一个线程要么唤醒全部线程。</li>
+<li>ReenTrantLock提供了一种能够中断等待锁的线程的机制，通过lock.lockInterruptibly()来实现这个机制。</li>
+</ol>
+<h4 id="ReenTrantLock实现的原理："><a href="#ReenTrantLock实现的原理：" class="headerlink" title="ReenTrantLock实现的原理："></a>ReenTrantLock实现的原理：</h4><p>　　简单来说，ReenTrantLock的实现是一种自旋锁，通过循环调用CAS操作来实现加锁。它的性能比较好也是因为避免了使线程进入内核态的阻塞状态。想尽办法避免线程进入内核的阻塞状态是我们去分析和理解锁设计的关键钥匙。</p>
+<p><strong>ReentrantLock 实现</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import java.util.concurrent.locks.Condition;</span><br><span class="line">import java.util.concurrent.locks.Lock;</span><br><span class="line">import java.util.concurrent.locks.ReentrantLock;</span><br><span class="line">public class MyService &#123;</span><br><span class="line">    private Lock lock = new ReentrantLock();</span><br><span class="line">    // Lock lock=new ReentrantLock(true);//公平锁</span><br><span class="line">    // Lock lock=new ReentrantLock(false);//非公平锁</span><br><span class="line">    private Condition condition = lock.newCondition();// 创建 Condition</span><br><span class="line">    public void testMethod() &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            lock.lock();// lock 加锁</span><br><span class="line">            // 1：wait 方法等待：</span><br><span class="line">            // System.out.println(&quot;开始 wait&quot;);</span><br><span class="line">            condition.await();</span><br><span class="line">            // 通过创建 Condition 对象来使线程 wait，必须先执行 lock.lock 方法获得锁</span><br><span class="line">            // :2：signal 方法唤醒</span><br><span class="line">            condition.signal();// condition 对象的 signal 方法可以唤醒 wait 线程</span><br><span class="line">            for (int i = 0; i &lt; 5; i++) &#123;</span><br><span class="line">                System.out.println(&quot;ThreadName=&quot; + Thread.currentThread().getName() + (&quot; &quot; + (i + 1)));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Condition类和Object类锁方法区别区别"><a href="#Condition类和Object类锁方法区别区别" class="headerlink" title="Condition类和Object类锁方法区别区别"></a>Condition类和Object类锁方法区别区别</h3><ol>
+<li>Condition类的awiat方法和Object类的wait方法等效</li>
+<li>Condition类的signal方法和Object类的notify方法等效</li>
+<li>Condition类的signalAll方法和Object类的notifyAll方法等效</li>
+<li>ReentrantLock类可以唤醒指定条件的线程，而object的唤醒是随机的</li>
+</ol>
+<h3 id="tryLock和lock和lockInterruptibly的区别"><a href="#tryLock和lock和lockInterruptibly的区别" class="headerlink" title="tryLock和lock和lockInterruptibly的区别"></a>tryLock和lock和lockInterruptibly的区别</h3><ol>
+<li>tryLock能获得锁就返回true，不能就立即返回false，tryLock(long timeout,TimeUnitunit)，可以增加时间限制，如果超过该时间段还没获得锁，返回false</li>
+<li>lock能获得锁就返回true，不能的话一直等待获得锁</li>
+<li>lock和lockInterruptibly，如果两个线程分别执行这两个方法，但此时中断这两个线程，lock不会抛出异常，而lockInterruptibly会抛出异常。</li>
+</ol>
+<h2 id="Semaphore信号量"><a href="#Semaphore信号量" class="headerlink" title="Semaphore信号量"></a>Semaphore信号量</h2><p>　　Semaphore是一种基于计数的信号量。它可以设定一个阈值，基于此，多个线程竞争获取许可信号，做完自己的申请后归还，超过阈值后，线程申请许可信号将会被阻塞。Semaphore可以用来构建一些对象池，资源池之类的，比如数据库连接池</p>
+<h3 id="实现互斥锁（计数器为-1）"><a href="#实现互斥锁（计数器为-1）" class="headerlink" title="实现互斥锁（计数器为 1）"></a>实现互斥锁（计数器为 1）</h3><p>　　我们也可以创建计数为1的Semaphore，将其作为一种类似互斥锁的机制，这也叫二元信号量，表示两种互斥状态。</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 创建一个计数阈值为 5 的信号量对象</span><br><span class="line">// 只能 5 个线程同时访问</span><br><span class="line">Semaphore semp = new Semaphore(5);</span><br><span class="line">try &#123; // 申请许可</span><br><span class="line">	semp.acquire();</span><br><span class="line">	try &#123;</span><br><span class="line">		// 业务逻辑</span><br><span class="line">	&#125; catch (Exception e) &#123;</span><br><span class="line">	&#125; finally &#123;</span><br><span class="line">		// 释放许可</span><br><span class="line">		semp.release();</span><br><span class="line">	&#125;</span><br><span class="line">&#125; catch (InterruptedException e) &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Semaphore与ReentrantLock"><a href="#Semaphore与ReentrantLock" class="headerlink" title="Semaphore与ReentrantLock"></a>Semaphore与ReentrantLock</h3><p>　　Semaphore基本能完成ReentrantLock的所有工作，使用方法也与之类似，通过acquire()与release()方法来获得和释放临界资源。经实测，Semaphone.acquire()方法默认为可响应中断锁，与ReentrantLock.lockInterruptibly()作用效果一致，也就是说在等待临界资源的过程中可以被Thread.interrupt()方法中断。<br>　　此外，Semaphore也实现了可轮询的锁请求与定时锁的功能，除了方法名tryAcquire与tryLock不同，其使用方法与ReentrantLock几乎一致。Semaphore也提供了公平与非公平锁的机制，也可在构造函数中进行设定。<br>　　Semaphore的锁释放操作也由手动进行，因此与ReentrantLock一样，为避免线程因抛出异常而无法正常释放锁的情况发生，释放锁的操作也必须在finally代码块中完成。</p>
+<h2 id="AtomicInteger"><a href="#AtomicInteger" class="headerlink" title="AtomicInteger"></a>AtomicInteger</h2><p>　　AtomicInteger是一个提供原子操作的Integer的类，常见的还有AtomicBoolean、AtomicInteger、AtomicLong、AtomicReference等，他们的实现原理相同，区别在与运算对象类型的不同。另外，还可以通过AtomicReference<v>将一个对象的所有操作转化成原子操作。<br>　　我们知道，在多线程程序中，诸如++i或i++等运算不具有原子性，是不安全的线程操作之一。通常我们会使用synchronized将该操作变成一个原子操作，但JVM为此类操作特意提供了一些同步类，使得使用更方便，且使程序运行效率变得更高。通过相关资料显示，通常AtomicInteger的性能是ReentantLock的好几倍。</v></p>
+<h2 id="可重入锁（递归锁）"><a href="#可重入锁（递归锁）" class="headerlink" title="可重入锁（递归锁）"></a>可重入锁（递归锁）</h2><p>　　本文里面讲的是广义上的可重入锁，而不是单指JAVA下的ReentrantLock。<br>　　可重入锁，也叫做递归锁，指的是同一线程 外层函数获得锁之后 ，内层递归函数仍然有获取该锁的代码，但不受影响。在JAVA环境下ReentrantLock和synchronized都是可重入锁。</p>
+<h2 id="公平锁与非公平锁"><a href="#公平锁与非公平锁" class="headerlink" title="公平锁与非公平锁"></a>公平锁与非公平锁</h2><h3 id="公平锁（Fair）"><a href="#公平锁（Fair）" class="headerlink" title="公平锁（Fair）"></a>公平锁（Fair）</h3><p>　　加锁前检查是否有排队等待的线程，优先排队等待的线程，先来先得</p>
+<h3 id="非公平锁（Nonfair）"><a href="#非公平锁（Nonfair）" class="headerlink" title="非公平锁（Nonfair）"></a>非公平锁（Nonfair）</h3><p>　　加锁时不考虑排队等待问题，直接尝试获取锁，获取不到自动到队尾等待。</p>
 <ol>
-<li>修饰一个代码块，被修饰的代码块称为同步语句块，其作用的范围是大括号{}括起来的代码，作用的对象是调用这个代码块的对象；</li>
-<li>修饰一个方法，被修饰的方法称为同步方法，其作用的范围是整个方法，作用的对象是调用这个方法的对象；</li>
-<li>修改一个静态的方法，其作用的范围是整个静态方法，作用的对象是这个类的所有对象；</li>
-<li>修改一个类，其作用的范围是synchronized后面括号括起来的部分，作用主的对象是这个类的所有对象。</li>
+<li>非公平锁性能比公平锁高5~10倍，因为公平锁需要在多核的情况下维护一个队列。</li>
+<li>Java中的synchronized是非公平锁，ReentrantLock 默认的lock()方法采用的是非公平锁。</li>
 </ol>
-<h5 id="在用synchronized修饰方法时要注意以下几点："><a href="#在用synchronized修饰方法时要注意以下几点：" class="headerlink" title="在用synchronized修饰方法时要注意以下几点："></a>在用synchronized修饰方法时要注意以下几点：</h5><ol>
-<li>synchronized关键字不能继承。如果在父类中的某个方法使用了synchronized关键字，而在子类中覆盖了这个方法，在子类中的这个方法默认情况下并不是同步的，而必须显式地在子类的这个方法中加上synchronized关键字才可以。</li>
-<li>定义接口方法时不能使用synchronized关键字。</li>
-<li>构造方法不能使用synchronized关键字，但可以使用synchronized代码块来进行同步。</li>
-</ol>
-<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><ol>
-<li>无论synchronized关键字加在方法上还是对象上，如果它作用的对象是非静态的，则它取得的锁是对象；如果synchronized作用的对象是一个静态方法或一个类，则它取得的锁是对类，该类所有的对象同一把锁。</li>
-<li>每个对象只有一个锁（lock）与之相关联，谁拿到这个锁谁就可以运行它所控制的那段代码。</li>
-<li>实现同步是要很大的系统开销作为代价的，甚至可能造成死锁，所以尽量避免无谓的同步控制</li>
+<h2 id="ReadWriteLock-读写锁"><a href="#ReadWriteLock-读写锁" class="headerlink" title="ReadWriteLock 读写锁"></a>ReadWriteLock 读写锁</h2><p>　　为了提高性能，Java提供了读写锁，在读的地方使用读锁，在写的地方使用写锁，灵活控制，如果没有写锁的情况下，读是无阻塞的,在一定程度上提高了程序的执行效率。读写锁分为读锁和写锁，多个读锁不互斥，读锁与写锁互斥，这是由 jvm 自己控制的，你只要上好相应的锁即可。</p>
+<h3 id="读锁"><a href="#读锁" class="headerlink" title="读锁"></a>读锁</h3><p>　　如果你的代码只读数据，可以很多人同时读，但不能同时写，那就上读锁</p>
+<h3 id="写锁"><a href="#写锁" class="headerlink" title="写锁"></a>写锁</h3><p>　　如果你的代码修改数据，只能有一个人在写，且不能同时读取，那就上写锁。总之，读的时候上读锁，写的时候上写锁！<br>　　Java中读写锁有个接口java.util.concurrent.locks.ReadWriteLock ，也有具体的实现ReentrantReadWriteLock。</p>
+<h2 id="共享锁和独占锁"><a href="#共享锁和独占锁" class="headerlink" title="共享锁和独占锁"></a>共享锁和独占锁</h2><p>　　java并发包提供的加锁模式分为独占锁和共享锁。</p>
+<h3 id="独占锁"><a href="#独占锁" class="headerlink" title="独占锁"></a>独占锁</h3><p>　　独占锁模式下，每次只能有一个线程能持有锁，ReentrantLock就是以独占方式实现的互斥锁。<br>　　独占锁是一种悲观保守的加锁策略，它避免了读/读冲突，如果某个只读线程获取锁，则其他读线程都只能等待，这种情况下就限制了不必要的并发性，因为读操作并不会影响数据的一致性。</p>
+<h3 id="共享锁"><a href="#共享锁" class="headerlink" title="共享锁"></a>共享锁</h3><p>　　共享锁则允许多个线程同时获取锁，并发访问 共享资源，如：ReadWriteLock。共享锁则是一种乐观锁，它放宽了加锁策略，允许多个执行读操作的线程同时访问共享资源。</p>
+<ol>
+<li>AQS的内部类 Node 定义了两个常量SHARED和EXCLUSIVE，他们分别标识AQS队列中等待线程的锁获取模式。</li>
+<li>java的并发包中提供了ReadWriteLock，读-写锁。它允许一个资源可以被多个读操作访问，或者被一个 写操作访问，但两者不能同时进行。<h2 id="重量级锁（Mutex-Lock）"><a href="#重量级锁（Mutex-Lock）" class="headerlink" title="重量级锁（Mutex Lock）"></a>重量级锁（Mutex Lock）</h2>　　Synchronized是通过对象内部的一个叫做监视器锁（monitor）来实现的。但是监视器锁本质又是依赖于底层的操作系统的Mutex Lock来实现的。<br>　　而操作系统实现线程之间的切换这就需要从用户态转换到核心态，这个成本非常高，状态之间的转换需要相对比较长的时间，这就是为什么Synchronized效率低的原因。<br>　　因此，这种依赖于操作系统Mutex Lock所实现的锁我们称之为“重量级锁”。JDK中对Synchronized做的种种优化，其核心都是为了减少这种重量级锁的使用。<br>　　JDK1.6以后，为了减少获得锁和释放锁所带来的性能消耗，提高性能，引入了“轻量级锁”和“偏向锁”。<h2 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h2>　　锁的状态总共有四种：无锁状态、偏向锁、轻量级锁和重量级锁<h3 id="锁升级"><a href="#锁升级" class="headerlink" title="锁升级"></a>锁升级</h3>　　随着锁的竞争，锁可以从偏向锁升级到轻量级锁，再升级的重量级锁（但是锁的升级是单向的，也就是说只能从低到高升级，不会出现锁的降级）。<br>　　“轻量级”是相对于使用操作系统互斥量来实现的传统锁而言的。但是，首先需要强调一点的是，轻量级锁并不是用来代替重量级锁的，它的本意是在没有多线程竞争的前提下，减少传统的重量级锁使用产生的性能消耗。在解释轻量级锁的执行过程之前，先明白一点，轻量级锁所适应的场景是线程交替执行同步块的情况，如果存在同一时间访问同一锁的情况，就会导致轻量级锁膨胀为重量级锁。<h2 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h2>　　Hotspot的作者经过以往的研究发现大多数情况下锁不仅不存在多线程竞争，而且总是由同一线程多次获得。偏向锁的目的是在某个线程获得锁之后，消除这个线程锁重入（CAS）的开销，看起来让这个线程得到了偏护。引入偏向锁是为了在无多线程竞争的情况下尽量减少不必要的轻量级锁执行路径，因为轻量级锁的获取及释放依赖多次 CAS 原子指令，而偏向锁只需要在置换ThreadID的时候依赖一次CAS原子指令（由于一旦出现多线程竞争的情况就必须撤销偏向锁，所以偏向锁的撤销操作的性能损耗必须小于节省下来的 CAS 原子指令的性能消耗）。上面说过，轻量级锁是为了在线程交替执行同步块时提高性能，而偏向锁则是在只有一个线程执行同步块时进一步提高性能。<h2 id="分段锁"><a href="#分段锁" class="headerlink" title="分段锁"></a>分段锁</h2>　　分段锁也并非一种实际的锁，而是一种思想ConcurrentHashMap是学习分段锁的最好实践。</li>
 </ol>
 <hr>
-<h3 id="synchronized与Lock的区别"><a href="#synchronized与Lock的区别" class="headerlink" title="synchronized与Lock的区别"></a>synchronized与Lock的区别</h3><ol>
-<li>首先synchronized是java内置关键字，在jvm层面，Lock是个java类；</li>
-<li>synchronized无法判断是否获取锁的状态，Lock可以判断是否获取到锁；</li>
-<li>synchronized会自动释放锁(a 线程执行完同步代码会释放锁 ；b 线程执行过程中发生异常会释放锁)，Lock需在finally中手工释放锁（unlock()方法释放锁），否则容易造成线程死锁；</li>
-<li>用synchronized关键字的两个线程1和线程2，如果当前线程1获得锁，线程2线程等待。如果线程1阻塞，线程2则会一直等待下去，而Lock锁就不一定会等待下去，如果尝试获取不到锁，线程可以不用一直等待就结束了；</li>
-<li>synchronized的锁可重入、不可中断、非公平，而Lock锁可重入、可判断、可公平（两者皆可）</li>
-<li>Lock锁适合大量同步的代码的同步问题，synchronized锁适合代码少量的同步问题。</li>
-</ol>
+<h2 id="锁优化"><a href="#锁优化" class="headerlink" title="锁优化"></a>锁优化</h2><h3 id="减少锁持有时间"><a href="#减少锁持有时间" class="headerlink" title="减少锁持有时间"></a>减少锁持有时间</h3><p>　　只用在有线程安全要求的程序上加锁</p>
+<h3 id="减小锁粒度"><a href="#减小锁粒度" class="headerlink" title="减小锁粒度"></a>减小锁粒度</h3><p>　　将大对象（这个对象可能会被很多线程访问），拆成小对象，大大增加并行度，降低锁竞争。降低了锁的竞争，偏向锁，轻量级锁成功率才会提高。最最典型的减小锁粒度的案例就是ConcurrentHashMap。</p>
+<h3 id="锁分离"><a href="#锁分离" class="headerlink" title="锁分离"></a>锁分离</h3><p>　　最常见的锁分离就是读写锁ReadWriteLock，根据功能进行分离成读锁和写锁，这样读读不互斥，读写互斥，写写互斥，即保证了线程安全，又提高了性能，具体也请查看[高并发 Java 五]JDK并发包1。读写分离思想可以延伸，只要操作互不影响，锁就可以分离。比如LinkedBlockingQueue从头部取出，从尾部放数据。</p>
+<h3 id="锁粗化"><a href="#锁粗化" class="headerlink" title="锁粗化"></a>锁粗化</h3><p>　　通常情况下，为了保证多线程间的有效并发，会要求每个线程持有锁的时间尽量短，即在使用完公共资源后，应该立即释放锁。但是，凡事都有一个度，如果对同一个锁不停的进行请求、同步和释放，其本身也会消耗系统宝贵的资源，反而不利于性能的优化 。</p>
+<h3 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h3><p>　　锁消除是在编译器级别的事情。在即时编译器时，如果发现不可能被共享的对象，则可以消除这些对象的锁操作，多数是因为程序员编码不规范引起。<br>ps:参考<a href="https://www.jianshu.com/p/39628e1180a9" target="_blank" rel="noopener">https://www.jianshu.com/p/39628e1180a9</a></p>
 
           
         
@@ -625,7 +682,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/02/12/valatile/">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/04/05/网页变灰原理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="无恤">
@@ -644,7 +701,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/02/12/valatile/" itemprop="url">valatile关键字</a></h1>
+                <a class="post-title-link" href="/2020/04/05/网页变灰原理/" itemprop="url">网页变灰原理</a></h1>
         
 
         <div class="post-meta">
@@ -656,8 +713,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-12T15:23:46+08:00">
-                2020-02-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-05T14:53:50+08:00">
+                2020-04-05
               </time>
             
 
@@ -696,11 +753,12 @@
       
         
           
-            <p><strong>起两个作用</strong></p>
-<ol>
-<li>内存的可见性<br>在程序工作的过程中，会存在工作内存（比如多线程工作时的变量内存）和主内存，在修改完这个线程对象的一瞬间，该线程的工作内存已经改变，主内存还没有改变，其他线程可能存在数据不一致的问题<br>使用valatile修饰后，该对象会立刻刷新到主内存和其他工内存。</li>
-<li>顺序性，<br>防止指令重排序。java在重新编译后，为了优化，字节码的顺序可能和我们所定义的顺序不一致，加上valatile，可以避免这种情况。</li>
-</ol>
+            <p>4月4号为纪念抗疫牺牲的人员，全国停摆，早上10点钟鸣钟，默哀3分钟。<br>其中大多数网站都变成了灰色。</p>
+<h3 id="网页变灰原理"><a href="#网页变灰原理" class="headerlink" title="网页变灰原理"></a>网页变灰原理</h3><p>技术原理很简单，在网页element.style中，加上filter: grayscale(100%);属性就行。表示该网页所有标签100%灰度，包括图片。</p>
+<h3 id="其他filter"><a href="#其他filter" class="headerlink" title="其他filter"></a>其他filter</h3><p>那么css中还有其他滤镜属性吗？</p>
+<table style="border-collapse: collapse;width: 100%;margin-bottom: 4px;margin-top: 4px;"> <tbody><tr> <th style="width:20%">Filter</th> <th style="width:68%">描述</th> </tr> <tr> <td>none</td> <td>默认值，没有效果。</td> </tr> <tr> <td>blur(<em>px</em>)</td> <td>给图像设置高斯模糊。”radius”一值设定高斯函数的标准差，或者是屏幕上以多少像素融在一起， 所以值越大越模糊；<br><br>如果没有设定值，则默认是0；这个参数可设置css长度值，但不接受百分比值。</td> </tr> <tr> <td>brightness(<em>%</em>)</td> <td>给图片应用一种线性乘法，使其看起来更亮或更暗。如果值是0%，图像会全黑。值是100%，则图像无变化。其他的值对应线性乘数效果。值超过100%也是可以的，图像会比原来更亮。如果没有设定值，默认是1。</td> </tr> <tr> <td>contrast(<em>%</em>)</td> <td>调整图像的对比度。值是0%的话，图像会全黑。值是100%，图像不变。值可以超过100%，意味着会运用更低的对比。若没有设置值，默认是1。</td> </tr> <tr> <td>drop-shadow(<em>h-shadow v-shadow blur spread color</em>)</td> <td><p>给图像设置一个阴影效果。阴影是合成在图像下面，可以有模糊度的，可以以特定颜色画出的遮罩图的偏移版本。 函数接受&lt;shadow&gt;(在CSS3背景中定义)类型的值，除了”inset”关键字是不允许的。该函数与已有的box-shadow box-shadow属性很相似；不同之处在于，通过滤镜，一些浏览器为了更好的性能会提供硬件加速。<code style="font-style: normal;line-height: 1.5">&lt;shadow&gt;参数如下：</code></p><code style="font-style: normal;line-height: 1.5"> <dl> <dt><strong>&lt;offset-x&gt;</strong> <strong>&lt;offset-y&gt;</strong> <small>(必须)</small></dt> <dd>这是设置阴影偏移量的两个 &lt;length&gt;值. <strong>&lt;offset-x&gt;</strong>&nbsp;设定水平方向距离. 负值会使阴影出现在元素左边. <strong>&lt;offset-y&gt;</strong>设定垂直距离.负值会使阴影出现在元素上方。查看<strong>&lt;length&gt;</strong>可能的单位.<br> <strong><font face="Open Sans, sans-serif">如果两个值都是</font>0</strong>, 则阴影出现在元素正后面 (如果设置了<span style="line-height: 1.5">&nbsp;</span><code style="font-style: normal;line-height: 1.5">&lt;blur-radius&gt;<span style="line-height: 1.5">&nbsp;and/or&nbsp;</span><code style="font-style: normal;line-height: 1.5">&lt;spread-radius&gt;，<span style="line-height: 1.5">会有模糊效果</span><span style="line-height: 1.5">).</span></code></code></dd><code style="font-style: normal;line-height: 1.5"><code style="font-style: normal;line-height: 1.5"> <dt><strong>&lt;blur-radius&gt;</strong> <small>(可选)</small></dt> <dd>这是第三个code&gt;&lt;length&gt;值. 值越大，越模糊，则阴影会变得更大更淡.不允许负值 若未设定，默认是0&nbsp;(则阴影的边界很锐利).</dd> <dt><strong>&lt;spread-radius&gt;</strong> <small>(可选)</small></dt> <dd>这是第四个 &lt;length&gt;值. 正值会使阴影扩张和变大，负值会是阴影缩小.若未设定，默认是0&nbsp;(阴影会与元素一样大小).&nbsp;<br> 注意: Webkit, 以及一些其他浏览器 不支持第四个长度，如果加了也不会渲染。</dd> <dt>&nbsp;</dt> <dt><strong>&lt;color&gt;</strong> <small>(可选)</small></dt> <dd>查看 &lt;color&gt;该值可能的关键字和标记。若未设定，颜色值基于浏览器。在Gecko&nbsp;(Firefox), Presto (Opera)和Trident (Internet Explorer)中， 会应用color<strong>color</strong>属性的值。另外, 如果颜色值省略，WebKit中阴影是透明的。</dd> </code></code></dl><code style="font-style: normal;line-height: 1.5"><code style="font-style: normal;line-height: 1.5"> </code></code></code></td> </tr> <tr> <td>grayscale(<em>%</em>)</td> <td><p>将图像转换为灰度图像。值定义转换的比例。值为100%则完全转为灰度图像，值为0%图像无变化。值在0%到100%之间，则是效果的线性乘子。若未设置，值默认是0；</p></td> </tr> <tr> <td>hue-rotate(<em>deg</em>)</td> <td><p>给图像应用色相旋转。”angle”一值设定图像会被调整的色环角度值。值为0deg，则图像无变化。若值未设置，默认值是0deg。该值虽然没有最大值，超过360deg的值相当于又绕一圈。</p></td> </tr> <tr> <td>invert(<em>%</em>)</td> <td><p>反转输入图像。值定义转换的比例。100%的价值是完全反转。值为0%则图像无变化。值在0%和100%之间，则是效果的线性乘子。 若值未设置，值默认是0。</p></td> </tr> <tr> <td>opacity(<em>%</em>)</td> <td><p>转化图像的透明程度。值定义转换的比例。值为0%则是完全透明，值为100%则图像无变化。值在0%和100%之间，则是效果的线性乘子，也相当于图像样本乘以数量。 若值未设置，值默认是1。该函数与已有的opacity属性很相似，不同之处在于通过filter，一些浏览器为了提升性能会提供硬件加速。</p></td> </tr> <tr> <td>saturate(<em>%</em>)</td> <td><p>转换图像饱和度。值定义转换的比例。值为0%则是完全不饱和，值为100%则图像无变化。其他值，则是效果的线性乘子。超过100%的值是允许的，则有更高的饱和度。 若值未设置，值默认是1。</p></td> </tr> <tr> <td>sepia(<em>%</em>)</td> <td><p>将图像转换为深褐色。值定义转换的比例。值为100%则完全是深褐色的，值为0%图像无变化。值在0%到100%之间，则是效果的线性乘子。若未设置，值默认是0；</p></td> </tr> <tr> <td>url()</td> <td><p>URL函数接受一个XML文件，该文件设置了 一个SVG滤镜，且可以包含一个锚点来指定一个具体的滤镜元素。</p> <p>例如：</p> <pre class="prettyprint prettyprinted" style=""><span class="pln">filter</span><span class="pun">:</span><span class="pln"> url</span><span class="pun">(</span><span class="pln">svg</span><span class="pun">-</span><span class="pln">url</span><span class="com">#element-id)</span></pre></td> </tr> <tr> <td>initial</td> <td><p>设置属性为默认值</p></td> </tr> <tr> <td>inherit</td> <td><p>从父元素继承该属性</p></td> <p></p></tr> </tbody></table>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://www.runoob.com/cssref/css3-pr-filter.html" target="_blank" rel="noopener">https://www.runoob.com/cssref/css3-pr-filter.html</a></p>
 
           
         
@@ -749,7 +807,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/02/12/装饰模式vs继承/">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/04/05/java多线程（三）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="无恤">
@@ -768,7 +826,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/02/12/装饰模式vs继承/" itemprop="url">装饰模式vs继承</a></h1>
+                <a class="post-title-link" href="/2020/04/05/java多线程（三）/" itemprop="url">java多线程（三）</a></h1>
         
 
         <div class="post-meta">
@@ -780,8 +838,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-12T15:22:52+08:00">
-                2020-02-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-05T00:00:26+08:00">
+                2020-04-05
               </time>
             
 
@@ -820,287 +878,34 @@
       
         
           
-            <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>装饰模式又名包装（Wrapper）模式</p>
-<ol>
-<li>装饰模式以对客户端透明的方式扩展对象的功能，是继承关系的一个替代方案</li>
-<li>装饰模式以对客户透明的方式动态的给一个对象附加更多的责任。换言之，客户端并不会觉得对象在装饰前和装饰后有什么不同。</li>
-<li>装饰模式可以在不创造更多子类的情况下。将对象的功能甲乙扩展。</li>
-<li>装饰模式吧客户端的调用委派到被装饰类。装饰模式的关键在于这种扩展完全是透明的</li>
-<li>装饰模式是在不必改变原类文件和使用继承的情况下，动态的扩展一个对象的功能。他是通过创建一个包装对象，也就是装饰来包裹真实的对象。</li>
-</ol>
-<h3 id="装饰模式的角色："><a href="#装饰模式的角色：" class="headerlink" title="装饰模式的角色："></a>装饰模式的角色：</h3><ol>
-<li>抽象构建角色（component）：给出一个抽象接口，以规范准备接受附加责任的对象。</li>
-<li>具体构建角色（concrete Component）：定义一个将要接受附加责任的类。</li>
-<li>装饰角色（Devorator）：持有一个构建对象的引用，并定义一个与抽象构建接口一致的接口。</li>
-<li>具体装饰角色（Concrete Decorator）:负责给构建对象“贴上”附加的责任。</li>
-</ol>
-<h3 id="装饰模式的特点："><a href="#装饰模式的特点：" class="headerlink" title="装饰模式的特点："></a>装饰模式的特点：</h3><ol>
-<li>装饰对象和真实对象有相同的接口。这样客户端对象就可以以和真实对象相同的方式和装饰对象交互。</li>
-<li>装饰对象包含一个真实对象的引用。</li>
-<li>装饰对象接受所有来自客户端的请求。它把这些请求转发给真实的对象。</li>
-<li>装饰对象可以在转发这些请求以前或者以后增加一些附加功能。这样就确保了在运行时，不用修改给定对象的结构就可以在外部增加附加的功能。在面向对象的设计中，通常是通过继承来是想对给定类的功能扩展。</li>
-</ol>
-<h3 id="核心代码："><a href="#核心代码：" class="headerlink" title="核心代码："></a>核心代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public interface Component&#123;</span><br><span class="line">	void doSomething();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Decoraror implements Component&#123;</span><br><span class="line"></span><br><span class="line">	private Component component;</span><br><span class="line">	</span><br><span class="line">	public Decorator(Component component)&#123;</span><br><span class="line">		this.component = component;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void doSomething()&#123;</span><br><span class="line">		component.doSomething();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/02/10/开发经验总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/10/开发经验总结/" itemprop="url">开发经验总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-10T10:02:43+08:00">
-                2020-02-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>接口返回的数据在数据库对应字符串，最好不好返回boolean类型，返回int或者string，考虑到安全的话，不要讲数据库代表的数字含义直接返回，<br>如： 数据库是 1：成功；0：失败，返回时可以返回”success”:成功 ; “failure”:失败，返回时可以返回</li>
-<li>对于数据库内容一定要有追溯性，不能为了业务方便，直接按照业务执行。 如查询记录一些日志，与其他冲突时，先删除以前全部的相关日志，再新增。（属于设计问题）</li>
-<li>魔鬼数字，不要写成 STRING_1=”1” ,这种写法还是属于魔鬼数字，STRING_1代表什么含义还是不知道，不能偷懒。</li>
-<li>对于if条件，如果是两种情况，且确认值的情况下，需要全部判断(特别复杂的除外，如多个条件同时判断，多个条件结果重复)。<br>如： 字符串str可能是1或者2，请写成if(str == ‘1’){}else if(str ==’2’ ){}else{}不要写成 if(str ==’1’ ){}else{}</li>
-<li>命名最好不要简写，最终目标是，看见变量名就能知道这个变量是做什么用的，不要让别人猜，产生歧义。</li>
-<li>遇见代码格式变化较大或者较多时，将原版代码格式化提交后，再讲自己代码提交，这样方便对比追溯。</li>
-<li>不要使用反歧义的boolean。<br>如： 用true表示未完成，false表示完成。</li>
-<li>对于稍长的字符串，使用时如果不是自动生成，请复制后使用，不建议手打，容易出错。<br>如： mabatis中mapper.xml和mapper.java对应的表名，空间名。</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/12/28/PreparedStatement/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/28/PreparedStatement/" itemprop="url">PreparedStatement</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-28T01:14:40+08:00">
-                2019-12-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>PreparedStatement 是一个特殊的Statement对象，如果我们只是来查询或者更新数据的话，最好用PreparedStatement代替Statement，因为它有以下有点：</p>
+            <h1 id="终止线程4种方式"><a href="#终止线程4种方式" class="headerlink" title="终止线程4种方式"></a>终止线程4种方式</h1><h2 id="正常运行结束"><a href="#正常运行结束" class="headerlink" title="正常运行结束"></a>正常运行结束</h2><p>程序运行结束，线程自动结束。</p>
+<h2 id="使用退出标志退出线程"><a href="#使用退出标志退出线程" class="headerlink" title="使用退出标志退出线程"></a>使用退出标志退出线程</h2><p>一般run()方法执行完，线程就会正常结束，然而，常常有些线程是伺服线程。它们需要长时间的运行，只有在外部某些条件满足的情况下，才能关闭这些线程。本质上也是乘车运行结束。</p>
+<h2 id="Interrupt方法结束线程"><a href="#Interrupt方法结束线程" class="headerlink" title="Interrupt方法结束线程"></a>Interrupt方法结束线程</h2><p>使用 interrupt()方法来中断线程有两种情况：</p>
 <ul>
-<li>简化Statement中的操作</li>
-<li>提高执行语句的性能</li>
-<li>可读性和可维护性更好</li>
-<li>安全性更好。</li>
-<li>使用PreparedStatement能够预防SQL注入攻击，所谓SQL注入，指的是通过把SQL命令插入到Web表单提交或者输入域名或者页面请求的查询字符串，最终达到欺骗服务器，达到执行恶意SQL命令的目的。注入只对SQL语句的编译过程有破坏作用，而执行阶段只是把输入串作为数据处理，不再需要对SQL语句进行解析，因此也就避免了类似select * from user where name=’aa’ and password=’bb’ or 1=1的sql注入问题的发生。</li>
+<li>线程处于阻塞状态：如使用了sleep,同步锁的 wait,socket中的receiver,accept 等方法时，会使线程处于阻塞状态。当调用线程的interrupt()方法时，会抛出InterruptException异常。阻塞中的那个方法抛出这个异常，通过代码捕获该异常，然后break跳出循环状态，从而让我们有机会结束这个线程的执行。通常很多人认为只要调用interrupt方法线程就会结束，实际上是错的， 一定要先捕获InterruptedException异常之后通过break来跳出循环，才能正常结束run方法。</li>
+<li>线程未处于阻塞状态：使用isInterrupted()判断线程的中断标志来退出循环。当使用interrupt()方法时，中断标志就会置true，和使用自定义的标志来控制循环是一样的道理。</li>
 </ul>
-<h5 id="Statement-和-PreparedStatement之间的关系和区别"><a href="#Statement-和-PreparedStatement之间的关系和区别" class="headerlink" title="Statement 和 PreparedStatement之间的关系和区别."></a>Statement 和 PreparedStatement之间的关系和区别.</h5><ul>
-<li>关系：PreparedStatement继承自Statement,都是接口</li>
-<li>区别：PreparedStatement可以使用占位符，是预编译的，批处理比Statement效率高</li>
+<h2 id="stop方法终止线程（线程不安全，不建议）"><a href="#stop方法终止线程（线程不安全，不建议）" class="headerlink" title="stop方法终止线程（线程不安全，不建议）"></a>stop方法终止线程（线程不安全，不建议）</h2><p>程序中可以直接使用thread.stop()来强行终止线程，但是stop方法是很危险的，就象突然关闭计算机电源，而不是按正常程序关机一样，可能会产生不可预料的结果，不安全主要是：thread.stop()调用之后，创建子线程的线程就会抛出ThreadDeatherror的错误，并且会释放子线程所持有的所有锁。一般任何进行加锁的代码块，都是为了保护数据的一致性，如果在调用thread.stop()后导致了该线程所持有的所有锁的突然释放(不可控制)，那么被保护数据就有可能呈现不一致性，其他线程在使用这些被破坏的数据时，有可能导致一些很奇怪的应用程序错误。因此，并不推荐使用stop方法来终止线程。</p>
+<hr>
+<h1 id="sleep与wait区别"><a href="#sleep与wait区别" class="headerlink" title="sleep与wait区别"></a>sleep与wait区别</h1><ul>
+<li>对于sleep()方法，我们首先要知道该方法是属于Thread类中的。而wait()方法，则是属于Object类中的。</li>
+<li>sleep()方法导致了程序暂停执行指定的时间，让出cpu该其他线程，但是他的监控状态依然保持者，当指定的时间到了又会自动恢复运行状态。</li>
+<li>在调用sleep()方法的过程中，线程不会释放对象锁。</li>
+<li>而当调用wait()方法的时候，线程会放弃对象锁，进入等待此对象的等待锁定池，只有针对此对象调用notify()方法后本线程才进入对象锁定池准备获取对象锁进入运行状态。</li>
 </ul>
+<hr>
+<h1 id="start与run区别"><a href="#start与run区别" class="headerlink" title="start与run区别"></a>start与run区别</h1><ul>
+<li>start（）方法来启动线程，真正实现了多线程运行。这时无需等待run方法体代码执行完毕，可以直接继续执行下面的代码。</li>
+<li>通过调用Thread类的start()方法来启动一个线程，这时此线程是处于就绪状态，并没有运行。</li>
+<li>方法run()称为线程体，它包含了要执行的这个线程的内容，线程就进入了运行状态，开始运行run函数当中的代码。Run方法运行结束，此线程终止，然后CPU再调度其它线程。</li>
+</ul>
+<hr>
+<h1 id="JAVA-后台线程"><a href="#JAVA-后台线程" class="headerlink" title="JAVA 后台线程"></a>JAVA 后台线程</h1><p>守护线程–也称“服务线程”，他是后台线程，它有一个特性，即为用户线程提供公共服务，在没有用户线程可服务时会自动离开。</p>
+<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p>守护线程的优先级比较低，用于为系统中的其它对象和线程提供服务。</p>
+<h2 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h2><p>通过setDaemon(true)来设置线程为“守护线程”；将一个用户线程设置为守护线程的方式是在线程对象创建之前用线程对象的setDaemon方法。<br>在Daemon线程中产生的新线程也是Daemon的。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>线程则是JVM级别的，以Tomcat为例，如果你在Web应用中启动一个线程，这个线程的生命周期并不会和Web应用程序保持同步。也就是说，即使你停止了Web应用，这个线程依旧是活跃的。</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>垃圾回收线程就是一个经典的守护线程，当我们的程序中不再有任何运行的Thread,程序就不会再产生垃圾，垃圾回收器也就无事可做，所以当垃圾回收线程是JVM上仅剩的线程时，垃圾回收线程会自动离开。它始终在低级别的状态中运行，用于实时监控和管理系统中的可回收资源。</p>
+<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><p>守护进程（Daemon）是运行在后台的一种特殊进程。它独立于控制终端并且周期性地执行某种任务或等待处理某些发生的事件。也就是说守护线程不依赖于终端，但是依赖于系统，与系统“同生共死”。当JVM中所有的线程都是守护线程的时候，JVM就可以退出了；如果还有一个或以上的非守护线程则JVM不会退出。</p>
 
           
         
@@ -1149,7 +954,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/11/28/遮蔽obscure/">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/04/03/java多线程（二）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="无恤">
@@ -1168,7 +973,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/11/28/遮蔽obscure/" itemprop="url">隐藏（hide）和重写（override）和遮掩（obscure）遮蔽（shadow）和重载（overload）</a></h1>
+                <a class="post-title-link" href="/2020/04/03/java多线程（二）/" itemprop="url">java多线程（二）</a></h1>
         
 
         <div class="post-meta">
@@ -1180,8 +985,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-28T01:13:39+08:00">
-                2019-11-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-03T00:46:47+08:00">
+                2020-04-03
               </time>
             
 
@@ -1220,19 +1025,289 @@
       
         
           
-            <h3 id="重写（override）"><a href="#重写（override）" class="headerlink" title="重写（override）"></a>重写（override）</h3><p>一个实例方法可以overide在其超类中可以访问到的具有相同签名的所有方法，从而可以动态分派（dynamic dispatch），VM基于运行时类型来选择要调用的覆写方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Base &#123;</span><br><span class="line">	public void f() &#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">class Derived extends Base &#123;</span><br><span class="line">	public void f() &#123;</span><br><span class="line">	&#125; // overrides Base.f()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="隐藏-hide"><a href="#隐藏-hide" class="headerlink" title="隐藏 hide"></a>隐藏 hide</h3><p>一个域，静态方法，或成员类型可以分别被隐藏（hide）在其超类可以访问到的具有相同名字的所有域、静态方法或成员类型。hide几个成员将阻止其被继承。<br>// 错误样例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Base &#123;</span><br><span class="line">	public static void f() &#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">class Derived extends Base &#123;</span><br><span class="line">	private static void f() &#123;</span><br><span class="line">	&#125; // hides Base.f()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>// 正确样例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Base &#123;</span><br><span class="line">	static int a = 1;</span><br><span class="line">	int b = 3;</span><br><span class="line">	public static void f() &#123;</span><br><span class="line">		System.out.println(&quot;Base&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">class Derived extends Base &#123;</span><br><span class="line">	static int a = 2;</span><br><span class="line">	int b = 4;</span><br><span class="line">	public static void f() &#123;</span><br><span class="line">		System.out.println(&quot;Derived&quot;);</span><br><span class="line">	&#125; // hides Base.f()</span><br><span class="line">&#125;</span><br><span class="line">public class Hide &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Base.f();</span><br><span class="line">		Derived.f();</span><br><span class="line">		System.out.println(Base.a);</span><br><span class="line">		System.out.println(Derived.a);</span><br><span class="line">		System.out.println((new Base()).b);</span><br><span class="line">		System.out.println((new Derived()).b);</span><br><span class="line">		System.out.println(((Base) (new Derived())).b);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="重载（overload）"><a href="#重载（overload）" class="headerlink" title="重载（overload）"></a>重载（overload）</h3><p>在某个类中的方法可以重载（overload）另一个方法，只要它们具有相同的名字和不同的签名。由调用所指定的重载方法是在编译期选定的。</p>
-<h3 id="遮蔽（shadow）"><a href="#遮蔽（shadow）" class="headerlink" title="遮蔽（shadow）"></a>遮蔽（shadow）</h3><p>一个变量、方法或类型可以分别遮蔽（shadow）在一个闭合的文本范围内的具有相同名字的所有变量、方法或类型。如果一个实体被遮蔽了，那么你用它的简单名是无法引用到它的；根据实体的不同，有时你根本就无法引用到它。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class WhoKnows &#123;</span><br><span class="line">	static String sentence = &quot;I don&apos;t know.&quot;;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		String sentence = &quot;I know!&quot;; // shadows static field</span><br><span class="line">		System.out.println(sentence); // prints local variable</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+            <h4 id="java线程池"><a href="#java线程池" class="headerlink" title="java线程池"></a>java线程池</h4><p>Java里面线程池的顶级接口是Executor，但是严格意义上讲Executor并不是一个线程池，而只是一个执行线程的工具。真正的线程池接口是ExecutorService。</p>
+<h4 id="4种线程池"><a href="#4种线程池" class="headerlink" title="4种线程池"></a>4种线程池</h4><h5 id="newCachedThreadPool"><a href="#newCachedThreadPool" class="headerlink" title="newCachedThreadPool"></a>newCachedThreadPool</h5><p>创建一个可根据需要创建新线程的线程池，但是在以前构造的线程可用时将重用它们。对于执行很多短期异步任务的程序而言，这些线程池通常可提高程序性能。调用execute将重用以前构造的线程（如果线程可用）。如果现有线程没有可用的，则创建一个新线程并添加到池中。终止并从缓存中移除那些已有60秒钟未被使用的线程。因此，长时间保持空闲的线程池不会使用任何资源。</p>
+<h5 id="newFixedThreadPool"><a href="#newFixedThreadPool" class="headerlink" title="newFixedThreadPool"></a>newFixedThreadPool</h5><p>创建一个可重用固定线程数的线程池，以共享的无界队列方式来运行这些线程。在任意点，在大多数nThreads线程会处于处理任务的活动状态。如果在所有线程处于活动状态时提交附加任务，则在有可用线程之前，附加任务将在队列中等待。如果在关闭前的执行期间由于失败而导致任何线程终止，那么一个新线程将代替它执行后续的任务（如果需要）。在某个线程被显式地关闭之前，池中的线程将一直存在。</p>
+<h5 id="newScheduledThreadPool"><a href="#newScheduledThreadPool" class="headerlink" title="newScheduledThreadPool"></a>newScheduledThreadPool</h5><p>创建一个线程池，它可安排在给定延迟后运行命令或者定期地执行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ScheduledExecutorService scheduledThreadPool= Executors.newScheduledThreadPool(3);</span><br><span class="line">scheduledThreadPool.schedule(newRunnable()&#123;</span><br><span class="line">@Override</span><br><span class="line">public void run() &#123;</span><br><span class="line">	System.out.println(&quot;延迟三秒&quot;);</span><br><span class="line">&#125;</span><br><span class="line">&#125;, 3, TimeUnit.SECONDS);</span><br><span class="line">scheduledThreadPool.scheduleAtFixedRate(newRunnable()&#123;</span><br><span class="line">@Override</span><br><span class="line">public void run() &#123;</span><br><span class="line">	System.out.println(&quot;延迟 1 秒后每三秒执行一次&quot;);</span><br><span class="line">&#125;</span><br><span class="line">&#125;,1,3,TimeUnit.SECONDS);</span><br></pre></td></tr></table></figure></p>
+<h5 id="newSingleThreadExecutor"><a href="#newSingleThreadExecutor" class="headerlink" title="newSingleThreadExecutor"></a>newSingleThreadExecutor</h5><p>Executors.newSingleThreadExecutor()返回一个线程池（这个线程池只有一个线程）,这个线程池可以在线程死后（或发生异常时）重新启动一个线程来替代原来的线程继续执行下去。</p>
+<hr>
+<h4 id="线程生命周期-状态"><a href="#线程生命周期-状态" class="headerlink" title="线程生命周期(状态)"></a>线程生命周期(状态)</h4><p>当线程被创建并启动以后，它既不是一启动就进入了执行状态，也不是一直处于执行状态。在线程的生命周期中，它要经过新建(New)、就绪（Runnable）、运行（Running）、阻塞(Blocked)和死亡(Dead)5 种状态。尤其是当线程启动以后，它不可能一直”霸占”着CPU独自运行，所以CPU需要在多条线程之间切换，于是线程状态也会多次在运行、阻塞之间切换。</p>
+<h5 id="新建状态（NEW）"><a href="#新建状态（NEW）" class="headerlink" title="新建状态（NEW）"></a>新建状态（NEW）</h5><p>当程序使用new关键字创建了一个线程之后，该线程就处于新建状态，此时仅由JVM为其分配内存，并初始化其成员变量的值。</p>
+<h5 id="就绪状态（RUNNABLE）"><a href="#就绪状态（RUNNABLE）" class="headerlink" title="就绪状态（RUNNABLE）"></a>就绪状态（RUNNABLE）</h5><p>当线程对象调用了start()方法之后，该线程处于就绪状态。Java虚拟机会为其创建方法调用栈和程序计数器，等待调度运行。</p>
+<h5 id="运行状态（RUNNING）"><a href="#运行状态（RUNNING）" class="headerlink" title="运行状态（RUNNING）"></a>运行状态（RUNNING）</h5><p>如果处于就绪状态的线程获得了CPU，开始执行run()方法的线程执行体，则该线程处于运行状态。</p>
+<h5 id="阻塞状态（BLOCKED）"><a href="#阻塞状态（BLOCKED）" class="headerlink" title="阻塞状态（BLOCKED）"></a>阻塞状态（BLOCKED）</h5><p>阻塞状态是指线程因为某种原因放弃了cpu使用权，也即让出了cpu timeslice，暂时停止运行。直到线程进入可运行(runnable)状态，才有机会再次获得cpu timeslice转到运行(running)状态。<br>阻塞的情况分三种：</p>
+<h6 id="等待阻塞（o-wait-gt-等待对列）"><a href="#等待阻塞（o-wait-gt-等待对列）" class="headerlink" title="等待阻塞（o.wait-&gt;等待对列）"></a>等待阻塞（o.wait-&gt;等待对列）</h6><p>运行(running)的线程执行o.wait()方法，JVM会把该线程放入等待队列(waitting queue)中。</p>
+<h6 id="同步阻塞-lock-gt-锁池"><a href="#同步阻塞-lock-gt-锁池" class="headerlink" title="同步阻塞(lock-&gt;锁池"></a>同步阻塞(lock-&gt;锁池</h6><p>运行(running)的线程在获取对象的同步锁时，若该同步锁被别的线程占用，则JVM会把该线程放入锁池(lock pool)中。</p>
+<h6 id="其他阻塞-sleep-join"><a href="#其他阻塞-sleep-join" class="headerlink" title="其他阻塞(sleep/join)"></a>其他阻塞(sleep/join)</h6><p>运行(running)的线程执行Thread.sleep(long ms)或t.join()方法，或者发出了I/O 请求时，JVM会把该线程置为阻塞状态。当sleep()状态超时、join()等待线程终止或者超时、或者I/O处理完毕时，线程重新转入可运行(runnable)状态。</p>
+<h5 id="线程死亡（DEAD）"><a href="#线程死亡（DEAD）" class="headerlink" title="线程死亡（DEAD）"></a>线程死亡（DEAD）</h5><p>线程会以下面三种方式结束，结束后就是死亡状态。</p>
+<h6 id="正常结束"><a href="#正常结束" class="headerlink" title="正常结束"></a>正常结束</h6><p>run()或 call()方法执行完成，线程正常结束。</p>
+<h6 id="异常结束"><a href="#异常结束" class="headerlink" title="异常结束"></a>异常结束</h6><p>线程抛出一个未捕获的 Exception 或 Error。</p>
+<h6 id="调用stop"><a href="#调用stop" class="headerlink" title="调用stop"></a>调用stop</h6><p>直接调用该线程的stop()方法来结束该线程—该方法通常容易导致死锁，不推荐使用。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/04/02/java多线程（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/02/java多线程（一）/" itemprop="url">java多线程（一）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-02T23:51:15+08:00">
+                2020-04-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="JAVA-线程实现-创建方式"><a href="#JAVA-线程实现-创建方式" class="headerlink" title="JAVA 线程实现/创建方式"></a>JAVA 线程实现/创建方式</h3><h5 id="继承Thread类"><a href="#继承Thread类" class="headerlink" title="继承Thread类"></a>继承Thread类</h5><p>Thread类本质上是实现了Runnable接口的一个实例，代表一个线程的实例。启动线程的唯一方法就是通过Thread类的 start()实例方法。start()方法是一个native方法，它将启动一个新线程，并执行run()方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class MyThread extends Thread &#123;</span><br><span class="line"> public void run() &#123;</span><br><span class="line"> System.out.println(&quot;MyThread.run()&quot;);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line">MyThread myThread1 = new MyThread();</span><br><span class="line">myThread1.start();</span><br></pre></td></tr></table></figure></p>
+<h5 id="实现Runnable接口"><a href="#实现Runnable接口" class="headerlink" title="实现Runnable接口"></a>实现Runnable接口</h5><p>如果自己的类已经extends另一个类，就无法直接extends Thread，此时，可以实现一个Runnable接口。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class MyThread extends OtherClass implements Runnable &#123;</span><br><span class="line"> public void run() &#123;</span><br><span class="line"> System.out.println(&quot;MyThread.run()&quot;);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line">//启动 MyThread，需要首先实例化一个 Thread，并传入自己的 MyThread 实例：</span><br><span class="line">MyThread myThread = new MyThread();</span><br><span class="line">Thread thread = new Thread(myThread);</span><br><span class="line">thread.start();</span><br><span class="line">//事实上，当传入一个 Runnable target 参数给 Thread 后，Thread 的 run()方法就会调用</span><br><span class="line">target.run()</span><br><span class="line">public void run() &#123;</span><br><span class="line"> if (target != null) &#123;</span><br><span class="line"> target.run();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="ExecutorService、Callable、Future-有返回值线程"><a href="#ExecutorService、Callable、Future-有返回值线程" class="headerlink" title="ExecutorService、Callable、Future 有返回值线程"></a>ExecutorService、Callable<class>、Future 有返回值线程</class></h5><p>有返回值的任务必须实现Callable接口，类似的，无返回值的任务必须Runnable接口。执行Callable任务后，可以获取一个Future的对象，在该对象上调用get就可以获取到Callable任务返回的Object了，再结合线程池接口ExecutorService就可以实现传说中有返回结果的多线程了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//创建一个线程池</span><br><span class="line">ExecutorService pool = Executors.newFixedThreadPool(taskSize);</span><br><span class="line">// 创建多个有返回值的任务</span><br><span class="line">List&lt;Future&gt; list = new ArrayList&lt;Future&gt;();</span><br><span class="line">for (int i = 0; i &lt; taskSize; i++) &#123;</span><br><span class="line">	Callable c = new MyCallable(i + &quot; &quot;);</span><br><span class="line">	// 执行任务并获取 Future 对象</span><br><span class="line">	Future f = pool.submit(c);</span><br><span class="line">	list.add(f);</span><br><span class="line">&#125;</span><br><span class="line">// 关闭线程池</span><br><span class="line">pool.shutdown();</span><br><span class="line">// 获取所有并发任务的运行结果</span><br><span class="line">for (Future f : list) &#123;</span><br><span class="line">	// 从 Future 对象上获取任务的返回值，并输出到控制台</span><br><span class="line">	System.out.println(&quot;res：&quot; + f.get().toString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="基于线程池的方式"><a href="#基于线程池的方式" class="headerlink" title="基于线程池的方式"></a>基于线程池的方式</h5><p>线程和数据库连接这些资源都是非常宝贵的资源。那么每次需要的时候创建，不需要的时候销毁，是非常浪费资源的。那么我们就可以使用缓存的策略，也就是使用线程池。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 创建线程池</span><br><span class="line">ExecutorService threadPool = Executors.newFixedThreadPool(10);</span><br><span class="line">	while(true) &#123;</span><br><span class="line">		threadPool.execute(new Runnable() &#123; // 提交多个线程任务，并执行</span><br><span class="line">			@Override</span><br><span class="line">			public void run() &#123;</span><br><span class="line">			System.out.println(Thread.currentThread().getName() + &quot; is running ..&quot;);</span><br><span class="line">			try &#123;</span><br><span class="line">				Thread.sleep(3000);</span><br><span class="line">			&#125; catch (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/04/01/JAVA集合/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/01/JAVA集合/" itemprop="url">JAVA集合</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-01T00:26:17+08:00">
+                2020-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="接口继承关系和实现"><a href="#接口继承关系和实现" class="headerlink" title="接口继承关系和实现"></a>接口继承关系和实现</h2><p>集合类存放于 Java.util包中，主要有3种：set(集）、list(列表包含 Queue）和 map(映射)。</p>
 <ol>
-<li>编译器在选择在运行期被调用的方法时，所做的第一件事就是在肯定能找到该方法的范围内挑选。编译器将在包含具有恰当名字的方法的最小闭合范围内挑选，下例中就是ImportDuty类，它包含了从Object继承的方法toString。</li>
-<li>导入的toString方法被继承的toString方法所遮蔽（shadow）</li>
-<li>本身就属于某个范围的成员在该范围内与静态导入相比具有优先权。<br>以下代码无法被编译通过<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import static java.util.Arrays.toString;</span><br><span class="line">class ImportDuty &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		printArgs(1, 2, 3, 4, 5);</span><br><span class="line">	&#125;</span><br><span class="line">	static void printArgs(Object... args) &#123;</span><br><span class="line">		System.out.println(toString(args));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<li>Collection：Collection是集合 List、Set、Queue的最基本的接口。</li>
+<li>Iterator：迭代器，可以通过迭代器遍历集合中的数据。</li>
+<li>Map：是映射表的基础接口。</li>
 </ol>
-<h3 id="遮掩（obscure）"><a href="#遮掩（obscure）" class="headerlink" title="遮掩（obscure）"></a>遮掩（obscure）</h3><p>一个变量可以遮掩具有相同名字的一个类型，只要它们都在同一个范围内：如果这个名字被用于变量与类型都被许可的范围，那么它将引用到变量上。相似地，一个变量或一个类型可以遮掩一个包。遮掩是唯一一种两个名字位于不同的名字空间的名字重用形式，这些名字空间包括：变量、包、方法或类型。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 变量遮掩了类型</span><br><span class="line">public class Obscure &#123;</span><br><span class="line">	static String System; // Obscures type java.lang.System</span><br><span class="line">	public static void main(String[ ] args) &#123;</span><br><span class="line">	// Next line won&apos;t compile: System refers to static field</span><br><span class="line">	System.out.println(”hello, obscure world!“);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>当一个变量和一个类型具有相同的名字，并且他们位于相同的作用域时，变量名具有优先权 JLS 6.5.2，变量将遮掩（obscure）类型名。相似地，变量名和类型名可以遮掩包名。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class ShadowOfGray &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		System.out.println(X.Y.Z); // 输出结果White</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">class X &#123;</span><br><span class="line">	static class Y &#123;</span><br><span class="line">		static String Z = &quot;Black&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">	static C Y = new C();</span><br><span class="line">&#125;</span><br><span class="line">class C &#123;</span><br><span class="line">	String Z = &quot;White&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="List"><a href="#List" class="headerlink" title="List"></a>List</h2><p>Java的List是非常常用的数据类型。List是有序的Collection。Java List一共三个实现类：分别是ArrayList、Vector和LinkedList。</p>
+<h5 id="ArrayList（数组）"><a href="#ArrayList（数组）" class="headerlink" title="ArrayList（数组）"></a>ArrayList（数组）</h5><p>ArrayList是最常用的List实现类，内部是通过数组实现的，它允许对元素进行快速随机访问。数组的缺点是每个元素之间不能有间隔，当数组大小不满足时需要增加存储能力，就要将已经有数组的数据复制到新的存储空间中。当从ArrayList的中间位置插入或者删除元素时，需要对数组进行复制、移动、代价比较高。因此，它适合随机查找和遍历，不适合插入和删除。</p>
+<h5 id="Vector（数组实现、线程同步）"><a href="#Vector（数组实现、线程同步）" class="headerlink" title="Vector（数组实现、线程同步）"></a>Vector（数组实现、线程同步）</h5><p>Vector与ArrayList一样，也是通过数组实现的，不同的是它支持线程的同步，即某一时刻只有一个线程能够写Vector，避免多线程同时写而引起的不一致性，但实现同步需要很高的花费，因此，访问它比访问ArrayList慢。</p>
+<h5 id="LinkList（链表）"><a href="#LinkList（链表）" class="headerlink" title="LinkList（链表）"></a>LinkList（链表）</h5><p>LinkedList是用链表结构存储数据的，很适合数据的动态插入和删除，随机访问和遍历速度比较慢。另外，他还提供了List接口中没有定义的方法，专门用于操作表头和表尾元素，可以当作堆栈、队列和双向队列使用。</p>
+<hr>
+<h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><p>Set注重独一无二的性质,该体系集合用于存储无序(存入和取出的顺序不一定相同)元素，值不能重复。对象的相等性本质是对象hashCode值（java是依据对象的内存地址计算出的此序号）判断的，如果想要让两个不同的对象视为相等的，就必须覆盖Object的hashCode方法和equals方法。</p>
+<h5 id="HashSet（Hash表）"><a href="#HashSet（Hash表）" class="headerlink" title="HashSet（Hash表）"></a>HashSet（Hash表）</h5><p>哈希表边存放的是哈希值。HashSet存储元素的顺序并不是按照存入时的顺序（和List显然不同） 而是按照哈希值来存的所以取数据也是按照哈希值取得。元素的哈希值是通过元素的hashcode方法来获取的, HashSet首先判断两个元素的哈希值，如果哈希值一样，接着会比较equals方法 如果equls结果为true，HashSet就视为同一个元素。如果equals为false就不是同一个元素。<br>哈希值相同equals为false的元素是怎么存储呢,就是在同样的哈希值下顺延（可以认为哈希值相同的元素放在一个哈希桶中）。也就是哈希一样的存一列。<br>HashSet通过hashCode值来确定元素在内存中的位置。一个hashCode位置上可以存放多个元素。</p>
+<h5 id="TreeSet（二叉树）"><a href="#TreeSet（二叉树）" class="headerlink" title="TreeSet（二叉树）"></a>TreeSet（二叉树）</h5><p>TreeSet()是使用二叉树的原理对新add()的对象按照指定的顺序排序（升序、降序），每增加一个对象都会进行排序，将对象插入的二叉树指定的位置。<br>Integer和String对象都可以进行默认的TreeSet排序，而自定义类的对象是不可以的，自己定义的类必须实现Comparable接口，并且覆写相应的compareTo()函数，才可以正常使用。<br>在覆写compare()函数时，要返回相应的值才能使TreeSet按照一定的规则来排序。<br>比较此对象与指定对象的顺序。如果该对象小于、等于或大于指定对象，则分别返回负整数、零或正整数。</p>
+<h5 id="LinkHashSet（HashSet-LinkedHashMap）"><a href="#LinkHashSet（HashSet-LinkedHashMap）" class="headerlink" title="LinkHashSet（HashSet+LinkedHashMap）"></a>LinkHashSet（HashSet+LinkedHashMap）</h5><p>对于LinkedHashSet而言，它继承于HashSet、又基于LinkedHashMap来实现的。LinkedHashSet底层使用LinkedHashMap来保存所有元素，它继承于HashSet，其所有的方法操作上又与HashSet相同，因此LinkedHashSet的实现上非常简单，只提供了四个构造方法，并通过传递一个标识参数，调用父类的构造器，底层构造一个LinkedHashMap来实现，在相关操作上与父类HashSet的操作相同，直接调用父类HashSet的方法即可。</p>
+<hr>
+<h2 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h2><h5 id="HashMap（数组-链表-红黑树）"><a href="#HashMap（数组-链表-红黑树）" class="headerlink" title="HashMap（数组+链表+红黑树）"></a>HashMap（数组+链表+红黑树）</h5><p>HashMap根据键的 hashCode 值存储数据，大多数情况下可以直接定位到它的值，因而具有很快的访问速度，但遍历顺序却是不确定的。HashMap最多只允许一条记录的键为null，允许多条记录的值为null。HashMap非线程安全，即任一时刻可以有多个线程同时写 HashMap，可能会导致数据的不一致。如果需要满足线程安全，可以用Collections的synchronizedMap方法使HashMap具有线程安全的能力，或者使用ConcurrentHashMap。</p>
+<h5 id="ConcurrentHashMap（线程安全）"><a href="#ConcurrentHashMap（线程安全）" class="headerlink" title="ConcurrentHashMap（线程安全）"></a>ConcurrentHashMap（线程安全）</h5><p>Segment段<br>ConcurrentHashMap和HashMap思路是差不多的，但是因为它支持并发操作，所以要复杂一些。整个ConcurrentHashMap由一个个Segment组成，Segment代表”部分“或”一段“的意思，所以很多地方都会将其描述为分段锁。注意，行文中，我很多地方用了“槽”来代表一个segment。<br>线程安全（Segment 继承 ReentrantLock 加锁）<br>简单理解就是，ConcurrentHashMap是一个Segment数组，Segment通过继承ReentrantLock 来进行加锁，所以每次需要加锁的操作锁住的是一个segment，这样只要保证每个Segment是线程安全的，也就实现了全局的线程安全。<br>并行度（默认16）<br>concurrencyLevel：并行级别、并发数、Segment数，怎么翻译不重要，理解它。默认是 16，也就是说ConcurrentHashMap有16个Segments，所以理论上，这个时候，最多可以同时支持16个线程并发写，只要它们的操作分别分布在不同的Segment上。这个值可以在初始化的时候设置为其他值，但是一旦初始化以后，它是不可以扩容的。再具体到每个Segment内部，其实每个Segment很像之前介绍的HashMap，不过它要保证线程安全，所以处理起来要麻烦些。<br>Java8实现（引入了红黑树）<br>Java8对ConcurrentHashMap进行了比较大的改动,引入了红黑树。</p>
+<h5 id="HashTable（线程安全，不建议使用）"><a href="#HashTable（线程安全，不建议使用）" class="headerlink" title="HashTable（线程安全，不建议使用）"></a>HashTable（线程安全，不建议使用）</h5><p>Hashtable是遗留类，很多映射的常用功能与HashMap类似，不同的是它承自Dictionary类，并且是线程安全的，任一时间只有一个线程能写Hashtable，并发性不如ConcurrentHashMap，因为ConcurrentHashMap引入了分段锁。Hashtable不建议在新代码中使用，不需要线程安全的场合可以用HashMap替换，需要线程安全的场合可以用ConcurrentHashMap替换。</p>
+<h5 id="TreeMap（可排序）"><a href="#TreeMap（可排序）" class="headerlink" title="TreeMap（可排序）"></a>TreeMap（可排序）</h5><p>TreeMap实现SortedMap接口，能够把它保存的记录根据键排序，默认是按键值的升序排序，也可以指定排序的比较器，当用Iterator遍历TreeMap时，得到的记录是排过序的。<br>如果使用排序的映射，建议使用TreeMap。<br>在使用TreeMap时，key必须实现Comparable接口或者在构造TreeMap传入自定义的Comparator，否则会在运行时抛出java.lang.ClassCastException类型的异常。</p>
+<h5 id="LinkHashMap（记录插入顺序）"><a href="#LinkHashMap（记录插入顺序）" class="headerlink" title="LinkHashMap（记录插入顺序）"></a>LinkHashMap（记录插入顺序）</h5><p>LinkedHashMap是HashMap的一个子类，保存了记录的插入顺序，在用Iterator遍历LinkedHashMap时，先得到的记录肯定是先插入的，也可以在构造时带参数，按照访问次序排序。</p>
+<hr>
 
           
         
@@ -1281,7 +1356,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/10/28/iterator和iterable/">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/03/31/JVM（五）--类加载机制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="无恤">
@@ -1300,7 +1375,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/10/28/iterator和iterable/" itemprop="url">iterator和iterable</a></h1>
+                <a class="post-title-link" href="/2020/03/31/JVM（五）--类加载机制/" itemprop="url">JVM（五）--类加载机制</a></h1>
         
 
         <div class="post-meta">
@@ -1312,8 +1387,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-28T01:18:17+08:00">
-                2019-10-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-31T20:15:33+08:00">
+                2020-03-31
               </time>
             
 
@@ -1352,350 +1427,299 @@
       
         
           
-            <p>迭代器（iterator）是一种对象，它能够用来遍历标准模板库容器中的部分或全部元素，每个迭代器对象代表容器中的确定的地址。迭代器修改了常规指针的接口，所谓迭代器是一种概念上的抽象：那些行为上像迭代器的东西都可以叫做迭代器。然而迭代器有很多不同的能力，它可以把抽象容器和通用算法有机的统一起来。<br>Iterator是java.util包下的接口:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">package java.util;</span><br><span class="line">public interface Iterator&#123;</span><br><span class="line">    boolean hasNext();</span><br><span class="line">    Object next();</span><br><span class="line">    void remove();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>Iterable是java.lang下的接口:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">package java.lang;</span><br><span class="line">import java.util.Iterator;</span><br><span class="line">public interface Iterable&#123;</span><br><span class="line">    Iterator iterator();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+            <p>JVM类加载机制分为五个部分：加载，验证，准备，解析，初始化，下面我们就分别来看一下这五个过程。</p>
+<h4 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h4><p>加载是类加载过程中的一个阶段，这个阶段会在内存中生成一个代表这个类的 java.lang.Class 对象，作为方法区这个类的各种数据的入口。注意这里不一定非得要从一个 Class 文件获取，这里既可以从 ZIP 包中读取（比如从 jar 包和 war 包中读取），也可以在运行时计算生成（动态代理），也可以由其它文件生成（比如将 JSP 文件转换成对应的 Class 类）。</p>
+<h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><p>这一阶段的主要目的是为了确保Class文件的字节流中包含的信息是否符合当前虚拟机的要求，并且不会危害虚拟机自身的安全。</p>
+<h4 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h4><p>准备阶段是正式为类变量分配内存并设置类变量的初始值阶段，即在方法区中分配这些变量所使用的内存空间。注意这里所说的初始值概念，比如一个类变量定义为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public static int v = 8080;</span><br></pre></td></tr></table></figure></p>
+<p>实际上变量v在准备阶段过后的初始值为0而不是8080，将v赋值为8080的put static指令是程序被编译后，存放于类构造器<client>方法之中。<br>但是注意如果声明为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public static final int v = 8080;</span><br></pre></td></tr></table></figure></client></p>
+<p>在编译阶段会为v生成ConstantValue属性，在准备阶段虚拟机会根据ConstantValue属性将v赋值为8080。</p>
+<h4 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h4><p>解析阶段是指虚拟机将常量池中的符号引用替换为直接引用的过程。符号引用就是class文件中的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CONSTANT_Class_info</span><br><span class="line">CONSTANT_Field_info</span><br><span class="line">CONSTANT_Method_info</span><br></pre></td></tr></table></figure></p>
+<p>等类型的常量。</p>
+<hr>
+<h4 id="符号引用"><a href="#符号引用" class="headerlink" title="符号引用"></a>符号引用</h4><p>符号引用与虚拟机实现的布局无关，引用的目标并不一定要已经加载到内存中。各种虚拟机实现的内存布局可以各不相同，但是它们能接受的符号引用必须是一致的，因为符号引用的字面量形式明确定义在Java虚拟机规范的Class文件格式中。</p>
+<h4 id="直接引用"><a href="#直接引用" class="headerlink" title="直接引用"></a>直接引用</h4><p>直接引用可以是指向目标的指针，相对偏移量或是一个能间接定位到目标的句柄。如果有了直接引用，那引用的目标必定已经在内存中存在。</p>
+<h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><p>初始化阶段是类加载最后一个阶段，前面的类加载阶段之后，除了在加载阶段可以自定义类加载器以外，其它操作都由JVM主导。到了初始阶段，才开始真正执行类中定义的Java程序代码。</p>
+<h4 id="类构造器"><a href="#类构造器" class="headerlink" title="类构造器"></a>类构造器<client></client></h4><p>初始化阶段是执行类构造器<client>方法的过程。<client>方法是由编译器自动收集类中的类变量的赋值操作和静态语句块中的语句合并而成的。虚拟机会保证子<client>方法执行之前，父类的<client>方法已经执行完毕，如果一个类中没有对静态变量赋值也没有静态语句块，那么编译器可以不为这个类生成<client>()方法。<br>注意以下几种情况不会执行类初始化：</client></client></client></client></client></p>
 <ol>
-<li>在jdk 1.5以后，引入了Iterable，使用foreach语句（增强型for循环）必须使用Iterable类。</li>
-<li>Collection继承于Iterable而不是Iterator接口。<br>Iterable的子类是Collection，Collection的子类是List，Set，这些是数据结构的类，用于存放数据。<br>Iterator是定义迭代逻辑的类，让迭代逻辑和数据结构分离开来，这样的好处是可以在一种数据结构上实现多种迭代逻辑</li>
-<li>每一次调用Iterable的Iterator()方法，都会返回一个从头开始的Iterator对象，各个Iterator对象之间不会相互干扰，保证了（多线程）可以同时对一个数据结构进行多个遍历。</li>
+<li>通过子类引用父类的静态字段，只会触发父类的初始化，而不会触发子类的初始化。</li>
+<li>定义对象数组，不会触发该类的初始化。</li>
+<li>常量在编译期间会存入调用类的常量池中，本质上并没有直接引用定义常量的类，不会触发定义常量所在的类。</li>
+<li>通过类名获取Class对象，不会触发类的初始化。</li>
+<li>通过Class.forName加载指定类时，如果指定参数initialize为false时，也不会触发类初始化，其实这个参数是告诉虚拟机，是否要对类进行初始化。</li>
+<li>通过ClassLoader默认的loadClass方法，也不会触发初始化动作。</li>
 </ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/10/27/解析藏宝阁密文/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/10/27/解析藏宝阁密文/" itemprop="url">解析藏宝阁密文</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-27T18:20:21+08:00">
-                2019-10-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>以下内容仅作为技术讨论使用，务商业使用。</p>
-<p>在查看梦幻藏宝阁的时，像了解下对于数据的展示，这种平台是如何操作，于是对网页数据进行了分析，以下是分析出数据的方法。</p>
-<p>对于一些敏感数据，网站就需要对其进行混淆，增加爬虫的成本。</p>
-<p>例如网页<a href="https://xyq.cbg.163.com/equip?s=212&amp;eid=201908132100113-212-AQYRMWM0DU8U&amp;o&amp;equip_refer=58" target="_blank" rel="noopener">https://xyq.cbg.163.com/equip?s=212&amp;eid=201908132100113-212-AQYRMWM0DU8U&amp;o&amp;equip_refer=58</a></p>
-<p>分析其返回的response,发现返回值并没有直接赋值上去。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;tr&gt;</span><br><span class="line">		&lt;th&gt;气血：&lt;/th&gt;</span><br><span class="line">		&lt;td&gt;&lt;%= pet.blood %&gt;/&lt;%= pet.max_blood %&gt;&lt;/td&gt;</span><br><span class="line">		&lt;th&gt;体质：&lt;/th&gt;</span><br><span class="line">		&lt;td&gt;&lt;%= pet.soma %&gt;&lt;/td&gt;</span><br><span class="line">	&lt;/tr&gt;</span><br><span class="line">	&lt;tr&gt;</span><br><span class="line">		&lt;th&gt;魔法：&lt;/th&gt;</span><br><span class="line">		&lt;td&gt;&lt;%= pet.magic %&gt;/&lt;%= pet.max_magic %&gt;&lt;/td&gt;</span><br><span class="line">		&lt;th&gt;法力：&lt;/th&gt;</span><br><span class="line">		&lt;td&gt;&lt;%= pet.magic_powner %&gt;&lt;/td&gt;</span><br><span class="line">	&lt;/tr&gt;</span><br><span class="line">	&lt;tr&gt;</span><br><span class="line">		&lt;th&gt;攻击：&lt;/th&gt;</span><br><span class="line">		&lt;td&gt;&lt;%= pet.attack %&gt;&lt;/td&gt;</span><br><span class="line">		&lt;th&gt;力量：&lt;/th&gt;</span><br><span class="line">		&lt;td&gt;&lt;%= pet.strength %&gt;&lt;/td&gt;</span><br><span class="line">	&lt;/tr&gt;</span><br></pre></td></tr></table></figure></p>
-<p>由pet对象来获取，则在网页中查找这个对象</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">   var pet = this.pet_attrs;</span><br><span class="line">   var enhance_info = this.enhance_info || &#123;&#125;;</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
-<p>继续查找pet_attrs<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var pet_desc = parse_desc_info($(&quot;equip_desc_&quot; + el.getAttribute(&quot;data_equipid&quot;)).value);</span><br><span class="line">var pet_attrs = get_pet_attrs_info(pet_desc, true);</span><br></pre></td></tr></table></figure></p>
-<p>这串代码中，根据equip_desc_查到到了这个网页的主要信息内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;textarea id=&quot;equip_desc_value&quot; style=&quot;display:none&quot;&gt;</span><br><span class="line">超级神兔;102273;169;3269;1920;2425;964;280;100;300;189;1092;189;189;0;956;3269;1920;65432;1;1600;1600;5500;3500;1400;1400;1300;425|404|416|405|422;0;1;0;2;0;0;([&quot;tmp_lingxing&quot;:0,&quot;core_close&quot;:0,&quot;lastchecksubzz&quot;:0,&quot;summon_core&quot;:([901:(&#123;5,0,([]),&#125;),924:(&#123;5,0,([]),&#125;),932:(&#123;5,0,([]),&#125;),]),&quot;left_qlxl&quot;:7,&quot;weaken&quot;:0,&quot;growthMax&quot;:1236,&quot;iJjFeedCd&quot;:0,&quot;summon_equip4_type&quot;:0,&quot;carrygradezz&quot;:0,&quot;MP_MAX&quot;:3050,&quot;sjg&quot;:0,&quot;summon_color&quot;:0,&quot;csavezz&quot;:&quot;1600|1600|1400|1400|5500|3500&quot;,&quot;MS_MAX&quot;:1800,&quot;jj_extra_add&quot;:0,&quot;iRealColor&quot;:0,&quot;SPD_MAX&quot;:1550,&quot;DEF_MAX&quot;:1550,&quot;summon_equip4_desc&quot;:&quot;&quot;,&quot;HP_MAX&quot;:5500,&quot;jinjie&quot;:([&quot;core&quot;:([]),&quot;cnt&quot;:0,&quot;lx&quot;:0,]),&quot;ATK_MAX&quot;:1550,&quot;strengthen&quot;:0,])</span><br><span class="line">&lt;/textarea&gt;</span><br></pre></td></tr></table></figure></p>
-<p>过程有些顺利</p>
-<p>接下来在解析角色时，发现equip_desc_value的value值并没有直接体现出来。<br>如：<a href="https://xyq.cbg.163.com/equip?s=579&amp;eid=201907212200113-579-5ZF1WK0H3GFP&amp;equip_refer=26&amp;view_loc=reco_left" target="_blank" rel="noopener">https://xyq.cbg.163.com/equip?s=579&amp;eid=201907212200113-579-5ZF1WK0H3GFP&amp;equip_refer=26&amp;view_loc=reco_left</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;textarea id=&quot;equip_desc_value&quot; style=&quot;display:none&quot;&gt;&lt;textarea id=&quot;equip_desc_value&quot; style=&quot;display:none&quot;&gt;@VB38(因内容太多，此处省略)DAxOSJ9@&lt;/textarea&gt;</span><br></pre></td></tr></table></figure></p>
-<p>继续追本溯源查找equip_desc_value，查找到以下代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var role_info = js_eval(lpc_2_js(get_equip_desc(&apos;equip_desc_value&apos;)));</span><br></pre></td></tr></table></figure></p>
-<p>通过打断点的方式发现get_equip_desc方法为解析加密的内容的核心方法。（lpc_2_js是将字符串转为对象字符串的方法，并不是核心方法）<br>继续往下查找get_equip_desc方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function get_equip_desc(elemId) &#123;</span><br><span class="line">    return decode_desc($(elemId).value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>好吧，继续查看decode_desc方法,看到这种代码，终于进入主题了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">!function(_0xcbc80b) &#123;</span><br><span class="line">        _0xcbc80b[&apos;\x64\x65\x63\x6f\x64\x65\x5f\x64\x65\x73\x63&apos;] = function g(_0x1c0cdf) &#123;</span><br><span class="line">            if (_0x1c0cdf = _0x1c0cdf[&apos;\x72\x65\x70\x6c\x61\x63\x65&apos;](/^\s+|\s+$/g, &apos;&apos;),</span><br><span class="line">            !/^@[\s\S]*@$/[_0x3a8e(&apos;0x0&apos;)](_0x1c0cdf))</span><br><span class="line">                return _0x1c0cdf;</span><br><span class="line">            var _0x36ab38 = (/\b_k=([^;]*)/[&apos;\x65\x78\x65\x63&apos;](document[&apos;\x63\x6f\x6f\x6b\x69\x65&apos;]) || [])[0x1] || &apos;&apos;;</span><br><span class="line">            if (_0x1c0cdf = _0x1c0cdf[&apos;\x72\x65\x70\x6c\x61\x63\x65&apos;](/^@|@$/g, &apos;&apos;),</span><br><span class="line">            /^[^@]+@[\s\S]+/[&apos;\x74\x65\x73\x74&apos;](_0x1c0cdf)) &#123;</span><br><span class="line">                var _0x33c80e = _0x1c0cdf[&apos;\x69\x6e\x64\x65\x78\x4f\x66&apos;](&apos;\x40&apos;);</span><br><span class="line">                _0x36ab38 = _0x1c0cdf[_0x3a8e(&apos;0x1&apos;)](0x0, _0x33c80e),</span><br><span class="line">                _0x1c0cdf = _0x1c0cdf[&apos;\x73\x75\x62\x73\x74\x72\x69\x6e\x67&apos;](_0x33c80e + 0x1);</span><br><span class="line">            &#125;</span><br><span class="line">            var _0x1b3f48 = function s(_0x1c0cdf) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    return _0xcbc80b[&apos;\x65\x76\x61\x6c&apos;](&apos;\x28&apos; + _0x1c0cdf + &apos;\x29&apos;);</span><br><span class="line">                &#125; catch (_0x40b9c3) &#123;</span><br><span class="line">                    return null;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;(_0x1c0cdf = _0xcbc80b[_0x3a8e(&apos;0x2&apos;)](_0x1c0cdf));</span><br><span class="line">            _0x1b3f48 &amp;&amp; &apos;\x6f\x62\x6a\x65\x63\x74&apos; == typeof _0x1b3f48 &amp;&amp; _0x1b3f48[&apos;\x64&apos;] &amp;&amp; (_0x1b3f48 = _0x1b3f48[&apos;\x64&apos;]);</span><br><span class="line">            for (var _0x20b9fa = [], _0x10503c = 0x0, _0x1a524d = 0x0; _0x1a524d &lt; _0x1b3f48[&apos;\x6c\x65\x6e\x67\x74\x68&apos;]; _0x1a524d++) &#123;</span><br><span class="line">                var _0x3641ed = _0x1b3f48[&apos;\x63\x68\x61\x72\x43\x6f\x64\x65\x41\x74&apos;](_0x1a524d)</span><br><span class="line">                  , _0x341952 = _0x36ab38[_0x3a8e(&apos;0x3&apos;)](_0x10503c % _0x36ab38[&apos;\x6c\x65\x6e\x67\x74\x68&apos;]);</span><br><span class="line">                _0x10503c += 0x1,</span><br><span class="line">                _0x3641ed = 0x1 * _0x3641ed ^ _0x341952,</span><br><span class="line">                _0x20b9fa[_0x3a8e(&apos;0x4&apos;)](_0x3641ed[&apos;\x74\x6f\x53\x74\x72\x69\x6e\x67&apos;](0x2));</span><br><span class="line">            &#125;</span><br><span class="line">            return function d(_0x1c0cdf) &#123;</span><br><span class="line">                for (var _0x36ab38 = [], _0x33c80e = 0x0; _0x33c80e &lt; _0x1c0cdf[&apos;\x6c\x65\x6e\x67\x74\x68&apos;]; _0x33c80e++)</span><br><span class="line">                    _0x36ab38[&apos;\x70\x75\x73\x68&apos;](_0xcbc80b[&apos;\x53\x74\x72\x69\x6e\x67&apos;][&apos;\x66\x72\x6f\x6d\x43\x68\x61\x72\x43\x6f\x64\x65&apos;](_0xcbc80b[&apos;\x70\x61\x72\x73\x65\x49\x6e\x74&apos;](_0x1c0cdf[_0x33c80e], 0x2)));</span><br><span class="line">                return _0x36ab38[&apos;\x6a\x6f\x69\x6e&apos;](&apos;&apos;);</span><br><span class="line">            &#125;(_0x20b9fa);</span><br><span class="line">        &#125;</span><br><span class="line">        ;</span><br><span class="line">    &#125;(window);</span><br></pre></td></tr></table></figure></p>
-<p>对此先将方法去混淆.刚开始看到 _0x1c0cdf[_0x3a8e(‘0x1’)](0x0, _0x33c80e) 这种写法我还懵圈了老半天，这是种什么写法。后来在去混淆的过程中发现 _0x3a8e(‘0x1’) 的值是substring，这不就是方法名吗，然后意识到，这不就是js调用方法的另一种写法吗 ，只是很久不用这种写法第一眼没有认出来。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">function decode_desc(ciphertext) &#123;</span><br><span class="line">            if (ciphertext = ciphertext.replace(/^\s+|\s+$/g, &apos;&apos;),</span><br><span class="line">            !/^@[\s\S]*@$/.test(ciphertext))</span><br><span class="line">                return ciphertext;</span><br><span class="line">            var _0x36ab38 = &quot;&quot;;//(/\b_k=([^;]*)/.exec(document.cookie) || [])[0x1] || &apos;&apos;;</span><br><span class="line">            if (ciphertext = ciphertext.replace(/^@|@$/g, &apos;&apos;),</span><br><span class="line">            /^[^@]+@[\s\S]+/.test(ciphertext)) &#123;</span><br><span class="line">                var num = ciphertext.indexOf(&apos;@&apos;);</span><br><span class="line">                _0x36ab38 = ciphertext.substring(0, num),</span><br><span class="line">                ciphertext = ciphertext.substring(num + 0x1);</span><br><span class="line">            &#125;</span><br><span class="line">			debugger;</span><br><span class="line">            var _0x1b3f48 = function s(ciphertext) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    return window.eval(&apos;(&apos; + ciphertext + &apos;)&apos;);//</span><br><span class="line">                &#125; catch (_0x40b9c3) &#123;</span><br><span class="line">                    return null;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;(ciphertext = window.atob(ciphertext));//解码</span><br><span class="line">            _0x1b3f48 &amp;&amp; &apos;object&apos; == typeof _0x1b3f48 &amp;&amp; _0x1b3f48[&apos;d&apos;] &amp;&amp; (_0x1b3f48 = _0x1b3f48[&apos;d&apos;]);//从对象&#123;&apos;d&apos;:&apos;xxx&apos;&#125; 取到xxx</span><br><span class="line">			var  str=_0x1b3f48;</span><br><span class="line">			//numList 是二进制数字的集合</span><br><span class="line">            for (var numList = [], j = 0, i =0; i &lt; str.length; i++) &#123;</span><br><span class="line">                var charCode = str.charCodeAt(i)</span><br><span class="line">                  , _0x341952 = _0x36ab38.charCodeAt(j % _0x36ab38.length);//_0x36ab38 是一个短的字符串 如 QOGBzhZ8hvVKgka8</span><br><span class="line">                j ++,</span><br><span class="line">                charCode = 0x1 * charCode ^ _0x341952,</span><br><span class="line">                numList.push(charCode.toString(2));</span><br><span class="line">            &#125;</span><br><span class="line">            return function d(ciphertext) &#123;</span><br><span class="line">                for (var arr = [], i = 0; i &lt; ciphertext.length; i++)</span><br><span class="line">                    arr.push(window.String.fromCharCode(window.parseInt(ciphertext[i], 2)));</span><br><span class="line">                return arr.join(&apos;&apos;);</span><br><span class="line">            &#125;(numList);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>至此提供一个完整版js解密代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">function decodeObject()&#123;</span><br><span class="line">var role_info = js_eval(lpc_2_js(decode_desc( &quot;@QOGBzhZ8hvVKgka8@eyJkIjogInlcdTAwMTRlMVx1MDAxMlxyNElcdTAwMDFUbGM8NkhcdTAwMTRzJlx1MDAwNSdcdTAwMWJcdTAwMWIua1x1MDAwM1x1MDAxZmdpXVtNXHUwMDFhOFxmJjFcdTAwMTJKYFxmXkZufF9HQ1FcdTAwMTk/XHUwMDE4XHUwMDBmXHUwMDFiXHUwMDEweFx1MDAwMllAbnJLSTV5XHUwMDBlJlx1MDAwNi5cdTAwMTYmP084XHUwMDE5PyVcdTAwMTNJW1x0fW1cdTAwMDYhXHUwMDEyODVRXHUwMDA2XHUwMDAyXHUwMDAyJFx1MDAxM1xuXHJcdTAwMWFreHZ3Vkozdlx1MDAxZFx1MDAwMiVcdTAwMDVcdTAwMTJcdTAwMDZDXHUwMDAyYWNlK1x1MDAxZFx1MDAwNzVcXFx1MDAwNlx1MDAxMyU4OFx1MDAxOFx1MDAwME5zdXV2TFxcdlx1MDAxYVx1MDAwMTs3LDgqXHJUc3V2dEpEeEpcclx1MDAxOFwiXHUwMDE0XHUwMDBiXHUwMDBlXHUwMDE3XT1tfXJWSjNsXHUwMDA3XHUwMDAyNycqXG5cdTAwMDZ8NClcdTAwMTgjXHUwMDE2XHUwMDA0eFx1MDAwMlxcRGJnRVxiL1k8KmV4WFx1NWE1OVx1NGUwYVxmXFxCdGdFXHUwMDAyMls5ICguWFJrXHJEVD9cdTAwMDZcdTAwMTdJW1x1MDAwZmV9a2AuKVx1MDAwNVEpXHUwMDFhOlx1MDAxYlxiXHUwMDAyXHUwMDBmTHN1d25YXHUwMDAxXHRTXHUwMDAxJjlcIlx0XHUwMDFmQ1x1MDAwMmJcdTAwN2ZrYFx1MDAxMyE5V1x1MDAwNlRsel5HQ30pP1xyNVhSalx1MDAxNEpcdTAwMWZcdTAwMTMzXHUwMDE3XHUwMDFmMlM4e2V4SkR4UTpcdTAwMTMlXHUwMDE0Jlx1MDAwN1xyXHUwMDFha35ydlZKPFlcdTAwMWFcdTAwMWJcdCdcdTAwMDJcdTAwMWRcdTAwMDRUc3V3blhcdTAwMDFcYllcdTAwMGJcdTAwMTN0cVVHQ1FcdTAwMTJcYlx1MDAxMy1cdTAwMGVcdDZ5XHUwMDA1XHUwMDE5IyVcdTAwMTNJW1xifW0uXHUwMDA3XHUwMDAyXHUwMDE4LmtcdTAwMDNcdTAwMWZjaV1bTVx1MDAxYThcdTAwMWNcIjVcdFx1MDAwMzNcdTAwMWFSRnppXHUwMDBlL1x1MDAwNF5cdTAwMGVcdTAwMGUrLlhSb1xiWVp0OVx1MDAwMlx1MDAwNVx1MDAxNVx1MDAxYWtcdTAwN2ZrYFx1MDAxOVx1MDAwNzdVXHUwMDFkKTFcIlx1MDAwM0lbXGJ9bVwiLFx1MDAxZlx1MDAxYT1BSkxie0tJXGJ9Iz0mLFx1MDAwZVx1MDAxYSNcdTAwMWFSRnppXHUwMDBlL1x1MDAwNEBcdTAwMGVcdTAwMGUrLlhSb1x1MDAwZVFadFwiJVx1MDAwZVx1MDAwMEslXHUwMDFjLCtJSmBcYkRUP1x1MDAwZVx1MDAxZlx1MDAxYlx1MDAxNWs6JnZgQFh2XHUwMDFhXHRcdTAwMTIyXHUwMDFiXGJcdTAwMDJcdTAwMGZMc3V3blhcbjNcXEpMZmdFXHUwMDAyLko2XHUwMDAwISRcdTAwMWZcdTAwMWF4XHUwMDAyWFp0M1x1MDAwZVxuXHUwMDBmQSRtfXJWSjRXXHUwMDFhXHUwMDFiNyc4XHUwMDAzXHUwMDBlSlwiKmV4SkR4WydcdTAwMDQxaV1JXHU3MDJkXHU3YmQ2XHU5YTg5XHU2MjA0ZW5YXHUwMDE4P0xKTH4wXHUwMDFhQk1cdTAwMWE+PS5cdTAwMWRcYlx0OV1KTGRnRVx1MDAwMiVdXCIsZXhKRHhwXHUwMDFkXHUwMDExM1x1MDAwM1xiXHUwMDE5XHUwMDEyXXN1b1x1MDAxOSdBdlx1MDAxYVx1MDAwMSYkXCJcdTAwMDNcdTAwMGVDXHUwMDAyZ3Z2blhcdTAwMDFcdTAwMTdZXHUwMDFhXHUwMDA0L2ldW01cdTAwMWE4XHUwMDBiJi9cdTAwMWJcdTAwMGY/ZylcdTAwMWE6aV1aUVxyaWNlXHUwMDA3XHUwMDAyKSxMSkx+XHUwMDEwOkJNXHUwMDFhOFx1MDAxYig2XHUwMDFiXHUwMDA0XHUwMDE3WVx1MDAwZjI3JjhcblxyVHN1cnJDRHhROFx1MDAxNT0/N1xuXHUwMDA2XXN1d25YXHUwMDA0M1ZcdTAwMGZcdTAwMTQ3JEVRSWNcZmZrYFx1MDAxMyU7Slx1MDAxYVx1MDAwZmRpXVtNXHUwMDFhOFx1MDAwMiY6P1x1MDAxMCpMWlRseVdHQ1FcdTAwMTJcYlx1MDAwNS1cdTAwMDIpN1dcdTAwMWRcdTAwMThcImldW01cdTAwMWE+PS5cdTAwMWRcdTAwMWVccilbSkxke1NTTVx1MDAxYSE9KDIxXHIqTEpMflx1MDAxMDpCTVx1MDAxYThcdTAwMWMkKjVcdTAwMGU8XVx1MDAxYVRse0tJXGJ1MChcdTAwMDMnXHUwMDFjN1x1MDAxYlRcdTAwMDRUbFx1MDA3ZlVfTVx1MDAxYThcZlx1MDAwMFx1MDAwMFx1MDAxNVxmI3lcdTAwMDVcdTAwMTkjJVx1MDAxM0lbXGJ9bVx1MDAwNi5cdTAwMTY6M1xcXHJcdTAwMDR0cU8wPFx1MDAxMX1tLlx1MDAxMVx1MDAwZVx1MDAxYVx1MDAwNXlcdTAwMDRcdTAwMWF0cVZfUVx1MDAxNHNcbj8yMFx1MDAxZlx1MDAxOFlcdTAwMWJcdTAwMTN0cVZbUVxiYVx1MDA3ZndySlh2XHUwMDFhXHUwMDBlXHUwMDE3NCpcYklbXHUwMDEwXG5cdTAwMTJublhcdTAwMDFcdTAwMTJISkxnfV9fTVx1MDAxYThcdTAwMTUvN1x1MDAxYlx1MDAwNlx1MDAwMFBcdTAwMDFUbHpLSVxiez49XHUwMDE4XHUwMDAzXHUwMDE2XHUwMDA0eFx1MDAwMllBZ2dFXHUwMDAyMlU4Oy8xXHUwMDExXHUwMDAxeFx1MDAwMlhadFwiJVx1MDAwZVx1MDAwMEslXHUwMDFjLCtISmBcYkRUP1xmXGJcdTAwMDRcdTAwMDVWNDw0YEBZalxyXlp0Klx1MDAwYlx1MDAwNz5LOiYrLlx0SmBcdTAwMTAzVGdyUUlbXHR9bXR2QlhuXHUwMDFhUkd6aVVaV1x1MDAxYWt7cm5YWWpcdTAwMGVKTGd4V0dDXG5gfmV4SFh2XHUwMDFhWUZjaV1aUlxifW12dEpKYFx0RFRnfFNJW1x0fW11c0pKYFx0XVp0eldcXENcdTAwMDJgfHduWFpqXHUwMDAxSkxlfUtJUFx1MDAwZmFtfXNWSmtcYlBUbHpUW01cdTAwMWFkfXdxSEpgXHREVGd7XklbXHRiXHUwMDdma2BIWWhcdTAwMWFSRGZnRVpUXHUwMDAwc3V0blhZbFx1MDAwZkpMZ2dFXlNcYmJ+ZXhLRHhcdFlGdHFWWFFcdTAwMTRzenVyS154XHUwMDAyWVp0el5SQ1x1MDAwMmBjZXNDX3hcdTAwMDJZWnR4U1NRXG5zdXZuWFlrXHRKTGdnRVpYXHUwMDAwc3V2blhZbFx1MDAwMUpMZ2dFWVFcbnN1dHdWSmhcYllUbH5XR0NcdGZ2ZXhLRFx1MDAwN1x1MDAxMURUP3ghXHUwMDA3XHUwMDE4dCdtfXJWSjN0XHJcdTAwMTckJSRcblx1MDAxMlBzdXJ3SFtiXHUwMDBiRFQ8XCJcdTAwMWVcdTAwMWVcdTAwMDBWc3V3blhcdTAwMWQpXVx1MDAxYVx1MDAxOCMmRVFVXG5ifHZ3Tlxcdlx1MDAxYVx1MDAwMTMuO1x1MDAxMzhcblFibX11Vkoza1x1MDAxOFx1MDAxM1x0XG5cdTAwMGJcdTAwMDdDXHUwMDAyZntwblhcdTAwMDFcbldcdTAwMDFcdTAwMThcImldW01cdTAwMWE4XHUwMDFjMi87XHUwMDA1NU1cdTAwMDZcdTAwMDJ0cV9HQ1FcdTAwMTk/XHUwMDE4XHUwMDA3XHUwMDFjXHUwMDBleFx1MDAwMllAbnJLSVxiXHUwMDdmIy4jJ1hSa1xuUVp0XCIlXG5cdTAwMDVWNDw0YEBYdlx1MDAxYVx1MDAwN1x1MDAwM1wiL1xiXHUwMDA0XHUwMDEzZz0qMSdcdTAwMTZKYFxiRFQ/XHUwMDA2XHUwMDE3NCxZKW19dU5adlx1MDAxYVx1MDAwMTI5LzgqXHJUc3Vwd01EeFEpXHUwMDAyXCJcdTAwMTQmXHUwMDA3XHJcdTAwMWFreHRyVkoza1x0XHUwMDAwPyVcdTAwMDBJW1xifW0uXHUwMDA3XHUwMDAyXHUwMDE4LmtcdTAwMDNcdTAwMWZkaV1bTVx1MDAxYTInJixcdTAwMWRccilbXHUwMDAwVGxjXHUwMDFjXHUwMDE2SFx1MDAxNHMsKC9cdTAwMTdcdTAwMWRcdTAwMDVWXHRcdTAwMWIzaV1bTVx1MDAxYThcdTAwMDImOj9cdTAwMTAqTFtUbHlXR0NRXHUwMDEzKiYxXHUwMDBlOzFRXFxUbHtLSVx1MDAxMk08XHUwMDEwXCI6XG5KYFx1MDAwMURUXCIkXHUwMDEzXG5ccmc5IDUxXHUwMDFmSmBcYkRUP1x1MDAwNlx1MDAwNlx1MDAxMyRAITt2YEBaalx1MDAxNEpcdTAwMWZcdTAwMDM7XCJcdTAwMTNcdTAwMTFcdTAwMWFrenVxSFpvXHRYWnQ4XHUwMDBmXHUwMDBlXHUwMDBmSThcdTAwMTA+J1x1MDAxNlx1MDAwNDVPSkx0aUtJXHUwMDA1WSUuKSUlXHUwMDBlP1lcdTAwMWNUbHlfUlJcdTAwMTRzPDAtXGJcZlx1MDAwNUtcdTAwMGJcdTAwMTkkLkVRUVx1MDAxNHNcIigwXHUwMDFmNztMXHUwMDFjXHUwMDA0dHFPMENZJTs1MVhSckNALXRcIlx1MDAwM1x1MDAxM0NcdTAwMDJgfmtgXHUwMDE2XHUwMDFleFx1MDAwMlhaXHUwMDBiYktDOlx1MDAxYTgrP2BAXnZcdTAwMWFcdTAwMDRcdTAwMDB0cVdHPFx1MDAxMX1nXHUwMDFjYFx1MDAxM1xmXCJcdTAwMWFSQnppXHUwMDBiXHUwMDFkQ1x1MDAwMmFjXHUwMDFha1ZAXHUwMDAxXHUwMDFhXHUwMDAxXHUwMDEyLmldWU1cdTAwMWE9OWV4SkRcdTAwMDdcdTAwMTFEXlxyaVx1MDAwZVx1MDAwZlx1MDAxOVx1MDAxYWt+dW5YXHUwMDA0LFx1MDAxYVJGelx1MDAxNk5HSWNzJiM6WFJrXHUwMDE0Slx1MDAxYSBpXVtNZXhjb1x1MDAxOVhcdTAwMDE+QEpMZWdFXHUwMDA3XHUwMDE3XHUwMDFha1x1MDA3ZmtcdTAwMWZTRHJjSlx1MDAxZjIzRVFQXGJ9bSs0WFJqXHUwMDE0NV96YzxJXGJcXCltfXdWSjZOSkxmZzpCTVx1MDAxMFxubS4mXHUwMDAySmBcdTAwMDBEVDo9RVFRXHUwMDE0XGZma2ohSjNcXFx1MDAxMFRscktJXHJOc3V3bidBdlx1MDAxMDNUPy9cdTAwMWZJW1x1MDAwZn1tKzRYUmpcdTAwMTQ1X3pjPElcYlxcKW19c0lEeFRcdTAwMWVUbHxSXFxNZXhjb1x1MDAxOVhcdTAwMDE+QEpMZ1x1MDA3ZktJXHJOc3VzcE5EXHUwMDA3XHUwMDExRFx1MDAwYlx1MDA3Zmc6Qk1cdTAwMWE4KyUrXHUwMDFlNz5dXHUwMDFiXHUwMDE1dHFPXHUwMDEwXHUwMDFjXHUwMDExfW1cdTAwMDYuXHUwMDE2Oy9VXHUwMDA1XHUwMDE5OGldQ1x1MDAxYVx1MDAxMFxubS5cdTAwMTBcdTAwMWZcdTAwMWJcdTAwMDVZXHUwMDA0XHUwMDFhdHFVXU1cdTAwMWE9LjQ2XHUwMDE5XHUwMDAwP1tcdTAwMDNcdTAwMDUjKVx1MDAxZFx1MDAxMUNcdTAwMDJjXHUwMDdmdntWSjN1XHUwMDE4VGx+UEdDVDguKTFcdTAwMTJcdTAwMDcvXHUwMDFhUkZ6aVx1MDAwM1x1MDAwNFx1MDAwNVx1MDAxYWt+dnZORHhZXHUwMDFjXHUwMDAyXHQ5XHUwMDA2XHUwMDFmXHUwMDA0XHUwMDFha1x1MDA3ZmtgXHRcdTAwMWQ3VVx1MDAwN1x1MDAxOFx0KFxiXHUwMDA3XHUwMDBlSnN1d25YXHUwMDAxXHUwMDFlXVx1MDAwZSlcdTAwMTcnXHUwMDBiSVtcZmVjZTBcdTAwMGZcdTAwMTEzXFxcdFx1MDAxOHRxV0dDUVx1MDAxYy4gXHUwMDA2XHUwMDFmXHUwMDBlXHUwMDA1WVx1MDAwNFx1MDAxYXRxVFpNXHUwMDFhOFx1MDAwMiYlJVx0NlRKTGdcdTAwN2ZLSVxifDQ3XHUwMDE4XHUwMDAzXHUwMDE2XHUwMDA0eFx1MDAwMlxcR3ppXHUwMDE0XHUwMDFlXGZVPiFcdTAwMTgnXHUwMDBiXHUwMDFkM0hcXCkyLlx1MDAxNFxiQ1x1MDAwMnNta2BcdTAwMTMpLkw3MHRxX0dDSyRcIiotXHUwMDE0NzlXXHUwMDFhXHUwMDEzdHFPMDxcdTAwMTF9bS0rXHUwMDE0XHUwMDAyM11KTH5cdTAwMTBFXGJcdTAwMGVKNG19aiE1c1x1MDAxNEpcdTAwMTU4P0VRUVx1MDAxNHMjP2BAWHZlQVp0XHUwMDAzNzQseVx0bX13T1hqXHUwMDE0Slx1MDAxMSQkXHUwMDEwSVtcdGF4cm5YXHUwMDBiKVlcdTAwMWVcdTAwMTMsMUVRQ1x0Y353PktablxuXHUwMDE0R2RcdTAwN2ZUXHUwMDE3UFx0ZXs7cUJdakRaRmVcdTAwN2ZFR0NfIyAwNlx1MDAxMiU7QEpMZ3tUW01cdTAwMWE4XHUwMDFiPjJcdTAwMWZKYFx0WERme1NHQ1FcdTAwMTYqKStcdTAwMGZcdTAwMWJ4XHUwMDAyWFp0KFx1MDAwNlx1MDAxOVx1MDAxM0E2PSYmXHUwMDFmXHUwMDEyIFx1MDAxYVJGemlcdTAwMGUqXHUwMDE1TFx1MDAwZS4rLlhSaFx1MDAwMURUNz9cdTAwMTNJW1x0Y353blhcdTAwMDUqXHUwMDFhUkRmeFNHQ0s7KGV4SkR4azgyXHRcdTAwMDYmM0NcdTAwMDJgenJyVkojTVx0XHUwMDE4LlwiXHUwMDA2XHUwMDA0Q1x1MDAwMmFjZSspXHUwMDFjKGdcdFx1MDAxYTppXVpZXHUwMDE0cyZcbjIlXHUwMDA1O0BKTGN8S0lcYnAhbX1zTF12XHUwMDFhXHUwMDAxJSYuOFxuXHJUc3V0cVZKM3pcdFx1MDAxOTQqXGJJW1x0fW0mLlx1MDAxNjcpU1x1MDAwMVx1MDAxYTo4RVFJY3N8d3dYUmtcdTAwMTRKQmd8RVFQXHUwMDE0XGZma2BcdFx1MDAxOD9cdTAwMWFSR2RcdTAwN2ZUR0NRXHUwMDEyIDVcdTAwMWRcdTAwMWJcdTAwMDQ2XHUwMDFhUkRiZ0VcdTAwMDIxVzghM2BAWW9cdTAwMTRKXHUwMDA3PypcdFx1MDAwMVxiVj06ZXhKRHhRIFx1MDAwNlx0Jlx1MDAwNlx1MDAxM0NcdTAwMDJgeXJuWFx1MDAwMVxiXVx0XHUwMDFhXHUwMDE1JFx1MDAwYlx1MDAwNFx1MDAxM1x1MDAxYWtcdTAwN2ZrYFx1MDAxMy8oWVxmXHUwMDEzdHFUR0NbPj1cIlx1MDAxZFx1MDAxOVx1MDAwNDVLXHJUbHtLSVxyXTc7XHUwMDE4M1x1MDAxNlx1MDAxMDZcdTAwMWFSQXppXHUwMDBlL1x1MDAwZVxcXHUwMDBlXHUwMDBlKy5YUmlcdTAwMGZEVFwiJlx1MDAxNzRcclE/KD8rXHUwMDE0XHUwMDBmeFx1MDAwMlhadCdcdTAwMGVcclx1MDAwNFx1MDAxYWt2dXZNRHh5PD1cdFx1MDAwNiYzQ1x1MDAwMmB6cnJWSjJISkxlc1JbTVx1MDAxYVwiOiovXHUwMDE1XHUwMDA2XHUwMDA1XVx1MDAxOVx1MDAwMz87UzRcdTAwMTVBISpleEpEeFxcXHJcdTAwMTB0cVZZVVxufW1cdTAwMDNcdTAwMDc8N1x1MDAxN3kwVGx6Ul5RXHUwMDE0c1x1MDAwMlx1MDAxNFx1MDAxZDcpXHUwMDAyXHUwMDFhUkdue1dHQ3VcdTAwMDFcdTAwMTBcblx1MDAwM1wiSmBcdTAwMGJYQ2ZnRVx1MDAwMVx1MDAwYmc0NzMwXHUwMDFiNztcXFxmVGx7S0lcYnI7XHRcIidcdTAwMWUrPlx1MDAxYVJGelx1MDAxNk5HSWNzJlx1MDAxNSdcdDc7VFx1MDAwNFRsel9HQ1QwPDMhXHUwMDEyXHI5U1x1MDAxYlx1MDAwMzQxXHUwMDFkSVtcbmF+fm5YXHUwMDAxXHUwMDE3SEpMYn5LSVxyUTAhNCpcdTAwMTVcdTAwMWR4XHUwMDAyWFp0L1xiXHUwMDBmQ1x1MDAwMmBcdTAwN2Z1dFZKO0xcdTAwMWMpJCpcdTAwMTNcdTAwMGVDXHUwMDAyYWNlMVx1MDAwZlx1MDAwNTdXXHUwMDA2KTUkXHUwMDBiXHUwMDA0XHUwMDEzXHUwMDFha1x1MDA3ZmtgXHUwMDEzLD9eNzc6J0VRU1x1MDAwZn1tNTdcdTAwMDNcdTAwMDE+WVx1MDAwNlRse0tJXGJ1MChcdTAwMDMnXHUwMDFjNztUXHUwMDA0VGx5UEdDUVx1MDAxYy4gXHUwMDFkXHUwMDFiXHUwMDA0Nlx1MDAxYVJHZWdFXHUwMDAyJV0pXHUwMDEwXHUwMDA2Llx1MDAxNkpgXHUwMDBiWVp0OFx1MDAxMlx1MDAwNlxmVz9cdTAwMTBcIjNcdTAwMGZcdTAwMDEqXGY3XHUwMDEyMzhcdTAwMDRJW1x1MDAxYXNjZSs7XHUwMDFjLmcuVGx5S0lcdTAwMTJNPFwiKCwlXHUwMDBiNUpcclRsYzw2SFx1MDAxNHMlLixcdTAwMTBcdTAwMDE/XHUwMDFhUl5ccmlcdTAwMDRcdTAwMDRcdTAwMTNdc3VvXHUwMDE5J0F2XHUwMDFhXHUwMDBiXHUwMDE4XCJpXVtNXHUwMDFhPTdleEpEXHUwMDA3XHUwMDExRFRcdTAwMWVcdTAwMWI4JiBgc3Vyd0pYdlx1MDAxYVx1MDAwZlx1MDAwNDk8RVFQXHRnfmtgXHUwMDE5XHUwMDFiO05cclxmLGldSVBcdGNcdTAwN2Y7c0tcXGpEWUJnfVx1MDAxYlpRXG5nM3NyQ10mXHRfRG5pS0lcdTAwMDZKPjgzKjdcdFwiXHUwMDFhUkdnc1NHQ1FcdTAwMDU2NydYUmtcYlpGZHhLSVxiXHUwMDdmNCEuN1x0SmBcYkRUNSpcdTAwMTVcdTAwMTlcdTAwMThfIy4jJ1x1MDAwMFx1MDAxMnhcdTAwMDJYWnRcIiZcdTAwMWZcdTAwMTVnMCMrYEBaalx1MDAxNEpcdTAwMTdcIj9FUVBcdGNcdTAwN2ZrYFx1MDAxN1x1MDAxOHhcdTAwMDJZQWRzS0lcdTAwMTJSNm19clZKXHRoLClcdTAwMWJcbj9JW1x0ZHp3blhcdTAwMTEvWVx1MDAwNlx1MDAwZT8qXGJJW1xifW0uXHUwMDExXHUwMDBlXHUwMDFhXHUwMDA1WVx1MDAwNFx1MDAxYXRxVlNNXHUwMDFhOFx1MDAwMjdcdTAwMWRcdTAwMTdcdFwiXHUwMDFhUkJjZ0VcdTAwMDIpSHN1dXJIRHhRO1x1MDAwNjNcdTAwMTRcdTAwMDZcdTAwMDdcclx1MDAxYWt9dW5YXHUwMDAxXHUwMDE4WVx1MDAwN1x1MDAxNDckRVFQXHUwMDE0cy4rLiVcdTAwMWIxUVx1MDAwNFx1MDAxYSVpXUM6XHUwMDFhZXx3YEBZdlx1MDAxYVtEYGldWk1cdTAwMWFkXHUwMDdmdWBAWXZcdTAwMWFbRmBpXVpNZXhjZTFcblxyeFx1MDAwMllCZ31LSVxiez49XHUwMDE4I1x1MDAxNlx1MDAwNHhcdTAwMDJaT3ppXHUwMDBlO1x1MDAwZVE/O2V4SkR4SVx1MDAwMVx1MDAxNzghXHUwMDBlXHUwMDA1XHJNc3V3blhcdTAwMDFcdTAwMTJIN1x1MDAxYjczRVFTXGJjY2UrKFxyO1QrXHUwMDE5OiRcdTAwMTVJW1xifW0uXHUwMDA1XGJcdD5dSkxmZ0VcYlx1MDAwZUo0XHUwMDEwJC5cdTAwMTVcdTAwMWI/XHUwMDFhUkZ6aVx1MDAwYlx1MDAwZVx1MDAwN0xcdTAwMGU+KzpcdTAwMTZKYFx1MDAwZkRUP1x1MDAwZlxiXHUwMDBmPnk9I2V4SFp2XHUwMDFhXHUwMDFjXHUwMDFiJlx1MDAxNFx1MDAwYlx1MDAwMlx1MDAwZl8pJiklWFJqXHUwMDE0Slx1MDAxYT8tXHUwMDAySVtcdGF7cnJWSlx1MDAxYmwjKVx1MDAxYlxuP0lbXHRkenduWFx1MDAwMCpcdTAwMWFSQmZyUkdDSyRcIiotXHUwMDE0Nz9JXHUwMDFkXHUwMDFmJlx1MDA3ZjhcdTAwMWZcdTAwMThING19clZKPl1cdTAwMGVUbHpWX1FcdTAwMTRzXHUwMDBiXHUwMDAyXHUwMDA0JSVcdTAwMWJgSkxnflJbTVx1MDAxYVx1MDAxY1x1MDAxY1x1MDAxOFx1MDAwZjsweFx1MDAwMllOZntLSSxoXHUwMDBlXHUwMDAyXHUwMDA2XHUwMDFhWFJpXGJdRnppXHJcdTAwMDE+XSk7NSMlXHQ+XFxKTGZnRVx1MDAwMitSXHUwMDE3KlwiJjlcZnhcdTAwMDJYWlx1MDAwYmJLXHUwMDE2SFx1MDAxNHMmXG4jXHUwMDAyLVwiSFx1MDAxY0J0cVVbTVx1MDAxYVwiJ1wiLFx1MDAwYlx1MDAwMVx1MDAwNUhcdTAwMDdcdTAwMDV0cU9cdTAwMTBRXHUwMDE0YWM6a1ZKXHUwMDFiVFx1MDAwNDMnPlx1MDAwZVx1MDAxYkNcdTAwMDJ5XHUwMDE0dnhSM3hRPFx1MDAwZiYuRVFTXHJgeGtgXHUwMDE5LD9LXHUwMDBiVGxpRFx1MDAxOVx1N2IyOFx1N2U5ZnF4d2JaSyhcdTliNmNcdTZjYmRWfXxXS1x1OTY1M1x1NWY5OXFkdHtZXHUwMDFhXHU4MDRhXHU0ZTdkXHU1ZWNlVmV5Vkg4XHUwMDE4cW1rXHUwMDFmU0RiXHUwMDAyQC10XCIzXHUwMDEyXHUwMDExXXN1dXRLX3ZcdTAwMWFcdTAwMGIyMzhcdTAwMDRJW1x1MDAxYXI9XHU3YjBlXHU3ZWU1Wl9qXHUwMDE4SFx1NGVlMlx1ODgxYWtcdTU3NzhIXHUwMDEzXHUwMDFiI1x1NmM1Ylx1ODgwN2JRUGpcdTAwMThcdTk2NWFcdTVmZDd2YFZbVlx1MDAxYiNcdTgwNWZcdTRlMDJcdTVlZTRaWm9cdTAwMDBIVlx1NGZiOFx1NzQ0ZFx1NTk1Nlx1OGQ0ZUFcdFx1NmI3MGw1XHU5NTc5XHU3MGM2XHU3YjIxXHU3ZWZkXHUwMDE4WlZ2XHU5NTNkXHU1ZDJiXHU1YmY2XHU3NzkyXHUwMDE4XHU1MTE4XHU4MmRkXHU3N2I0YVxiS1x1MDAxZFx1MDAxYi9cdTRmMjVcdThkN2VrTFpTXHUwMDFiXGJsXHUwMDFlYlpKdmVBWmJxTzBDUVx1MDAwNTY3J1hSaFx1MDAwMFhAemlcdTAwMDQvXHUwMDA0SzJtfWBZXHUwMDFhXHU3YjEzXHU3ZTlmSEJma0dIXHUwMDEzXHU3MDRkXHU1MmNhb2xxTksoXHU4MDI4XHU0ZTJkXHU1ZWQwdnpXWEJhcj1kIU4sXHUwMDE4eS5CXHU3MjJmXHU2NTAzXHVmZjdkSFx1MDAwMlxmXHUwMDE1XHJcdTAwMDZcdTAwMDROXHU0ZTdiXHU2Y2IyXHUwMDFiMVZ2aUs2SFx1MDAxNGd1b1x1MDAxOVhcdTAwMDFcdTAwMGVBXHUwMDE4XHUwMDEzdHFWWFRcYn1tJFx1MDAwNlx1MDAxZlx1MDAxYjlcdTAwMWFSVHU5XHU3YjJlXHU3ZWNjQVx0YVx1MDA3ZmdiXHU0ZWVlXHU4ODI0elx1NTcyN0tcdTAwMDR1OVx1NGY0M1x1NWJkOEFcdTAwMTNie3ZiXHU1NDA3XHU0ZTQ1elx1MDAxM1tBbmhcdTAwMTVcdTgwN2JcdTRlMjRcdTVlOWVxeWQwXHU5NTQxXHU3MGQ0XHU3YjEzXHU3ZTlmSER2a1x1OTUxMVx1NWQyN1x1NWJmY1x1NzdjYnFcdTU5NjVcdTk2NzRcdTc3YjFZXHUwMDFheVx1MDA3ZksxXHU4MDQ2XHU1MmQwR0BQXHUwMDBmclx1MDAxNmRcdTAwMWJZXHUwMDFheW9cdTUyNWVcdTkwNTZcdTgwNTNcdWZmNTEoJFFcdTViYzNcdTI1ZjFcdTY4ZTlcYlxyNVx1NWY1Mlx1NTM0Y1x1NjI2Ylx1OTA0OFVcdTAwMGZrR0lNZXhjXHUwMDFha1ZKM2tcdTAwMWRcdTAwMWJcdTAwMTcmXGJcdTAwMWVcdTAwMGZMXHUwMDE0N2V4SkR4cFxyXHUwMDA0OVx1MDAxOFx1MDAwNFx1MDAwNFx1MDAxM11zdXZ1VkouV1x1MDAxY1x1MDAxNzpcdTAwMTRcdTAwMDZcdTAwMWRcdTAwMDBMMD1leEpEeFFcdTAwMGJcdTAwMTk6JFx1MDAxNTRcdTAwMDRAc3V3bidBIn0=@&quot;)));    </span><br><span class="line">console.log(role_info);</span><br><span class="line">return role_info;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function js_eval(js_str) &#123;</span><br><span class="line">    return eval(&quot;(&quot; + js_str + &quot;)&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function lpc_2_js(lpc_str) &#123;</span><br><span class="line">    var convert_dict = &#123;</span><br><span class="line">        &quot;([&quot;: &quot;&#123;&quot;,</span><br><span class="line">        &quot;])&quot;: &quot;&#125;&quot;,</span><br><span class="line">        &quot;,])&quot;: &quot;&#125;&quot;,</span><br><span class="line">        &quot;(&#123;&quot;: &quot;[&quot;,</span><br><span class="line">        &quot;&#125;)&quot;: &quot;]&quot;,</span><br><span class="line">        &quot;,&#125;)&quot;: &quot;]&quot;</span><br><span class="line">    &#125;;</span><br><span class="line">    function convert($1) &#123;</span><br><span class="line">        var match_str = $1.replace(/\s+/g, &apos;&apos;);</span><br><span class="line">        return convert_dict[match_str];</span><br><span class="line">    &#125;</span><br><span class="line">    var parser = new RegExp(&quot;\\(\\[|,?\s*\\]\\)|\\(&#123;|,?\\s*&#125;\\)&quot;,&apos;g&apos;);</span><br><span class="line">    return lpc_str.replace(parser, convert);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function decode_desc(ciphertext) &#123;</span><br><span class="line">            if (ciphertext = ciphertext.replace(/^\s+|\s+$/g, &apos;&apos;),</span><br><span class="line">            !/^@[\s\S]*@$/.test(ciphertext))</span><br><span class="line">                return ciphertext;</span><br><span class="line">            var _0x36ab38 = &quot;&quot;;//(/\b_k=([^;]*)/.exec(document.cookie) || [])[0x1] || &apos;&apos;;</span><br><span class="line">            if (ciphertext = ciphertext.replace(/^@|@$/g, &apos;&apos;),</span><br><span class="line">            /^[^@]+@[\s\S]+/.test(ciphertext)) &#123;</span><br><span class="line">                var num = ciphertext.indexOf(&apos;@&apos;);</span><br><span class="line">                _0x36ab38 = ciphertext.substring(0, num),</span><br><span class="line">                ciphertext = ciphertext.substring(num + 0x1);</span><br><span class="line">            &#125;</span><br><span class="line">			debugger;</span><br><span class="line">            var _0x1b3f48 = function s(ciphertext) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    return window.eval(&apos;(&apos; + ciphertext + &apos;)&apos;);//</span><br><span class="line">                &#125; catch (_0x40b9c3) &#123;</span><br><span class="line">                    return null;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;(ciphertext = window.atob(ciphertext));//解码</span><br><span class="line">            _0x1b3f48 &amp;&amp; &apos;object&apos; == typeof _0x1b3f48 &amp;&amp; _0x1b3f48[&apos;d&apos;] &amp;&amp; (_0x1b3f48 = _0x1b3f48[&apos;d&apos;]);//从对象&#123;&apos;d&apos;:&apos;xxx&apos;&#125; 取到xxx</span><br><span class="line">			var  str=_0x1b3f48;</span><br><span class="line">			//numList 是二进制数字的集合</span><br><span class="line">            for (var numList = [], j = 0, i =0; i &lt; str.length; i++) &#123;</span><br><span class="line">                var charCode = str.charCodeAt(i)</span><br><span class="line">                  , _0x341952 = _0x36ab38.charCodeAt(j % _0x36ab38.length);//_0x36ab38 是一个短的字符串 如 QOGBzhZ8hvVKgka8</span><br><span class="line">                j ++,</span><br><span class="line">                charCode = 0x1 * charCode ^ _0x341952,</span><br><span class="line">                numList.push(charCode.toString(2));</span><br><span class="line">            &#125;</span><br><span class="line">            return function d(ciphertext) &#123;</span><br><span class="line">                for (var arr = [], i = 0; i &lt; ciphertext.length; i++)</span><br><span class="line">                    arr.push(window.String.fromCharCode(window.parseInt(ciphertext[i], 2)));</span><br><span class="line">                return arr.join(&apos;&apos;);</span><br><span class="line">            &#125;(numList);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>另外附上依照此js写的java版本(仅核心代码，其他缺失部分可以自己手动填加)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">private static String decodeStr(String ciphertext) throws UnsupportedEncodingException, ScriptException &#123;</span><br><span class="line">		// 去除前后空格，判断先后字符是否符号特定规则</span><br><span class="line">		ciphertext = ciphertext.trim();</span><br><span class="line">		if (!(ciphertext.startsWith(&quot;@&quot;) &amp;&amp; ciphertext.endsWith(&quot;@&quot;))) &#123;</span><br><span class="line">			return ciphertext;</span><br><span class="line">		&#125;</span><br><span class="line">		ciphertext = replace(ciphertext, &quot;^@|@$&quot;, &quot;&quot;);</span><br><span class="line">		// 将字符串分成两部分</span><br><span class="line">		int index = ciphertext.indexOf(&quot;@&quot;);</span><br><span class="line">		String ciphertextPrefix = ciphertext.substring(0, index);</span><br><span class="line">		String ciphertextSuffix = ciphertext.substring(index + 1);</span><br><span class="line">		// 对ciphertextSuffix解码</span><br><span class="line">		ciphertextSuffix = BtoAAtoB.atob(ciphertextSuffix);</span><br><span class="line">		Object ciphertextSuffixObj = evalJS(&apos;(&apos; + ciphertextSuffix + &apos;)&apos;);</span><br><span class="line">		ciphertextSuffix = JSONObject.toJSONString(ciphertextSuffixObj);</span><br><span class="line">		JSONObject jsonObject = JSONObject.parseObject(ciphertextSuffix);</span><br><span class="line">		// 从对象&#123;&apos;d&apos;:&apos;xxx&apos;&#125; 取到xxx</span><br><span class="line">		ciphertextSuffix = jsonObject.get(&quot;d&quot;).toString();</span><br><span class="line">		// 转二进制</span><br><span class="line">		List&lt;String&gt; numList2 = new ArrayList&lt;String&gt;();</span><br><span class="line">		for (int i = 0, j = 0; i &lt; ciphertextSuffix.length(); i++) &#123;</span><br><span class="line">			char charCode = ciphertextSuffix.charAt(i);</span><br><span class="line">			char charCode2 = ciphertextPrefix.charAt(j % ciphertextPrefix.length());</span><br><span class="line">			j++;</span><br><span class="line">			int charCodeInt = 1 * (int) charCode ^ (int) charCode2;</span><br><span class="line">			numList2.add(Integer.toBinaryString(charCodeInt));</span><br><span class="line">		&#125;</span><br><span class="line">		// 转字符串</span><br><span class="line">		String byteArrayStr=listTobyte2(numList2);</span><br><span class="line">		System.out.println(&quot;--------------&quot;);</span><br><span class="line">		return lpc_2_js(byteArrayStr);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/10/01/java基础知识点归纳/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/10/01/java基础知识点归纳/" itemprop="url">java基础知识点归纳</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-01T23:01:13+08:00">
-                2019-10-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>统计了java的知识点，后面的有些自己也没有接触过，需要一步步学习，后期会将学习的东西补充上来</p>
 <hr>
-<p><strong>基础</strong></p>
+<h1 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h1><p>虚拟机设计团队把加载动作放到JVM外部实现，以便让应用程序决定如何获取所需的类，JVM提供了3种类加载器：</p>
+<h4 id="启动类加载器-Bootstrap-ClassLoader"><a href="#启动类加载器-Bootstrap-ClassLoader" class="headerlink" title="启动类加载器(Bootstrap ClassLoader)"></a>启动类加载器(Bootstrap ClassLoader)</h4><p>负责加载JAVA_HOME\lib目录中的，或通过-Xbootclasspath参数指定路径中的，且被虚拟机认可（按文件名识别，如rt.jar）的类。</p>
+<h4 id="扩展类加载器-Extension-ClassLoader"><a href="#扩展类加载器-Extension-ClassLoader" class="headerlink" title="扩展类加载器(Extension ClassLoader)"></a>扩展类加载器(Extension ClassLoader)</h4><p>负责加载 JAVA_HOME\lib\ext目录中的，或通过java.ext.dirs系统变量指定路径中的类库。</p>
+<h4 id="应用程序类加载器-Application-ClassLoader"><a href="#应用程序类加载器-Application-ClassLoader" class="headerlink" title="应用程序类加载器(Application ClassLoader)"></a>应用程序类加载器(Application ClassLoader)</h4><p>负责加载用户路径（classpath）上的类库。<br>JVM 通过双亲委派模型进行类的加载，当然我们也可以通过继承java.lang.ClassLoader实现自定义的类加载器。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/03/28/双亲委派/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/28/双亲委派/" itemprop="url">双亲委派和破坏双亲委派</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-28T01:12:55+08:00">
+                2020-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>对于任意一个类，都需要由加载它的类加载器和这个类本身来一同确立其在Java虚拟机中的唯一性。<br>如果不是同一个类加载器加载，即时是相同的class文件，也会出现判断不相同的情况，从而引发一些意想不到的情况，为了保证相同的class文件，在使用的时候，是相同的对象，jvm设计的时候，采用了双亲委派的方式来加载类。</p>
+<h3 id="双亲委派"><a href="#双亲委派" class="headerlink" title="双亲委派"></a>双亲委派</h3><p>如果一个类加载器收到了加载某个类的请求,则该类加载器并不会去加载该类,而是把这个请求委派给父类加载器,每一个层次的类加载器都是如此,因此所有的类加载请求最终都会传送到顶端的启动类加载器;只有当父类加载器在其搜索范围内无法找到所需的类,并将该结果反馈给子类加载器,子类加载器会尝试去自己加载。</p>
+<h3 id="系统加载器"><a href="#系统加载器" class="headerlink" title="系统加载器"></a>系统加载器</h3><ol>
+<li>启动类加载器（Bootstrap ClassLoader）：C++实现，在java里无法获取，负责加载&lt;JAVA_HOME&gt;/lib下的类。</li>
+<li>扩展类加载器（Extension ClassLoader）： Java实现，可以在java里获取，负责加载&lt;JAVA_HOME&gt;/lib/ext下的类。</li>
+<li>系统类加载器/应用程序类加载器（Application ClassLoader）：是与我们接触最多的类加载器，我们写的代码默认就是由它来加载，ClassLoader.getSystemClassLoader返回的就是它。<br>三者之间关系是：<br>启动类加载器（Bootstrap ClassLoader） &lt;== 扩展类加载器（Extension ClassLoader） &lt;== 应用程序类加载器（Application ClassLoader） &lt;== 自定义类加载器（User ClassLoader）</li>
+</ol>
+<hr>
+<h3 id="破坏双亲委派"><a href="#破坏双亲委派" class="headerlink" title="破坏双亲委派"></a>破坏双亲委派</h3><h5 id="为什么需要破坏双亲委派？"><a href="#为什么需要破坏双亲委派？" class="headerlink" title="为什么需要破坏双亲委派？"></a>为什么需要破坏双亲委派？</h5><p>因为在某些情况下父类加载器需要委托子类加载器去加载class文件。受到加载范围的限制，父类加载器无法加载到需要的文件，以Driver接口为例，由于Driver接口定义在jdk当中的，而其实现由各个数据库的服务商来提供，比如mysql的就写了MySQL Connector，那么问题就来了，DriverManager（也由jdk提供）要加载各个实现了Driver接口的实现类，然后进行管理，但是DriverManager由启动类加载器加载，只能记载JAVA_HOME的lib下文件，而其实现是由服务商提供的，由系统类加载器加载，这个时候就需要启动类加载器来委托子类来加载Driver实现，从而破坏了双亲委派，这里仅仅是举了破坏双亲委派的其中一个情况。</p>
+<h5 id="破坏双亲委派的实现"><a href="#破坏双亲委派的实现" class="headerlink" title="破坏双亲委派的实现"></a>破坏双亲委派的实现</h5><p>结合Driver来看一下在spi（Service Provider Inteface）中如何实现破坏双亲委派。<br>先从DriverManager开始看，平时我们通过DriverManager来获取数据库的Connection：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String url = &quot;jdbc:mysql://localhost:3306/testdb&quot;;</span><br><span class="line">Connection conn = java.sql.DriverManager.getConnection(url, &quot;root&quot;, &quot;root&quot;);</span><br></pre></td></tr></table></figure></p>
+<p>在调用DriverManager的时候，会先初始化类，调用其中的静态块：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">static &#123;</span><br><span class="line">    loadInitialDrivers();</span><br><span class="line">    println(&quot;JDBC DriverManager initialized&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static void loadInitialDrivers() &#123;</span><br><span class="line">    ...</span><br><span class="line">        // 加载Driver的实现类</span><br><span class="line">        AccessController.doPrivileged(new PrivilegedAction&lt;Void&gt;() &#123;</span><br><span class="line">            public Void run() &#123;</span><br><span class="line"></span><br><span class="line">                ServiceLoader&lt;Driver&gt; loadedDrivers = ServiceLoader.load(Driver.class);</span><br><span class="line">                Iterator&lt;Driver&gt; driversIterator = loadedDrivers.iterator();</span><br><span class="line">                try&#123;</span><br><span class="line">                    while(driversIterator.hasNext()) &#123;</span><br><span class="line">                        driversIterator.next();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; catch(Throwable t) &#123;</span><br><span class="line">                &#125;</span><br><span class="line">                return null;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>重点来看一下ServiceLoader.load(Driver.class)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public static &lt;S&gt; ServiceLoader&lt;S&gt; load(Class&lt;S&gt; service) &#123;</span><br><span class="line">    // 获取当前线程中的上下文类加载器</span><br><span class="line">    ClassLoader cl = Thread.currentThread().getContextClassLoader();</span><br><span class="line">    return ServiceLoader.load(service, cl);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，load方法调用获取了当前线程中的上下文类加载器，那么上下文类加载器放的是什么加载器呢？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public Launcher() &#123;</span><br><span class="line">	...</span><br><span class="line">    try &#123;</span><br><span class="line">        this.loader = Launcher.AppClassLoader.getAppClassLoader(var1);</span><br><span class="line">    &#125; catch (IOException var9) &#123;</span><br><span class="line">        throw new InternalError(&quot;Could not create application class loader&quot;, var9);</span><br><span class="line">    &#125;</span><br><span class="line">    Thread.currentThread().setContextClassLoader(this.loader);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在sun.misc.Launcher中，我们找到了答案，在Launcher初始化的时候，会获取AppClassLoader，然后将其设置为上下文类加载器，而这个AppClassLoader，就是之前上文提到的系统类加载器Application ClassLoader，所以上下文类加载器默认情况下就是系统加载器。<br>继续来看下ServiceLoader.load(service, cl)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public static &lt;S&gt; ServiceLoader&lt;S&gt; load(Class&lt;S&gt; service,</span><br><span class="line">                                        ClassLoader loader)&#123;</span><br><span class="line">    return new ServiceLoader&lt;&gt;(service, loader);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private ServiceLoader(Class&lt;S&gt; svc, ClassLoader cl) &#123;</span><br><span class="line">    service = Objects.requireNonNull(svc, &quot;Service interface cannot be null&quot;);</span><br><span class="line">    // ClassLoader.getSystemClassLoader()返回的也是系统类加载器</span><br><span class="line">    loader = (cl == null) ? ClassLoader.getSystemClassLoader() : cl;</span><br><span class="line">    acc = (System.getSecurityManager() != null) ? AccessController.getContext() : null;</span><br><span class="line">    reload();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void reload() &#123;</span><br><span class="line">    providers.clear();</span><br><span class="line">    lookupIterator = new LazyIterator(service, loader);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面这段就不解释了，比较简单，然后就是看LazyIterator迭代器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">private class LazyIterator implements Iterator&lt;S&gt;&#123;</span><br><span class="line">    // ServiceLoader的iterator()方法最后调用的是这个迭代器里的next</span><br><span class="line">    public S next() &#123;</span><br><span class="line">        if (acc == null) &#123;</span><br><span class="line">            return nextService();</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            PrivilegedAction&lt;S&gt; action = new PrivilegedAction&lt;S&gt;() &#123;</span><br><span class="line">                public S run() &#123; return nextService(); &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            return AccessController.doPrivileged(action, acc);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    private S nextService() &#123;</span><br><span class="line">        if (!hasNextService())</span><br><span class="line">            throw new NoSuchElementException();</span><br><span class="line">        String cn = nextName;</span><br><span class="line">        nextName = null;</span><br><span class="line">        Class&lt;?&gt; c = null;</span><br><span class="line">        // 根据名字来加载类</span><br><span class="line">        try &#123;</span><br><span class="line">            c = Class.forName(cn, false, loader);</span><br><span class="line">        &#125; catch (ClassNotFoundException x) &#123;</span><br><span class="line">            fail(service,</span><br><span class="line">                 &quot;Provider &quot; + cn + &quot; not found&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        if (!service.isAssignableFrom(c)) &#123;</span><br><span class="line">            fail(service,</span><br><span class="line">                 &quot;Provider &quot; + cn  + &quot; not a subtype&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        try &#123;</span><br><span class="line">            S p = service.cast(c.newInstance());</span><br><span class="line">            providers.put(cn, p);</span><br><span class="line">            return p;</span><br><span class="line">        &#125; catch (Throwable x) &#123;</span><br><span class="line">            fail(service,</span><br><span class="line">                 &quot;Provider &quot; + cn + &quot; could not be instantiated&quot;,</span><br><span class="line">                 x);</span><br><span class="line">        &#125;</span><br><span class="line">        throw new Error();          // This cannot happen</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public boolean hasNext() &#123;</span><br><span class="line">        if (acc == null) &#123;</span><br><span class="line">            return hasNextService();</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            PrivilegedAction&lt;Boolean&gt; action = new PrivilegedAction&lt;Boolean&gt;() &#123;</span><br><span class="line">                public Boolean run() &#123; return hasNextService(); &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            return AccessController.doPrivileged(action, acc);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    private boolean hasNextService() &#123;</span><br><span class="line">        if (nextName != null) &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        if (configs == null) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                // 在classpath下查找META-INF/services/java.sql.Driver名字的文件夹</span><br><span class="line">                // private static final String PREFIX = &quot;META-INF/services/&quot;;</span><br><span class="line">                String fullName = PREFIX + service.getName();</span><br><span class="line">                if (loader == null)</span><br><span class="line">                    configs = ClassLoader.getSystemResources(fullName);</span><br><span class="line">                else</span><br><span class="line">                    configs = loader.getResources(fullName);</span><br><span class="line">            &#125; catch (IOException x) &#123;</span><br><span class="line">                fail(service, &quot;Error locating configuration files&quot;, x);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        while ((pending == null) || !pending.hasNext()) &#123;</span><br><span class="line">            if (!configs.hasMoreElements()) &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            pending = parse(service, configs.nextElement());</span><br><span class="line">        &#125;</span><br><span class="line">        nextName = pending.next();</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>整个流程</strong></p>
 <ol>
-<li>数据类型与字长</li>
-<li>switch语句</li>
-<li>index for 和foreach</li>
-<li>labeled loop</li>
-<li>异常体系</li>
-<li>集合体系结构</li>
-<li>迭代器</li>
-<li>集合和泛型</li>
+<li>Launcher初始化，将AppClassLoader设置为ContextClassLoader</li>
+<li>获取ContextClassLoader调用ServiceLoader.load(xxx.class,loader)</li>
+<li>初始化ServiceLoader,LazyIterator</li>
+<li>调用LazyIterator.hasNext(),在classpath下的META-INF/services/查找对应的xx接口的文件</li>
+<li>调用LazyIterator.next(),用APPClassLoader和全限定名来加载实现类</li>
 </ol>
-<hr>
-<p><strong>强化</strong></p>
-<ol start="9">
-<li>LinkedList</li>
-<li>ArrayList</li>
-<li>HashMap</li>
-<li>TreeSet</li>
-<li>Quene</li>
-<li>WeakHashMap</li>
-<li>集合只读视图</li>
-<li>集合同步视图</li>
-<li>deprecated集合</li>
-<li>线程体系结构</li>
-<li>线程状态转换</li>
-<li>valatile</li>
-<li>Atom对象</li>
-<li>deprecated线程API</li>
-<li>File对象</li>
-<li>thread local对象</li>
-<li>input/output流设计体系</li>
-<li>字符编码设置</li>
-<li>NIO</li>
-<li>正则表达式</li>
-<li>反射体系结构</li>
-<li>类初始化过程</li>
-<li>classloader层次结构设计</li>
-</ol>
-<hr>
-<p><strong>进阶</strong></p>
-<ol start="32">
-<li>有向图/根节点</li>
-<li>GC原理</li>
-<li>finalized和GC</li>
-<li>java安全类库</li>
-<li>SQL注入</li>
-<li>JDBC</li>
-<li>socket</li>
-<li>URL和URI</li>
-<li>资源状态错误原理</li>
-<li>JDK工具</li>
-<li>泛型集合协变</li>
-<li>优先级Quene</li>
-<li>stream与MapReadnve</li>
-<li>Collections/Arrays/Commons</li>
-<li>线程中断</li>
-<li>线程/线程组默认处理机制</li>
-<li>Callable/Future</li>
-<li>线程池/定时器</li>
-</ol>
-<hr>
-<p><strong>了解</strong></p>
-<ol start="50">
-<li>Semaphore/CountDownlatch/CyclicBarrier</li>
-<li>JNI：java层与C层数据双向访问</li>
-<li>JNI：java层与C层数据双向调用</li>
-<li>jNI库生成/加载机制</li>
-<li>SecurityManager</li>
-<li>java二进制保护</li>
-<li>JDBC参数调优</li>
-<li>数据库连接池参数调优</li>
-<li>JIT机制</li>
-<li>典型Carbage Collectors原理</li>
-<li>GC参数调优</li>
-<li>socket与ososI协议栈资源管理</li>
-<li>java层线程/C层线程/OS线程/CPU核（物理线程）关系</li>
-<li>class格式</li>
-<li>栈帧结构</li>
-<li>klass-oop</li>
-</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/03/28/IO和NIO (一)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/28/IO和NIO (一)/" itemprop="url">IO/NIO (一)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-28T00:48:26+08:00">
+                2020-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="阻塞IO模型"><a href="#阻塞IO模型" class="headerlink" title="阻塞IO模型"></a>阻塞IO模型</h4><p>最传统的一种IO模型，即在读写数据过程中会发生阻塞现象。当用户线程发出IO请求之后，内核会去查看数据是否就绪，如果没有就绪就会等待数据就绪，而用户线程就会处于阻塞状态，用户线程交出CPU。当数据就绪之后，内核会将数据拷贝到用户线程，并返回结果给用户线程，用户线程才解除block状态。典型的阻塞IO模型的例子为：data = socket.read();如果数据没有就绪，就会一直阻塞在read方法。</p>
+<h4 id="非阻塞IO模型"><a href="#非阻塞IO模型" class="headerlink" title="非阻塞IO模型"></a>非阻塞IO模型</h4><p>当用户线程发起一个read操作后，并不需要等待，而是马上就得到了一个结果。如果结果是一个error时，它就知道数据还没有准备好，于是它可以再次发送read操作。一旦内核中的数据准备好了，并且又再次收到了用户线程的请求，那么它马上就将数据拷贝到了用户线程，然后返回。<br>所以事实上，在非阻塞IO模型中，用户线程需要不断地询问内核数据是否就绪，也就说非阻塞IO不会交出CPU，而会一直占用CPU。<br>典型的非阻塞IO模型一般如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">while(true)&#123;</span><br><span class="line">	data = socket.read();</span><br><span class="line">	if(data!= error)&#123;</span><br><span class="line">		// 处理数据</span><br><span class="line">		break;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>但是对于非阻塞IO就有一个非常严重的问题，在while循环中需要不断地去询问内核数据是否就绪，这样会导致CPU占用率非常高，因此一般情况下很少使用while循环这种方式来读取数据。</p>
+<h4 id="多路复用IO模型"><a href="#多路复用IO模型" class="headerlink" title="多路复用IO模型"></a>多路复用IO模型</h4><p>多路复用IO模型是目前使用得比较多的模型。Java NIO实际上就是多路复用IO。在多路复用IO模型中，会有一个线程不断去轮询多个socket的状态，只有当socket真正有读写事件时，才真正调用实际的IO读写操作。因为在多路复用IO模型中，只需要使用一个线程就可以管理多个socket，系统不需要建立新的进程或者线程，也不必维护这些线程和进程，并且只有在真正有socket 读写事件进行时，才会使用IO资源，所以它大大减少了资源占用。在Java NIO中，是通过selector.select()去查询每个通道是否有到达事件，如果没有事件，则一直阻塞在那里，因此这种方式会导致用户线程的阻塞。多路复用IO模式，通过一个线程就可以管理多个socket，只有当socket真正有读写事件发生才会占用资源来进行实际的读写操作。因此，多路复用IO比较适合连接数比较多的情况。<br><strong>另外多路复用IO为何比非阻塞IO模型的效率高是因为在非阻塞IO中，不断地询问socket状态时通过用户线程去进行的，而在多路复用IO中，轮询每个socket状态是内核在进行的，这个效率要比用户线程要高的多。</strong><br>不过要注意的是，多路复用IO模型是通过轮询的方式来检测是否有事件到达，并且对到达的事件逐一进行响应。因此对于多路复用IO模型来说，一旦事件响应体很大，那么就会导致后续的事件迟迟得不到处理，并且会影响新的事件轮询。</p>
+<h4 id="信号驱动IO模型"><a href="#信号驱动IO模型" class="headerlink" title="信号驱动IO模型"></a>信号驱动IO模型</h4><p>在信号驱动IO模型中，当用户线程发起一个IO请求操作，会给对应的socket注册一个信号函数，然后用户线程会继续执行，当内核数据就绪时会发送一个信号给用户线程，用户线程接收到信号之后，便在信号函数中调用IO读写操作来进行实际的IO请求操作。</p>
+<h4 id="异步-IO-模型"><a href="#异步-IO-模型" class="headerlink" title="异步 IO 模型"></a>异步 IO 模型</h4><p>异步IO模型才是最理想的IO模型，在异步IO模型中，当用户线程发起read操作之后，立刻就可以开始去做其它的事。而另一方面，从内核的角度，当它受到一个asynchronous read之后，它会立刻返回，说明read请求已经成功发起了，因此不会对用户线程产生任何block。然后，内核会等待数据准备完成，然后将数据拷贝到用户线程，当这一切都完成之后，内核会给用户线程发送一个信号，告诉它read操作完成了。也就说用户线程完全不需要实际的整个IO操作是如何进行的，只需要先发起一个请求，当接收内核返回的成功信号时表示IO操作已经完成，可以直接去使用数据了。<br>也就说在异步IO模型中，IO操作的两个阶段都不会阻塞用户线程，这两个阶段都是由内核自动完成，然后发送一个信号告知用户线程操作已完成。用户线程中不需要再次调用IO函数进行具体的读写。这点是和信号驱动模型有所不同的，在信号驱动模型中，当用户线程接收到信号表示数据已经就绪，然后需要用户线程调用IO函数进行实际的读写操作；而在异步IO模型中，收到信号表示IO操作已经完成，不需要再在用户线程中调用IO函数进行实际的读写操作。<br><strong>注意，异步IO是需要操作系统的底层支持，在Java7中，提供了Asynchronous IO。</strong></p>
 
           
         
@@ -1735,7 +1759,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1781,7 +1805,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">77</span>
+                <span class="site-state-item-count">90</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1803,7 +1827,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
