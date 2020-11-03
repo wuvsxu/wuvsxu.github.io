@@ -308,6 +308,662 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/02/12/valatile/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/12/valatile/" itemprop="url">valatile关键字</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-12T15:23:46+08:00">
+                2020-02-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>起两个作用</strong></p>
+<ol>
+<li>内存的可见性<br>在程序工作的过程中，会存在工作内存（比如多线程工作时的变量内存）和主内存，在修改完这个线程对象的一瞬间，该线程的工作内存已经改变，主内存还没有改变，其他线程可能存在数据不一致的问题<br>使用valatile修饰后，该对象会立刻刷新到主内存和其他工内存。</li>
+<li>顺序性，<br>防止指令重排序。java在重新编译后，为了优化，字节码的顺序可能和我们所定义的顺序不一致，加上valatile，可以避免这种情况。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/02/12/装饰模式vs继承/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/12/装饰模式vs继承/" itemprop="url">装饰模式vs继承</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-12T15:22:52+08:00">
+                2020-02-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>装饰模式又名包装（Wrapper）模式</p>
+<ol>
+<li>装饰模式以对客户端透明的方式扩展对象的功能，是继承关系的一个替代方案</li>
+<li>装饰模式以对客户透明的方式动态的给一个对象附加更多的责任。换言之，客户端并不会觉得对象在装饰前和装饰后有什么不同。</li>
+<li>装饰模式可以在不创造更多子类的情况下。将对象的功能甲乙扩展。</li>
+<li>装饰模式吧客户端的调用委派到被装饰类。装饰模式的关键在于这种扩展完全是透明的</li>
+<li>装饰模式是在不必改变原类文件和使用继承的情况下，动态的扩展一个对象的功能。他是通过创建一个包装对象，也就是装饰来包裹真实的对象。</li>
+</ol>
+<h3 id="装饰模式的角色："><a href="#装饰模式的角色：" class="headerlink" title="装饰模式的角色："></a>装饰模式的角色：</h3><ol>
+<li>抽象构建角色（component）：给出一个抽象接口，以规范准备接受附加责任的对象。</li>
+<li>具体构建角色（concrete Component）：定义一个将要接受附加责任的类。</li>
+<li>装饰角色（Devorator）：持有一个构建对象的引用，并定义一个与抽象构建接口一致的接口。</li>
+<li>具体装饰角色（Concrete Decorator）:负责给构建对象“贴上”附加的责任。</li>
+</ol>
+<h3 id="装饰模式的特点："><a href="#装饰模式的特点：" class="headerlink" title="装饰模式的特点："></a>装饰模式的特点：</h3><ol>
+<li>装饰对象和真实对象有相同的接口。这样客户端对象就可以以和真实对象相同的方式和装饰对象交互。</li>
+<li>装饰对象包含一个真实对象的引用。</li>
+<li>装饰对象接受所有来自客户端的请求。它把这些请求转发给真实的对象。</li>
+<li>装饰对象可以在转发这些请求以前或者以后增加一些附加功能。这样就确保了在运行时，不用修改给定对象的结构就可以在外部增加附加的功能。在面向对象的设计中，通常是通过继承来是想对给定类的功能扩展。</li>
+</ol>
+<h3 id="核心代码："><a href="#核心代码：" class="headerlink" title="核心代码："></a>核心代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public interface Component&#123;</span><br><span class="line">	void doSomething();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Decoraror implements Component&#123;</span><br><span class="line"></span><br><span class="line">	private Component component;</span><br><span class="line">	</span><br><span class="line">	public Decorator(Component component)&#123;</span><br><span class="line">		this.component = component;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void doSomething()&#123;</span><br><span class="line">		component.doSomething();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2020/02/10/开发经验总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/10/开发经验总结/" itemprop="url">开发经验总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-10T10:02:43+08:00">
+                2020-02-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li>接口返回的数据在数据库对应字符串，最好不好返回boolean类型，返回int或者string，考虑到安全的话，不要讲数据库代表的数字含义直接返回，<br>如： 数据库是 1：成功；0：失败，返回时可以返回”success”:成功 ; “failure”:失败，返回时可以返回</li>
+<li>对于数据库内容一定要有追溯性，不能为了业务方便，直接按照业务执行。 如查询记录一些日志，与其他冲突时，先删除以前全部的相关日志，再新增。（属于设计问题）</li>
+<li>魔鬼数字，不要写成 STRING_1=”1” ,这种写法还是属于魔鬼数字，STRING_1代表什么含义还是不知道，不能偷懒。</li>
+<li>对于if条件，如果是两种情况，且确认值的情况下，需要全部判断(特别复杂的除外，如多个条件同时判断，多个条件结果重复)。<br>如： 字符串str可能是1或者2，请写成if(str == ‘1’){}else if(str ==’2’ ){}else{}不要写成 if(str ==’1’ ){}else{}</li>
+<li>命名最好不要简写，最终目标是，看见变量名就能知道这个变量是做什么用的，不要让别人猜，产生歧义。</li>
+<li>遇见代码格式变化较大或者较多时，将原版代码格式化提交后，再讲自己代码提交，这样方便对比追溯。</li>
+<li>不要使用反歧义的boolean。<br>如： 用true表示未完成，false表示完成。</li>
+<li>对于稍长的字符串，使用时如果不是自动生成，请复制后使用，不建议手打，容易出错。<br>如： mabatis中mapper.xml和mapper.java对应的表名，空间名。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/12/28/PreparedStatement/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/28/PreparedStatement/" itemprop="url">PreparedStatement</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-28T01:14:40+08:00">
+                2019-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>PreparedStatement 是一个特殊的Statement对象，如果我们只是来查询或者更新数据的话，最好用PreparedStatement代替Statement，因为它有以下有点：</p>
+<ul>
+<li>简化Statement中的操作</li>
+<li>提高执行语句的性能</li>
+<li>可读性和可维护性更好</li>
+<li>安全性更好。</li>
+<li>使用PreparedStatement能够预防SQL注入攻击，所谓SQL注入，指的是通过把SQL命令插入到Web表单提交或者输入域名或者页面请求的查询字符串，最终达到欺骗服务器，达到执行恶意SQL命令的目的。注入只对SQL语句的编译过程有破坏作用，而执行阶段只是把输入串作为数据处理，不再需要对SQL语句进行解析，因此也就避免了类似select * from user where name=’aa’ and password=’bb’ or 1=1的sql注入问题的发生。</li>
+</ul>
+<h5 id="Statement-和-PreparedStatement之间的关系和区别"><a href="#Statement-和-PreparedStatement之间的关系和区别" class="headerlink" title="Statement 和 PreparedStatement之间的关系和区别."></a>Statement 和 PreparedStatement之间的关系和区别.</h5><ul>
+<li>关系：PreparedStatement继承自Statement,都是接口</li>
+<li>区别：PreparedStatement可以使用占位符，是预编译的，批处理比Statement效率高</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/11/28/遮蔽obscure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/11/28/遮蔽obscure/" itemprop="url">隐藏（hide）和重写（override）和遮掩（obscure）遮蔽（shadow）和重载（overload）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-28T01:13:39+08:00">
+                2019-11-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="重写（override）"><a href="#重写（override）" class="headerlink" title="重写（override）"></a>重写（override）</h3><p>一个实例方法可以overide在其超类中可以访问到的具有相同签名的所有方法，从而可以动态分派（dynamic dispatch），VM基于运行时类型来选择要调用的覆写方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Base &#123;</span><br><span class="line">	public void f() &#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">class Derived extends Base &#123;</span><br><span class="line">	public void f() &#123;</span><br><span class="line">	&#125; // overrides Base.f()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="隐藏-hide"><a href="#隐藏-hide" class="headerlink" title="隐藏 hide"></a>隐藏 hide</h3><p>一个域，静态方法，或成员类型可以分别被隐藏（hide）在其超类可以访问到的具有相同名字的所有域、静态方法或成员类型。hide几个成员将阻止其被继承。<br>// 错误样例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Base &#123;</span><br><span class="line">	public static void f() &#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">class Derived extends Base &#123;</span><br><span class="line">	private static void f() &#123;</span><br><span class="line">	&#125; // hides Base.f()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>// 正确样例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Base &#123;</span><br><span class="line">	static int a = 1;</span><br><span class="line">	int b = 3;</span><br><span class="line">	public static void f() &#123;</span><br><span class="line">		System.out.println(&quot;Base&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">class Derived extends Base &#123;</span><br><span class="line">	static int a = 2;</span><br><span class="line">	int b = 4;</span><br><span class="line">	public static void f() &#123;</span><br><span class="line">		System.out.println(&quot;Derived&quot;);</span><br><span class="line">	&#125; // hides Base.f()</span><br><span class="line">&#125;</span><br><span class="line">public class Hide &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Base.f();</span><br><span class="line">		Derived.f();</span><br><span class="line">		System.out.println(Base.a);</span><br><span class="line">		System.out.println(Derived.a);</span><br><span class="line">		System.out.println((new Base()).b);</span><br><span class="line">		System.out.println((new Derived()).b);</span><br><span class="line">		System.out.println(((Base) (new Derived())).b);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="重载（overload）"><a href="#重载（overload）" class="headerlink" title="重载（overload）"></a>重载（overload）</h3><p>在某个类中的方法可以重载（overload）另一个方法，只要它们具有相同的名字和不同的签名。由调用所指定的重载方法是在编译期选定的。</p>
+<h3 id="遮蔽（shadow）"><a href="#遮蔽（shadow）" class="headerlink" title="遮蔽（shadow）"></a>遮蔽（shadow）</h3><p>一个变量、方法或类型可以分别遮蔽（shadow）在一个闭合的文本范围内的具有相同名字的所有变量、方法或类型。如果一个实体被遮蔽了，那么你用它的简单名是无法引用到它的；根据实体的不同，有时你根本就无法引用到它。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class WhoKnows &#123;</span><br><span class="line">	static String sentence = &quot;I don&apos;t know.&quot;;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		String sentence = &quot;I know!&quot;; // shadows static field</span><br><span class="line">		System.out.println(sentence); // prints local variable</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>编译器在选择在运行期被调用的方法时，所做的第一件事就是在肯定能找到该方法的范围内挑选。编译器将在包含具有恰当名字的方法的最小闭合范围内挑选，下例中就是ImportDuty类，它包含了从Object继承的方法toString。</li>
+<li>导入的toString方法被继承的toString方法所遮蔽（shadow）</li>
+<li>本身就属于某个范围的成员在该范围内与静态导入相比具有优先权。<br>以下代码无法被编译通过<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import static java.util.Arrays.toString;</span><br><span class="line">class ImportDuty &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		printArgs(1, 2, 3, 4, 5);</span><br><span class="line">	&#125;</span><br><span class="line">	static void printArgs(Object... args) &#123;</span><br><span class="line">		System.out.println(toString(args));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="遮掩（obscure）"><a href="#遮掩（obscure）" class="headerlink" title="遮掩（obscure）"></a>遮掩（obscure）</h3><p>一个变量可以遮掩具有相同名字的一个类型，只要它们都在同一个范围内：如果这个名字被用于变量与类型都被许可的范围，那么它将引用到变量上。相似地，一个变量或一个类型可以遮掩一个包。遮掩是唯一一种两个名字位于不同的名字空间的名字重用形式，这些名字空间包括：变量、包、方法或类型。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 变量遮掩了类型</span><br><span class="line">public class Obscure &#123;</span><br><span class="line">	static String System; // Obscures type java.lang.System</span><br><span class="line">	public static void main(String[ ] args) &#123;</span><br><span class="line">	// Next line won&apos;t compile: System refers to static field</span><br><span class="line">	System.out.println(”hello, obscure world!“);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当一个变量和一个类型具有相同的名字，并且他们位于相同的作用域时，变量名具有优先权 JLS 6.5.2，变量将遮掩（obscure）类型名。相似地，变量名和类型名可以遮掩包名。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class ShadowOfGray &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		System.out.println(X.Y.Z); // 输出结果White</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">class X &#123;</span><br><span class="line">	static class Y &#123;</span><br><span class="line">		static String Z = &quot;Black&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">	static C Y = new C();</span><br><span class="line">&#125;</span><br><span class="line">class C &#123;</span><br><span class="line">	String Z = &quot;White&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/10/28/iterator和iterable/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1011,661 +1667,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/03/30/【请停用以开发者模式运行的扩展程序】取消/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/30/【请停用以开发者模式运行的扩展程序】取消/" itemprop="url">【请停用以开发者模式运行的扩展程序】取消</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-30T19:52:21+08:00">
-                2019-03-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>作为程序员，chrome的使用必不可少，Chrome应用商店的扩展更是chrome的一大特色，但是经常使用这些扩展的，如果不是从应用商店下载的，每次启动的时候总会会有一个烦人的<strong>请停用以开发者模式运行的扩展程序</strong>提示。<br>虽然他不影响自己的工作，每次启动后随手点击下就可关闭，但是每次启动都要点击一下也挺费事，下面提供了一个一劳永逸的办法。</p>
-<h3 id="2020-03-28-更新"><a href="#2020-03-28-更新" class="headerlink" title="2020-03-28 更新"></a>2020-03-28 更新</h3><p>大约从Chrome79开始，使用上面的 version.dll替换会导致Chrome浏览器直接崩溃掉，需要换成这个更新的：version_v79.dll ，使用方法还是一样，解压后找到指定系统位数的version.dll放在和Chrome.exe同目录后重启Chrome即可。</p>
-<h3 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h3><p><a href="http://file.haoji.me/detail/27" target="_blank" rel="noopener">http://file.haoji.me/detail/27</a></p>
-<h3 id="2020-04-05-更新"><a href="#2020-04-05-更新" class="headerlink" title="2020-04-05 更新"></a>2020-04-05 更新</h3><p>如果是wind10的话，推荐安装微软的chrome内核的edge,和chrome基本一样，功能上更好用一些。<br>下载地址：<a href="https://www.microsoft.com/zh-cn/edge" target="_blank" rel="noopener">https://www.microsoft.com/zh-cn/edge</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2019/01/05/www-google-com网站打开一直显示证书无效，指向vmware/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/05/www-google-com网站打开一直显示证书无效，指向vmware/" itemprop="url">www.google.com网站打开一直显示证书无效，指向vmware</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-05T03:13:35+08:00">
-                2019-01-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近打开google搜索时，一直打不开<a href="http://www.google.com域名下的所有网页（其他的网页都可以打开，把默认搜索网址改为了https://ipv4.google.com/search），显示不是安全的链接，点开域名前的锁，显示域名无效。" target="_blank" rel="noopener">www.google.com域名下的所有网页（其他的网页都可以打开，把默认搜索网址改为了https://ipv4.google.com/search），显示不是安全的链接，点开域名前的锁，显示域名无效。</a><br>近期也安装了vmWare,然后<a href="http://www.google.com的颁发者和颁布者全部指向了VMWare。" target="_blank" rel="noopener">www.google.com的颁发者和颁布者全部指向了VMWare。</a><br>然后一直以为是VMWare的问题或者是<a href="http://www.google.com的证书问题。" target="_blank" rel="noopener">www.google.com的证书问题。</a><br>在网上重新安装了<a href="http://www.google.com的证书，VMWare也重新卸载安装，还是一直不行。" target="_blank" rel="noopener">www.google.com的证书，VMWare也重新卸载安装，还是一直不行。</a><br>后来无意间ping <a href="http://www.google.com时，发现ip竟然指向了" target="_blank" rel="noopener">www.google.com时，发现ip竟然指向了</a> 127.0.0.1,查询下本地hosts文件，并没有 定义<a href="http://www.google.com的ip。" target="_blank" rel="noopener">www.google.com的ip。</a><br>最后在网上查了下问题，可能是dns劫持的问题，修改dns为114然后在网上查了下问题，可能是dns劫持的问题，修改dns为114.114.114.114，备用为8.8.8.8。<br>问题得以解决</p>
-<p>就这个问题，在网上找到的有以下解决办法，都可以试一试。</p>
-<h5 id="办法-一"><a href="#办法-一" class="headerlink" title="办法 一"></a>办法 一</h5><p>安装了<a href="http://www.google.com的证书。" target="_blank" rel="noopener">www.google.com的证书。</a><br>下载地址：<a href="https://pki.google.com/GIAG2.crt" target="_blank" rel="noopener">https://pki.google.com/GIAG2.crt</a></p>
-<h5 id="办法-二"><a href="#办法-二" class="headerlink" title="办法 二"></a>办法 二</h5><p>重新安装或者修复VMWare，chrome。</p>
-<h5 id="办法-三"><a href="#办法-三" class="headerlink" title="办法 三"></a>办法 三</h5><p>ping <a href="http://www.google.com，如果ip为127.0.0.1。则将自动获取dns服务地址，改为选用下面的dns服务地址。" target="_blank" rel="noopener">www.google.com，如果ip为127.0.0.1。则将自动获取dns服务地址，改为选用下面的dns服务地址。</a><br>首选dns服务器：114.114.114.114<br>备用dns服务器：8.8.8.8</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/12/30/TortoiseSVN在win10安装后-svn地址获取的文件没有对勾感叹号/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/30/TortoiseSVN在win10安装后-svn地址获取的文件没有对勾感叹号/" itemprop="url">TortoiseSVN在win10安装后,svn地址获取的文件没有对勾感叹号</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-30T01:31:04+08:00">
-                2018-12-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天在新电脑上安装TortoiseSVN后，根据svn地址获取代码，但是获取的代码文件前没有显示对勾感叹号等。<br>后来在网上寻找解决方案。</p>
-<h5 id="方案1"><a href="#方案1" class="headerlink" title="方案1"></a>方案1</h5><p>在注册表中查询ShellIconOverlayIdentifiers文件下内容<br>看一下名字中带有Tortoise的文件夹是否排在最前面，如果不是的话，修改文件名（在文件名前面加空格就行），使带有Tortoise的文件夹排在最前面。<br>具体操作如下：<br>在运行里 输入 regedit 进入 注册表界面,<br>HKEY_LOCAL_MACHINE-&gt;SOFTWARE-&gt;Microsoft-&gt;Windows-&gt;CurrentVersion-&gt;Explorer-&gt;ShellIconOverlayIdentifiers<br>打开后发现Tortoise 系列（1TortoiseNormal,2TortoiseAdded等）前面有好多项,Tortoise系列排到了15名之后,难怪不显示。<br>现在的任务就是把它们提到前面了,修改一下它们的名字就好（我是看第一项的前缀是空格,说明空格的字符排序在前面,我就加了几个空格）,<br>我改后的名字如（ TortoiseNormal,TortoiseAdded等）,然后关闭再打开注册表,发现Tortoise系列系列图标已经排到前面了。<br>最后重启电脑，再看下svn获取文件，发下左下角图标已经显示了。</p>
-<h5 id="方案2"><a href="#方案2" class="headerlink" title="方案2"></a>方案2</h5><p>第二个方法是在svn获取地址的文件下<br>右键文件夹—&gt;TortoiseSVN—&gt;Settings—&gt;Icon Overlays（图标覆盖） —&gt;（  Status cache下—&gt;Shell前打对勾，Drives Types下—&gt;Fixed drives前面打对勾   ）<br>这样就可以了。</p>
-<p>我是通过第一种方法解决问题的。第二种情况应该很少出现。</p>
-<h5 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h5><p>参考地址1：<a href="https://blog.csdn.net/shichuwu/article/details/79808560" target="_blank" rel="noopener">https://blog.csdn.net/shichuwu/article/details/79808560</a><br>参考地址2：<a href="https://blog.csdn.net/Love_Legain/article/details/68489912" target="_blank" rel="noopener">https://blog.csdn.net/Love_Legain/article/details/68489912</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/12/05/mysql中遇到的奇怪问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/05/mysql中遇到的奇怪问题/" itemprop="url">mysql中遇到的奇怪问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-05T18:25:37+08:00">
-                2018-12-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>创建表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `testtable` (</span><br><span class="line">  `id` varchar(32) DEFAULT NULL,</span><br><span class="line">  `num` int(10) DEFAULT NULL</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8;</span><br></pre></td></tr></table></figure></p>
-<p>插入数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO `testtable` VALUES (&apos;111111111111&apos;, &apos;1&apos;);</span><br><span class="line">INSERT INTO `testtable` VALUES (&apos;222222222222&apos;, &apos;0&apos;);</span><br><span class="line">INSERT INTO `testtable` VALUES (&apos;333333333333&apos;, &apos;0&apos;);</span><br><span class="line">INSERT INTO `testtable` VALUES (&apos;444444444444&apos;, &apos;0&apos;);</span><br><span class="line">INSERT INTO `testtable` VALUES (&apos;555555555555&apos;, &apos;1&apos;);</span><br></pre></td></tr></table></figure></p>
-<p>查询语句<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">--语句1</span><br><span class="line">select * from testtable where num =&quot;r&quot;=&quot;fff&quot;;</span><br><span class="line">--语句2</span><br><span class="line">select &quot;r&quot;=&quot;t&quot; ;</span><br></pre></td></tr></table></figure></p>
-<p>语句1中 查询结果为</p>
-<table>
-<thead>
-<tr>
-<th>id</th>
-<th>num</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>111111111111</td>
-<td>1</td>
-</tr>
-<tr>
-<td>555555555555</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<p>语句2结果为</p>
-<table>
-<thead>
-<tr>
-<th>“r”=”t”</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>分析：按照网上查找的说法<br>select <em> from testtable where num =”r”=”fff”;<br>中会执行顺序为先执行括号中的<br> select </em> from testtable where num = (“r”=”fff”);<br>select “r”=”t” ;查询结果为 0；<br>按理说语句1应该对应 select <em> from testtable where num = 0；<br>但是查出来的结果为 select </em> from testtable where num = 1；的执行结果。</p>
-<p>这种问题是什么原因？</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/12/05/oracle-注册表字符集/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/05/oracle-注册表字符集/" itemprop="url">oracle 注册表字符集</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-05T17:57:50+08:00">
-                2018-12-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Oracle中字符集的问题。有些数据库中存的特殊字符，在读出来后，有的电脑上显示为问号。</p>
-<p>解决办法：<br>在注册表中搜索NLS_LANG，设置为 SIMPLIFIED CHINESE_CHINA.ZHS16GBK</p>
-<p>可以在oracle中查询 NLS_LANG<br>select userenv(‘language’) from dual ；<br>SIMPLIFIED CHINESE_CHINA.AL32UTF8。</p>
-<p>好吧。最后发现的问题是，导出脚本为sql,数据库存的特殊字符没法识别，转换为？。<br>最后的解决办法是，将含有特殊字符的表导出为dmp格式。重新导入就好了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1711,7 +1717,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">90</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1733,7 +1739,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

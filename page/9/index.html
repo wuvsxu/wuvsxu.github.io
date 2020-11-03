@@ -308,6 +308,925 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/29/mysql-触发器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/29/mysql-触发器/" itemprop="url">mysql 触发器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T10:35:18+08:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在ＭySQL中，触发器可以在你执行INSERT、UPDATE或DELETE的时候，执行一些特定的操作。在创建触发器时，可以指定是在执行SQL语句之前或是之后执行这些操作。通过触发器，你可以实现一些业务逻辑或一些数据限制，在简化应用程序逻辑，优化系统性能时非常有用。但在使用MySQL触发器也有一些注意事项，否则会导致触发器不能工作或不按指定的方式工作。</p>
+<h3 id="1-MySQL触发器注意事项"><a href="#1-MySQL触发器注意事项" class="headerlink" title="1. MySQL触发器注意事项"></a>1. MySQL触发器注意事项</h3><p>MySQL触发器使用非常简单，当然其功能也比较有限。当你在项目中大量使用触发器，那么你应该注意以下几点，以避免触发器不按预期效果执行：</p>
+<p>MySQL触发器能基于行触发，MySQL触发器始终时基于表中的一条记录触发，而不是一组SQL语句。因此，如果需要变动整个数据集而数据集数据量又较大时，触发器效果会非常低。<br>每一个表的一个事件只能定义一个触发器，例如：不能在AFTER INSERT上定义一个以上的触发器。</p>
+<h3 id="2-MySQL触发器可能导致的问题"><a href="#2-MySQL触发器可能导致的问题" class="headerlink" title="2. MySQL触发器可能导致的问题"></a>2. MySQL触发器可能导致的问题</h3><p>由于MySQL触发器基于行触发的特性，因此对于批量操作并不适合使用触发器，如：汇总表、缓存表等。触发器使用不当，可能会导致以下问题：</p>
+<p>一个MySQL触发器可能会关联到另外一张表或几张表的操作。因此，会导致数据库服务器负荷也会相应的增加一倍或几倍，如果出现因为触发器问题导致的性能问题，会很难定位问题位置和原因。<br>在基于锁的操作中，触发器可能会导致锁等待或死锁。触发器执行失败，原来执行的SQL语名也会执行失败。而因为触发器导致的失败结果和失败原因，往往很难排查。</p>
+<h3 id="3-MySQL触发器的好处"><a href="#3-MySQL触发器的好处" class="headerlink" title="3. MySQL触发器的好处"></a>3. MySQL触发器的好处</h3><p>对MySQL触发器有足够的认识和了解后，MySQL触发器会给我们带来极大的便利。当实现一些系统约束时，或在实现系统维护及针对操作数据的更新时，使用触发器都非常方便。在之胶我们介绍了MySQL触发器不适合做的一些工作，但MySQL触发器在以下一些应用场景中，会非常实用：</p>
+<ul>
+<li>基于行数据变更的日志记录。如：在用户订单系统中，我们可以基于用户订单数据状态的改变，使用触发器构建用户订单日志表数据。</li>
+<li>基于行数据变更的关系数据的更新。如：用户订单改变至付款或相关状态时，我们可以基于用户订单数据状态的改变，使用触发器改变用户会付款或相应状态信息。</li>
+<li>基于行数据变更的数据汇总。如：用户订单成交或失败，我们可以基于用户订单数据状态的改变，使用触发器构建用户总成交量或失败量汇总数据。</li>
+</ul>
+<p>以上仅列举了一些常用场景，合理的利用MySQL触发器会在数据库工作效率和开发效率上有很大的提高。</p>
+<p>由于MySQL触发器的种种问题，要求我们在创建触发器就应该充分考虑。避免使用不合适的触发器，并能对所有触发器有足够的了解，以便问题的定位和排查。</p>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
+<li>有begin end体，begin end;之间的语句可以写的简单或者复杂</li>
+<li>什么条件会触发：I、D、U</li>
+<li>什么时候触发：在增删改前或者后</li>
+<li>触发频率：针对每一行执行</li>
+<li>触发器定义在表上，附着在表上</li>
+</ul>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><ul>
+<li>尽量少使用触发器，不建议使用。</li>
+<li>假设触发器触发每次执行1s，insert table 500条数据，那么就需要触发500次触发器，光是触发器执行的时间就花费了500s，而insert 500条数据一共是1s，那么这个insert的效率就非常低了。因此我们特别需要注意的一点是触发器的begin end;之间的语句的执行效率一定要高，资源消耗要小。</li>
+<li>触发器尽量少的使用，因为不管如何，它还是很消耗资源，如果使用的话要谨慎的使用，确定它是非常高效的：触发器是针对每一行的；对增删改非常频繁的表上切记不要使用触发器，因为它会非常消耗资源。 <h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3></li>
+</ul>
+<h4 id="1、创建只有一个执行语句的触发器"><a href="#1、创建只有一个执行语句的触发器" class="headerlink" title="1、创建只有一个执行语句的触发器"></a>1、创建只有一个执行语句的触发器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE TRIGGER 触发器名 BEFORE|AFTER 触发事件 ON 表名 FOR EACH ROW 执行语句;</span><br></pre></td></tr></table></figure>
+<h4 id="2、创建有多个执行语句的触发器"><a href="#2、创建有多个执行语句的触发器" class="headerlink" title="2、创建有多个执行语句的触发器"></a>2、创建有多个执行语句的触发器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TRIGGER 触发器名 BEFORE|AFTER 触发事件</span><br><span class="line">ON 表名 FOR EACH ROW</span><br><span class="line">BEGIN</span><br><span class="line">        执行语句列表</span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+<p>例<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TRIGGER trig2 BEFORE DELETE</span><br><span class="line">  ON work FOR EACH ROW</span><br><span class="line">     BEGIN</span><br><span class="line">     　	INSERT INTO time VALUES(NOW());</span><br><span class="line">   　　	INSERT INTO time VALUES(NOW());</span><br><span class="line">	END</span><br></pre></td></tr></table></figure></p>
+<h4 id="3、NEW与OLD详解"><a href="#3、NEW与OLD详解" class="headerlink" title="3、NEW与OLD详解"></a>3、NEW与OLD详解</h4><p>MySQL 中定义了 NEW 和 OLD，用来表示触发器的所在表中，触发了触发器的那一行数据，来引用触发器中发生变化的记录内容，具体地：</p>
+<ul>
+<li><p>在INSERT型触发器中，NEW用来表示将要（BEFORE）或已经（AFTER）插入的新数据；</p>
+</li>
+<li><p>在UPDATE型触发器中，OLD用来表示将要或已经被修改的原数据，NEW用来表示将要或已经修改为的新数据；</p>
+</li>
+<li><p>在DELETE型触发器中，OLD用来表示将要或已经被删除的原数据；</p>
+</li>
+</ul>
+<p>另外，OLD是只读的，而NEW则可以在触发器中使用 SET 赋值，这样不会再次触发触发器，造成循环调用（如每插入一个学生前，都在其学号前加“2013”）。</p>
+<h4 id="4、查看触发器"><a href="#4、查看触发器" class="headerlink" title="4、查看触发器"></a>4、查看触发器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SHOW TRIGGERS;</span><br><span class="line">显示所有触发器的基本信息；无法查询指定的触发器。</span><br><span class="line">SELECT * FROM information_schema.triggers;</span><br><span class="line">显示所有触发器的详细信息；同时，该方法可以查询制定触发器的详细信息。</span><br></pre></td></tr></table></figure>
+<p>如果加where，可以写成<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from information_schema.triggers </span><br><span class="line">    <span class="built_in">where</span> trigger_name=<span class="string">'tri_insert_order'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>所有触发器信息都存储在information_schema数据库下的triggers表中，可以使用SELECT语句查询，如果触发器信息过多，最好通过TRIGGER_NAME字段指定查询。</p>
+<h4 id="5、删除触发器"><a href="#5、删除触发器" class="headerlink" title="5、删除触发器"></a>5、删除触发器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DROP TRIGGER [IF EXISTS] [schema_name.]trigger_name</span><br></pre></td></tr></table></figure>
+<p>删除触发器之后最好使用上面的方法查看一遍；同时，也可以使用database.trig来指定某个数据库中的触发器。</p>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>在做支付宝订单支付的时，支付宝支付接口在一个单独的项目中，在后台调取接口生成订单去支付，当完成支付时，因为回调方法在另一个项目中，没法修改，只能用触发器来实现对表数据的监控，来完成剩下的业务逻辑。</p>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">BEGIN</span><br><span class="line">  DECLARE <span class="keyword">done</span> INT DEFAULT FALSE ; /*遍历数据结束标志 */</span><br><span class="line">  <span class="built_in">declare</span> lenght_time int(5); /*时长*/</span><br><span class="line">  <span class="built_in">declare</span>  column_id varchar(32);  /*栏目id*/</span><br><span class="line">  /*定义游标 以及赋值*/</span><br><span class="line">  <span class="built_in">declare</span> column_ids cursor <span class="keyword">for</span> </span><br><span class="line">          select sod.service_id,sod.duration  from sys_order_detail sod  <span class="built_in">where</span> order_id <span class="keyword">in</span></span><br><span class="line">        (SELECT t.order_id</span><br><span class="line">        FROM sys_order_info t</span><br><span class="line">        WHERE order_number = NEW.out_trade_no);</span><br><span class="line">  DECLARE CONTINUE HANDLER FOR NOT FOUND SET <span class="keyword">done</span> = TRUE ;/* 将结束标志绑定到游标  */</span><br><span class="line">  </span><br><span class="line">   IF (NEW.trade_status = <span class="string">'TRADE_SUCCESS'</span>) THEN</span><br><span class="line">   </span><br><span class="line">   UPDATE sys_order_info </span><br><span class="line"></span><br><span class="line">   <span class="built_in">set</span> order_status = <span class="string">'2'</span></span><br><span class="line">   </span><br><span class="line">   <span class="built_in">where</span> order_number = NEW.out_trade_no;</span><br><span class="line">		/*打开游标*/</span><br><span class="line">		open  column_ids ;</span><br><span class="line">			/*循环开始*/</span><br><span class="line">			read_loop:loop</span><br><span class="line">				/*提前游标的值  */</span><br><span class="line">				fetch  column_ids into column_id ,lenght_time; </span><br><span class="line">				/*声明结束的时候*/</span><br><span class="line">				<span class="keyword">if</span> <span class="keyword">done</span> </span><br><span class="line">				<span class="keyword">then</span> leave read_loop ; end <span class="keyword">if</span> ;</span><br><span class="line">				/*根据时长和栏目id修改时长*/				</span><br><span class="line">				UPDATE xypt_column SET end_time = DATE_ADD(end_time, INTERVAL lenght_time MONTH) <span class="built_in">where</span> id =column_id	;			</span><br><span class="line">			end loop ;  /*循环结束*/</span><br><span class="line">		close column_ids ;/*关闭游标*/</span><br><span class="line">	ELSE</span><br><span class="line">     </span><br><span class="line">    UPDATE sys_order_info </span><br><span class="line"></span><br><span class="line">   <span class="built_in">set</span> order_status = <span class="string">'3'</span></span><br><span class="line">   </span><br><span class="line">   <span class="built_in">where</span> order_number = NEW.out_trade_no;</span><br><span class="line"></span><br><span class="line"> 	 END IF;</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<h4 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h4><p><a href="https://itbilu.com/database/mysql/4y77zMXel.html" target="_blank" rel="noopener">点击查看触发器概念 https://itbilu.com/database/mysql/4y77zMXel.html</a><br><a href="https://www.cnblogs.com/geaozhang/p/6819648.html" target="_blank" rel="noopener">点击查看触发器应用 https://www.cnblogs.com/geaozhang/p/6819648.html</a><br><a href="https://dev.mysql.com/doc/refman/5.5/en/trigger-syntax.html" target="_blank" rel="noopener">点击查看官网示例 https://dev.mysql.com/doc/refman/5.5/en/trigger-syntax.html</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/29/java-List接口/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/29/java-List接口/" itemprop="url">java List接口</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T02:02:58+08:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/后端/" itemprop="url" rel="index">
+                    <span itemprop="name">后端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>Interface List<e> 继承自Collection<e>, Iterable<e>，实现类有AbstractList, AbstractSequentialList, ArrayList, AttributeList, CopyOnWriteArrayList, LinkedList, RoleList, RoleUnresolvedList, Stack, Vector，最常用的实现类是ArrayList。</e></e></e></p>
+<h3 id="常用方法概要"><a href="#常用方法概要" class="headerlink" title="常用方法概要"></a>常用方法概要</h3><h4 id="接口方法-（有描述的为常用方法）"><a href="#接口方法-（有描述的为常用方法）" class="headerlink" title="接口方法 （有描述的为常用方法）"></a>接口方法 （有描述的为常用方法）</h4><table>
+<thead>
+<tr>
+<th>修饰符和返回类型</th>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>boolean</td>
+<td>add(E e)</td>
+<td>将指定的元素追加到此列表的末尾（可选操作）。</td>
+</tr>
+<tr>
+<td>void</td>
+<td>add(int index, E element)</td>
+<td>将指定的元素插入此列表中的指定位置（可选操作）。</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>addAll(Collection&lt;? extends E&gt; c)</td>
+<td></td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>addAll(int index, Collection&lt;? extends E&gt; c)</td>
+<td></td>
+</tr>
+<tr>
+<td>void</td>
+<td>clear()</td>
+<td>从此列表中删除所有元素（可选操作）。</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>contains(Object o)</td>
+<td>如果此列表包含指定的元素，则返回 true 。</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>containsAll(Collection&lt;?&gt; c)</td>
+<td></td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>equals(Object o)</td>
+<td></td>
+</tr>
+<tr>
+<td>E</td>
+<td>get(int index)</td>
+<td>返回此列表中指定位置的元素。</td>
+</tr>
+<tr>
+<td>int</td>
+<td>hashCode()</td>
+<td>返回此列表的哈希码值。</td>
+</tr>
+<tr>
+<td>int</td>
+<td>indexOf(Object o)</td>
+<td>返回此列表中指定元素的第一次出现的索引，如果此列表不包含元素，则返回-1</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>isEmpty()</td>
+<td></td>
+</tr>
+<tr>
+<td>Iterator<e></e></td>
+<td>iterator()</td>
+<td></td>
+</tr>
+<tr>
+<td>int</td>
+<td>lastIndexOf(Object o)</td>
+<td></td>
+</tr>
+<tr>
+<td>ListIterator<e></e></td>
+<td>listIterator()</td>
+<td></td>
+</tr>
+<tr>
+<td>ListIterator<e></e></td>
+<td>listIterator(int index)</td>
+<td></td>
+</tr>
+<tr>
+<td>E</td>
+<td>remove(int index)</td>
+<td>删除该列表中指定位置的元素（可选操作）。</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>remove(Object o)</td>
+<td>从列表中删除指定元素的第一个出现（如果存在）（可选操作）。</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>removeAll(Collection&lt;?&gt; c)</td>
+<td></td>
+</tr>
+<tr>
+<td>default void</td>
+<td>replaceAll(UnaryOperator<e> operator)</e></td>
+<td></td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>retainAll(Collection&lt;?&gt; c)</td>
+<td></td>
+</tr>
+<tr>
+<td>E</td>
+<td>set(int index, E element)</td>
+<td>用指定的元素（可选操作）替换此列表中指定位置的元素。</td>
+</tr>
+<tr>
+<td>int</td>
+<td>size()</td>
+<td></td>
+</tr>
+<tr>
+<td>default void</td>
+<td>sort(Comparator&lt;? super E&gt; c)</td>
+<td></td>
+</tr>
+<tr>
+<td>default Spliterator<e></e></td>
+<td>spliterator()</td>
+<td></td>
+</tr>
+<tr>
+<td>List<e></e></td>
+<td>subList(int fromIndex, int toIndex)</td>
+<td></td>
+</tr>
+<tr>
+<td>Object[]</td>
+<td>toArray()</td>
+<td>以正确的顺序（从第一个到最后一个元素）返回一个包含此列表中所有元素的数组。</td>
+</tr>
+<tr>
+<td><t> T[]</t></td>
+<td>toArray(T[] a)</td>
+<td>以正确的顺序返回一个包含此列表中所有元素的数组（从第一个到最后一个元素）; 返回的数组的运行时类型是指定数组的运行时类型</td>
+</tr>
+</tbody>
+</table>
+<h4 id="list去重方法"><a href="#list去重方法" class="headerlink" title="list去重方法"></a>list去重方法</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; lst1=new ArrayList&lt;&gt;();</span><br><span class="line">lst1.add(<span class="string">"aa"</span>);</span><br><span class="line">lst1.add(<span class="string">"dd"</span>);</span><br><span class="line">lst1.add(<span class="string">"ss"</span>);</span><br><span class="line">lst1.add(<span class="string">"aa"</span>);</span><br><span class="line">lst1.add(<span class="string">"ss"</span>);</span><br><span class="line">//-----------------------------------</span><br><span class="line">//方法 1.</span><br><span class="line"><span class="keyword">for</span> (int i = 0; i &lt;lst1.size()-1; i++) &#123;</span><br><span class="line">	<span class="keyword">for</span> (int j = lst1.size()-1; j &gt;i; j--) &#123;</span><br><span class="line">		<span class="keyword">if</span> (lst1.get(j).equals(lst1.get(i))) &#123;</span><br><span class="line">			lst1.remove(j);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(lst1);</span><br><span class="line">//-----------------------------------</span><br><span class="line">//方法 2.</span><br><span class="line">List&lt;String&gt; lst2=new ArrayList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (String s:lst1) &#123;</span><br><span class="line">	<span class="keyword">if</span> (Collections.frequency(lst2, s)&lt;1) &#123;</span><br><span class="line">		lst2.add(s);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(lst2);</span><br></pre></td></tr></table></figure>
+<h3 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h3><p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" target="_blank" rel="noopener">java 官方文档 https://docs.oracle.com/javase/8/docs/api/java/util/List.html</a><br><a href="http://wziyou.top:19080/download/chm/jdk_api_1.8.chm" target="_blank" rel="noopener">中文文档下载</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/29/ECharts-地图统计数据/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/29/ECharts-地图统计数据/" itemprop="url">ECharts 地图统计数据</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T01:10:19+08:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/数据可视化/" itemprop="url" rel="index">
+                    <span itemprop="name">数据可视化</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 为ECharts准备一个具备大小（宽高）的Dom --&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;div id=<span class="string">"main"</span> style=<span class="string">"height:400px;width:800px;margin: auto;"</span>&gt;&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;!-- ECharts单文件引入 --&gt;</span><br><span class="line">    &lt;script src=<span class="string">"http://echarts.baidu.com/build/dist/echarts.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script <span class="built_in">type</span>=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">        // 路径配置</span><br><span class="line">        require.config(&#123;</span><br><span class="line">            paths: &#123;</span><br><span class="line">                echarts: <span class="string">'http://echarts.baidu.com/build/dist'</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        // 使用</span><br><span class="line">        require([<span class="string">'echarts'</span>, </span><br><span class="line">		<span class="string">'echarts/chart/line'</span>, </span><br><span class="line">		<span class="string">'echarts/chart/bar'</span>, // 使用柱状图就加载bar模块，按需加载</span><br><span class="line">		<span class="string">'echarts/chart/map'</span>,  ], </span><br><span class="line">		<span class="keyword">function</span>(ec) &#123;</span><br><span class="line">			// 基于准备好的dom，初始化echarts图表</span><br><span class="line">		var myChart = ec.init(document.getElementById(<span class="string">'main'</span>));</span><br><span class="line"></span><br><span class="line">			var option = &#123;</span><br><span class="line"></span><br><span class="line">				title: &#123;</span><br><span class="line">					text: <span class="string">'访问来访分析'</span>,</span><br><span class="line">					x:<span class="string">"center"</span></span><br><span class="line">					/*subtext: <span class="string">'数据来自国家统计局'</span> */</span><br><span class="line">				&#125;,</span><br><span class="line">				tooltip: &#123;</span><br><span class="line">					trigger: <span class="string">'item'</span></span><br><span class="line">				&#125;,</span><br><span class="line">				</span><br><span class="line">				dataRange: &#123;</span><br><span class="line">					orient: <span class="string">'horizontal'</span>,</span><br><span class="line">					min: 0,</span><br><span class="line">					max: 55000,</span><br><span class="line">					text: [<span class="string">'高'</span>, <span class="string">'低'</span>],</span><br><span class="line">					// 文本，默认为数值文本</span><br><span class="line">					splitNumber: 0,</span><br><span class="line">					x: <span class="string">"20%"</span></span><br><span class="line">				&#125;,</span><br><span class="line">				toolbox: &#123;</span><br><span class="line">					show: <span class="literal">false</span>,</span><br><span class="line">					orient: <span class="string">'vertical'</span>,</span><br><span class="line">					x: <span class="string">'right'</span>,</span><br><span class="line">					y: <span class="string">'center'</span>,</span><br><span class="line">					feature: &#123;</span><br><span class="line">						mark: &#123;</span><br><span class="line">							show: <span class="literal">true</span></span><br><span class="line">						&#125;,</span><br><span class="line">						dataView: &#123;</span><br><span class="line">							show: <span class="literal">true</span>,</span><br><span class="line">							readOnly: <span class="literal">false</span></span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;,</span><br><span class="line">				series: [&#123;</span><br><span class="line">					name: <span class="string">'累积访问次数'</span>,</span><br><span class="line">					<span class="built_in">type</span>: <span class="string">'map'</span>,</span><br><span class="line">					mapType: <span class="string">'china'</span>,</span><br><span class="line">					mapLocation: &#123;</span><br><span class="line">						x: <span class="string">'center'</span></span><br><span class="line">					&#125;,					</span><br><span class="line">					itemStyle: &#123;</span><br><span class="line">						normal: &#123;</span><br><span class="line">							label: &#123;</span><br><span class="line">								show: <span class="literal">true</span></span><br><span class="line">							&#125;</span><br><span class="line">						&#125;,</span><br><span class="line">						emphasis: &#123;</span><br><span class="line">							label: &#123;</span><br><span class="line">								show: <span class="literal">true</span></span><br><span class="line">							&#125;</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;,</span><br><span class="line">					data: [ </span><br><span class="line">					&#123;name:<span class="string">'北京'</span>, value:16251.93&#125;,</span><br><span class="line">					&#123;name:<span class="string">'福建'</span>, value:17560.18&#125;,</span><br><span class="line">					&#123;name:<span class="string">'上海'</span>, value:19195.69&#125;,</span><br><span class="line">					&#123;name:<span class="string">'湖北'</span>, value:19632.26&#125;,</span><br><span class="line">					&#123;name:<span class="string">'湖南'</span>, value:19669.56&#125;,</span><br><span class="line">					&#123;name:<span class="string">'四川'</span>, value:21026.68&#125;,</span><br><span class="line">					&#123;name:<span class="string">'辽宁'</span>, value:22226.7&#125;,</span><br><span class="line">					&#123;name:<span class="string">'河北'</span>, value:24515.76&#125;,</span><br><span class="line">					&#123;name:<span class="string">'河南'</span>, value:26931.03&#125;,</span><br><span class="line">					&#123;name:<span class="string">'浙江'</span>, value:32318.85&#125;,</span><br><span class="line">					&#123;name:<span class="string">'山东'</span>, value:45361.85&#125;,</span><br><span class="line">					&#123;name:<span class="string">'江苏'</span>, value:49110.27&#125;,</span><br><span class="line">					&#123;name:<span class="string">'广东'</span>, value:53210.28&#125;]</span><br><span class="line">					&#125;],</span><br><span class="line">				animation: <span class="literal">false</span></span><br><span class="line">			&#125;;</span><br><span class="line">			// 为echarts对象加载数据 </span><br><span class="line">			myChart.setOption(option);</span><br><span class="line">		&#125;);</span><br><span class="line">    &lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><a href="http://www.wziyou.top:19080/demo/ECharts_demo2.html" target="_blank" rel="noopener">点击查看 ECharts_demo2.html</a></p>
+<h4 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h4><p><a href="http://echarts.baidu.com/echarts2/doc/example/mix3.html" target="_blank" rel="noopener">参考地址:http://echarts.baidu.com/echarts2/doc/example/mix3.html</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/28/ECharts-制作折线图-柱状图/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/28/ECharts-制作折线图-柱状图/" itemprop="url">ECharts 制作折线图/统计图</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-28T22:42:45+08:00">
+                2018-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/数据可视化/" itemprop="url" rel="index">
+                    <span itemprop="name">数据可视化</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="官方api"><a href="#官方api" class="headerlink" title="官方api"></a>官方api</h3><p><a href="http://echarts.baidu.com/examples/" target="_blank" rel="noopener">官网 http://echarts.baidu.com/examples/</a><br><a href="http://echarts.baidu.com/api.html#echarts" target="_blank" rel="noopener">官方api http://echarts.baidu.com/api.html#echarts</a><br><a href="http://echarts.baidu.com/option.html#title" target="_blank" rel="noopener">配置项详细介绍 http://echarts.baidu.com/option.html#title</a></p>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>ECharts2.0提供了常规的折线图、柱状图、散点图、饼图、K线图，用于统计的盒形图，用于地理数据可视化的地图、热力图、线图，用于关系数据可视化的关系图、treemap、旭日图，多维数据可视化的平行坐标，还有用于 BI 的漏斗图，仪表盘，并且支持图与图之间的混搭。<br>ECharts 3 开始加强了对多维数据的支持。</p>
+<h3 id="直接贴代码"><a href="#直接贴代码" class="headerlink" title="直接贴代码"></a>直接贴代码</h3><p>以下部分配置项注释已加，还需要配置其他请查看<a href="http://echarts.baidu.com/option.html#title" target="_blank" rel="noopener">配置项详细介绍</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line">    &lt;title&gt;ECharts&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;!-- 为ECharts准备一个具备大小（宽高）的Dom --&gt;</span><br><span class="line">&lt;div&gt;</span><br><span class="line">	&lt;div id=<span class="string">"main"</span> style=<span class="string">"height:400px;width:800px;margin: auto;"</span>&gt;&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;!-- ECharts单文件引入 --&gt;</span><br><span class="line">&lt;script src=<span class="string">"http://echarts.baidu.com/build/dist/echarts.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">&lt;script <span class="built_in">type</span>=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">// 路径配置</span><br><span class="line">require.config(&#123;</span><br><span class="line">	paths: &#123;</span><br><span class="line">		echarts: <span class="string">'http://echarts.baidu.com/build/dist'</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line">// 使用</span><br><span class="line">require(</span><br><span class="line">	[</span><br><span class="line">	<span class="string">'echarts'</span>,</span><br><span class="line">	<span class="string">'echarts/chart/line'</span> ,</span><br><span class="line">	<span class="string">'echarts/chart/bar'</span>, // 使用柱状图就加载bar模块，按需加载				</span><br><span class="line">	],</span><br><span class="line"><span class="keyword">function</span> (ec) &#123;			</span><br><span class="line">	// 基于准备好的dom，初始化echarts图表</span><br><span class="line">	var myChart = ec.init(document.getElementById(<span class="string">'main'</span>)); 		</span><br><span class="line">	var option = &#123;</span><br><span class="line">		title : &#123;//标题</span><br><span class="line">			text: <span class="string">'一周内流量统计变化'</span>,					 </span><br><span class="line">			x:<span class="string">'center'</span>,	//此处使用 left:<span class="string">"center"</span>,textAlign:<span class="string">"center"</span>均不可用，</span><br><span class="line">						//换成x后才好使，下面的同理</span><br><span class="line">		&#125;,</span><br><span class="line">		tooltip: &#123; //提示框</span><br><span class="line">			show: <span class="literal">true</span>, </span><br><span class="line">			trigger: <span class="string">'axis'</span> //坐标轴触发</span><br><span class="line">		&#125;,</span><br><span class="line">		toolbox: &#123; //工具箱</span><br><span class="line">			show: <span class="literal">true</span>, //是否展示按钮</span><br><span class="line">			x:<span class="string">'left'</span>,</span><br><span class="line">			feature: &#123;</span><br><span class="line">				magicType: &#123; //模式切换（折线图，柱状图）</span><br><span class="line">					<span class="built_in">type</span>: [<span class="string">'line'</span>, <span class="string">'bar'</span>, ],</span><br><span class="line">					show: <span class="literal">true</span></span><br><span class="line">				&#125;,</span><br><span class="line">				dataZoom: &#123; //区域放大</span><br><span class="line">					show: <span class="literal">true</span></span><br><span class="line">				&#125;,</span><br><span class="line">				dataView: &#123; //数据视图</span><br><span class="line">					show: <span class="literal">true</span></span><br><span class="line">				&#125;,</span><br><span class="line">				restore: &#123; //还原按钮</span><br><span class="line">					show: <span class="literal">true</span></span><br><span class="line">				&#125;,</span><br><span class="line">				saveAsImage: &#123; //保存图片按钮</span><br><span class="line">					show: <span class="literal">true</span></span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;,</span><br><span class="line">		legend: &#123; //名称</span><br><span class="line">			data:[<span class="string">'统计'</span>,<span class="string">"累计"</span>],</span><br><span class="line">			 y:<span class="string">'8%'</span>,</span><br><span class="line">		&#125;,		</span><br><span class="line">		xAxis : [ //x轴数据</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="built_in">type</span> : <span class="string">'category'</span>, //分类</span><br><span class="line">				boundaryGap : <span class="literal">true</span>,  //数据边界线</span><br><span class="line">				data : </span><br><span class="line">				[<span class="string">'2018-08-21'</span>,<span class="string">'2018-08-22'</span>,</span><br><span class="line">				<span class="string">'2018-08-23'</span>,<span class="string">'2018-08-24'</span>,</span><br><span class="line">				<span class="string">'2018-08-25'</span>,<span class="string">'2018-08-26'</span>,</span><br><span class="line">				<span class="string">'2018-08-27'</span>]</span><br><span class="line">			&#125;</span><br><span class="line">		],</span><br><span class="line">		yAxis : [ //y轴数据</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="built_in">type</span> : <span class="string">'value'</span></span><br><span class="line">			&#125;</span><br><span class="line">		],</span><br><span class="line">		series : [</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="string">"name"</span>:<span class="string">"统计"</span>,</span><br><span class="line">				<span class="string">"type"</span>:<span class="string">"line"</span>,				</span><br><span class="line">				<span class="string">"data"</span>:[5, 20, 40, 10, 10, 20,55]</span><br><span class="line">			&#125;,</span><br><span class="line">			 &#123;</span><br><span class="line">				<span class="string">"name"</span>:<span class="string">"累计"</span>,</span><br><span class="line">				<span class="string">"type"</span>:<span class="string">"line"</span>,				</span><br><span class="line">				<span class="string">"data"</span>: [0,21,15,6,0,0,3]</span><br><span class="line">			&#125;</span><br><span class="line">		]</span><br><span class="line">	&#125;;</span><br><span class="line">	</span><br><span class="line">	// 为echarts对象加载数据 </span><br><span class="line">	myChart.setOption(option); </span><br><span class="line">	&#125;</span><br><span class="line">);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><a href="http://www.wziyou.top:19080/demo/ECharts_demo.html" target="_blank" rel="noopener">点击查看效果 ECharts_demo.html</a></p>
+<h5 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h5><p><a href="http://echarts.baidu.com/echarts2/doc/example/line2.html" target="_blank" rel="noopener">参考地址:http://echarts.baidu.com/echarts2/doc/example/line2.html</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/27/mysqlql计算一段时间内-表中每天的数据量/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无恤">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/27/mysqlql计算一段时间内-表中每天的数据量/" itemprop="url">mysqlql计算一段时间内 表中每天的数据量</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-27T04:44:41+08:00">
+                2018-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="原sql为"><a href="#原sql为" class="headerlink" title="原sql为"></a>原sql为</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> SELECT</span><br><span class="line">   CAST(tt.startTime AS char)	  x,count(tt.id) y</span><br><span class="line">FROM</span><br><span class="line">    (</span><br><span class="line">        SELECT</span><br><span class="line">            t.id id,</span><br><span class="line">            date(t.start_time) startTime</span><br><span class="line">        FROM</span><br><span class="line">            sys_visit_log t</span><br><span class="line">        WHERE</span><br><span class="line">            t.prod_id IN (</span><br><span class="line">                SELECT</span><br><span class="line">                    xp.id</span><br><span class="line">                FROM</span><br><span class="line">                    xypt_production xp</span><br><span class="line">                WHERE</span><br><span class="line">                    xp.org_id = <span class="comment">#&#123;orgId,jdbcType=VARCHAR&#125;</span></span><br><span class="line">            )</span><br><span class="line">    ) tt</span><br><span class="line"><span class="built_in">where</span> tt.startTime &amp;lt; date(NOW()) and tt.startTime &amp;gt;= date( DATE_SUB(NOW(), INTERVAL 7 DAY))</span><br><span class="line">GROUP BY startTime</span><br><span class="line">ORDER BY tt.startTime ASC</span><br></pre></td></tr></table></figure>
+<h5 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2018-08-20	16</span><br><span class="line">2018-08-22	21</span><br><span class="line">2018-08-23	15</span><br><span class="line">2018-08-24	6</span><br></pre></td></tr></table></figure>
+<h3 id="修改后改为"><a href="#修改后改为" class="headerlink" title="修改后改为"></a>修改后改为</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	CAST(a.x AS CHAR) x,</span><br><span class="line">	count(tt.id) y</span><br><span class="line">FROM</span><br><span class="line">	(</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 1 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 2 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 3 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 4 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 5 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 6 DAY) ) x</span><br><span class="line">		UNION ALL</span><br><span class="line">		SELECT date( DATE_SUB(NOW(), INTERVAL 7 DAY) ) x</span><br><span class="line">	) a</span><br><span class="line">LEFT JOIN (</span><br><span class="line">	SELECT</span><br><span class="line">		t.id id,</span><br><span class="line">		date(t.start_time) startTime</span><br><span class="line">	FROM</span><br><span class="line">		sys_visit_log t</span><br><span class="line">	WHERE</span><br><span class="line">		t.prod_id IN (</span><br><span class="line">			SELECT 	xp.id</span><br><span class="line">			FROM xypt_production xp</span><br><span class="line">			WHERE xp.org_id = <span class="string">'a4b1ccf70e4c47978e7931356ab43577'</span></span><br><span class="line">		)</span><br><span class="line">	AND date(t.start_time) &lt; date(NOW())</span><br><span class="line">	AND date(t.start_time) &gt;= date(</span><br><span class="line">		DATE_SUB(NOW(), INTERVAL 7 DAY)</span><br><span class="line">	)</span><br><span class="line">) tt ON a.x = tt.startTime</span><br><span class="line">GROUP BY a.x</span><br><span class="line">ORDER BY a.x ASC</span><br></pre></td></tr></table></figure>
+<h5 id="结果-1"><a href="#结果-1" class="headerlink" title="结果"></a>结果</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">2018-08-20	16</span><br><span class="line">2018-08-21	0</span><br><span class="line">2018-08-22	21</span><br><span class="line">2018-08-23	15</span><br><span class="line">2018-08-24	6</span><br><span class="line">2018-08-25	0</span><br><span class="line">2018-08-26	0</span><br></pre></td></tr></table></figure>
+<h3 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h3><p><a href="https://stackoverflow.com/questions/16636433/mysql-count-to-return-0-if-no-records-found" target="_blank" rel="noopener">https://stackoverflow.com/questions/16636433/mysql-count-to-return-0-if-no-records-found</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/27/mybatis坑点/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1009,966 +1928,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/23/chrome-上传下载时卡死问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/23/chrome-上传下载时卡死问题/" itemprop="url">chrome 上传下载时卡死问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-23T00:50:41+08:00">
-                2018-08-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/浏览器/" itemprop="url" rel="index">
-                    <span itemprop="name">浏览器</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="原因和解决办法"><a href="#原因和解决办法" class="headerlink" title="原因和解决办法"></a>原因和解决办法</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">搜狗输入法与chrome冲突，搜狗卸载重新安装就好了。</span><br></pre></td></tr></table></figure>
-<p>近期遇到这种问题，将chrome重新安装了好多次都没用。装成低版本的chrome时就好了，但是因为版本太低，好多插件不起效，用起来还是蛋疼。<br>然后在网上找原因时，看到有说可能与搜狗有关系，卸载搜狗后，chrome恢复正常， 重新安装成新版本的搜狗后，问题解决<br> <a href="http://tieba.baidu.com/p/5782771456?traceid=" target="_blank" rel="noopener">参考地址:http://tieba.baidu.com/p/5782771456</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/22/mysql-日期操作函数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/22/mysql-日期操作函数/" itemprop="url">mysql 日期操作函数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T17:13:37+08:00">
-                2018-08-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据库/" itemprop="url" rel="index">
-                    <span itemprop="name">数据库</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>DATE_ADD()：日期增加函数<br>DATE_SUB()：日期减少函数 </p>
-<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>添加15分钟到日期并返回日期：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DATE_ADD(<span class="string">"2018-08-22 09:34:21"</span>, INTERVAL 15 MINUTE);</span><br></pre></td></tr></table></figure></p>
-<p>从日期减去10天并返回日期：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DATE_SUB(<span class="string">"2018-08-22"</span>, INTERVAL 10 DAY);</span><br></pre></td></tr></table></figure></p>
-<h3 id="定义和用法"><a href="#定义和用法" class="headerlink" title="定义和用法"></a>定义和用法</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">_定义：_</span><br><span class="line">DATE_ADD（）函数在添加特定时间/日期间隔后返回日期。</span><br><span class="line">DATE_SUB（）函数在减去某个时间/日期间隔后返回一个日期。</span><br><span class="line">__用法：__</span><br><span class="line">DATE_ADD(date, INTERVAL value unit)</span><br><span class="line">DATE_SUB(date, INTERVAL value unit)</span><br></pre></td></tr></table></figure>
-<h3 id="参数值"><a href="#参数值" class="headerlink" title="参数值"></a>参数值</h3><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>date</td>
-<td>必填，原日期</td>
-</tr>
-<tr>
-<td>value</td>
-<td>必填，增加/减去日期的值</td>
-</tr>
-<tr>
-<td>unit</td>
-<td>必填，单位类型</td>
-</tr>
-</tbody>
-</table>
-<h3 id="unit值"><a href="#unit值" class="headerlink" title="unit值"></a>unit值</h3><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>MICROSECOND</td>
-<td>微秒</td>
-</tr>
-<tr>
-<td>SECOND</td>
-<td>秒</td>
-</tr>
-<tr>
-<td>MINUTE</td>
-<td>分钟</td>
-</tr>
-<tr>
-<td>HOUR</td>
-<td>小时</td>
-</tr>
-<tr>
-<td>DAY</td>
-<td>天</td>
-</tr>
-<tr>
-<td>WEEK</td>
-<td>周</td>
-</tr>
-<tr>
-<td>MONTH</td>
-<td>月</td>
-</tr>
-<tr>
-<td>QUARTER</td>
-<td>季度</td>
-</tr>
-<tr>
-<td>YEAR</td>
-<td>年</td>
-</tr>
-<tr>
-<td>SECOND_MICROSECOND</td>
-<td>秒.微秒</td>
-</tr>
-<tr>
-<td>MINUTE_MICROSECOND</td>
-<td>分钟.微秒</td>
-</tr>
-<tr>
-<td>MINUTE_SECOND</td>
-<td>分钟.秒</td>
-</tr>
-<tr>
-<td>HOUR_MICROSECOND</td>
-<td>小时.微秒</td>
-</tr>
-<tr>
-<td>HOUR_SECOND</td>
-<td>小时.秒</td>
-</tr>
-<tr>
-<td>HOUR_MINUTE</td>
-<td>小时.分</td>
-</tr>
-<tr>
-<td>DAY_MICROSECOND</td>
-<td>天.微秒</td>
-</tr>
-<tr>
-<td>DAY_SECOND</td>
-<td>天.秒</td>
-</tr>
-<tr>
-<td>DAY_MINUTE</td>
-<td>天.分</td>
-</tr>
-<tr>
-<td>DAY_HOUR</td>
-<td>天.时</td>
-</tr>
-<tr>
-<td>YEAR_MONTH</td>
-<td>年.月</td>
-</tr>
-</tbody>
-</table>
-<h5 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h5><p>DATE_ADD()参考地址1: <a href="https://www.w3schools.com/sql/func_mysql_date_add.asp" target="_blank" rel="noopener">https://www.w3schools.com/sql/func_mysql_date_add.asp</a><br>DATE_SUB()参考地址2: <a href="https://www.w3schools.com/sql/func_mysql_date_sub.asp" target="_blank" rel="noopener">https://www.w3schools.com/sql/func_mysql_date_sub.asp</a></p>
-<h3 id="DATE-FORMAT-函数"><a href="#DATE-FORMAT-函数" class="headerlink" title="DATE_FORMAT() 函数"></a>DATE_FORMAT() 函数</h3><p>DATE_FORMAT():不同的格式显示日期/时间数据</p>
-<h3 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h3><h4 id="执行以下脚本"><a href="#执行以下脚本" class="headerlink" title="执行以下脚本"></a>执行以下脚本</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">select DATE_FORMAT(NOW(),<span class="string">'%b %d %Y %h:%i %p'</span>);</span><br><span class="line"> select DATE_FORMAT(NOW(),<span class="string">'%Y-%m-%d'</span>);</span><br><span class="line">select DATE_FORMAT(NOW(),<span class="string">'%d %b %y'</span>);</span><br><span class="line">select DATE_FORMAT(NOW(),<span class="string">'%d %b %Y %T:%f'</span>);</span><br></pre></td></tr></table></figure>
-<h4 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Aug 28 2018 12:53 AM</span><br><span class="line">2018-08-28</span><br><span class="line">28 Aug 18</span><br><span class="line">28 Aug 2018 12:53:40:000000</span><br><span class="line">``` </span><br><span class="line"><span class="comment">### 定义和用法</span></span><br><span class="line">``` bash</span><br><span class="line">_定义：_</span><br><span class="line">DATE_FORMAT() 函数用于以不同的格式显示日期/时间数据。</span><br><span class="line">__用法：__</span><br><span class="line">DATE_FORMAT(date,format)</span><br></pre></td></tr></table></figure>
-<h3 id="参数值-1"><a href="#参数值-1" class="headerlink" title="参数值"></a>参数值</h3><p>date 参数是合法的日期。format 规定日期/时间的输出格式。</p>
-<h4 id="format-可用格式"><a href="#format-可用格式" class="headerlink" title="format 可用格式"></a>format 可用格式</h4><table>
-<thead>
-<tr>
-<th>格式</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>%a</td>
-<td>缩写星期名</td>
-</tr>
-<tr>
-<td>%b</td>
-<td>缩写月名</td>
-</tr>
-<tr>
-<td>%c</td>
-<td>月，数值</td>
-</tr>
-<tr>
-<td>%D</td>
-<td>带有英文前缀的月中的天</td>
-</tr>
-<tr>
-<td>%d</td>
-<td>月的天，数值(00-31)</td>
-</tr>
-<tr>
-<td>%e</td>
-<td>月的天，数值(0-31)</td>
-</tr>
-<tr>
-<td>%f</td>
-<td>微秒</td>
-</tr>
-<tr>
-<td>%H</td>
-<td>小时 (00-23)</td>
-</tr>
-<tr>
-<td>%h</td>
-<td>小时 (01-12)</td>
-</tr>
-<tr>
-<td>%I</td>
-<td>小时 (01-12)</td>
-</tr>
-<tr>
-<td>%i</td>
-<td>分钟，数值(00-59)</td>
-</tr>
-<tr>
-<td>%j</td>
-<td>年的天 (001-366)</td>
-</tr>
-<tr>
-<td>%k</td>
-<td>小时 (0-23)</td>
-</tr>
-<tr>
-<td>%l</td>
-<td>小时 (1-12)</td>
-</tr>
-<tr>
-<td>%M</td>
-<td>月名</td>
-</tr>
-<tr>
-<td>%m</td>
-<td>月，数值(00-12)</td>
-</tr>
-<tr>
-<td>%p</td>
-<td>AM 或 PM</td>
-</tr>
-<tr>
-<td>%r</td>
-<td>时间，12-小时（hh:mm:ss AM 或 PM）</td>
-</tr>
-<tr>
-<td>%S</td>
-<td>秒(00-59)</td>
-</tr>
-<tr>
-<td>%s</td>
-<td>秒(00-59)</td>
-</tr>
-<tr>
-<td>%T</td>
-<td>时间, 24-小时 (hh:mm:ss)</td>
-</tr>
-<tr>
-<td>%U</td>
-<td>周 (00-53) 星期日是一周的第一天</td>
-</tr>
-<tr>
-<td>%u</td>
-<td>周 (00-53) 星期一是一周的第一天</td>
-</tr>
-<tr>
-<td>%V</td>
-<td>周 (01-53) 星期日是一周的第一天，与 %X 使用</td>
-</tr>
-<tr>
-<td>%v</td>
-<td>周 (01-53) 星期一是一周的第一天，与 %x 使用</td>
-</tr>
-<tr>
-<td>%W</td>
-<td>星期名</td>
-</tr>
-<tr>
-<td>%w</td>
-<td>周的天 （0=星期日, 6=星期六）</td>
-</tr>
-<tr>
-<td>%X</td>
-<td>年，其中的星期日是周的第一天，4 位，与 %V 使用</td>
-</tr>
-<tr>
-<td>%x</td>
-<td>年，其中的星期一是周的第一天，4 位，与 %v 使用</td>
-</tr>
-<tr>
-<td>%Y</td>
-<td>年，4 位</td>
-</tr>
-<tr>
-<td>%y</td>
-<td>年，2 位</td>
-</tr>
-</tbody>
-</table>
-<h5 id="参考地址-1"><a href="#参考地址-1" class="headerlink" title="参考地址"></a>参考地址</h5><p>DATE_FORMAT()参考地址1: <a href="http://www.w3school.com.cn/sql/func_date_format.asp" target="_blank" rel="noopener">http://www.w3school.com.cn/sql/func_date_format.asp</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/22/支付遇到的问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/22/支付遇到的问题/" itemprop="url">订单支付遇到的问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T17:07:11+08:00">
-                2018-08-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/业务/" itemprop="url" rel="index">
-                    <span itemprop="name">业务</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>前提：是这样的，一笔订单下单之后，如果不支付，会处于待支付状态。而一般这个订单会有类似 30 分钟不支付自动取消订单的功能。</p>
-<p>实现：这种功能的实现，可以通过定时任务，每隔 30 秒或一分钟扫描一次。但如果集群环境下，可能定时任务会执行重复。当然我们可以通过类似操作系统 PV 操作限制同一时段只能一个定时任务执行。</p>
-<p>目标：这种情况，除了定时任务，还有没有其他好点的实现？</p>
-<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>1.记录下单时间 。在用户访问订单的时候用超时时间和下单时间比较，如果超时就取消订单，用户主动触发。在加上定时任务，扫描表，过期订单改为取消状态。<br>优点：方法简单高效<br>缺点：用户自己触发的这种并不能即使恢复库存.<br>2.利用redis。将订单存入redis中，给订单设置过期时间（expire ）。支付时，去redis查询订单，不存在的话讲订单设置为已取消。</p>
-<p>3.延时队列。 可以 rabbitmq 实现的。AB 两个队列，A 队列设置消息过期时间，A 队列没有消费者，A 队列过期后自动转发到 B 队列，B 队列消费者进行取消队列。（此处是别人给的方案，对消息队列熟悉，等有时间研究）</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/2018/08/22/hexo搭建/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/22/hexo搭建/" itemprop="url">hexo搭建</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T00:56:36+08:00">
-                2018-08-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p> 这是一篇用于记录hexo搭建的日志,用于记录遇到的所有问题:</p>
-<h3 id="搭建"><a href="#搭建" class="headerlink" title="搭建"></a>搭建</h3><p> hexo搭建：<a href="https://zhuanlan.zhihu.com/p/25729240" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/25729240</a></p>
-<h3 id="标签和分类"><a href="#标签和分类" class="headerlink" title="标签和分类"></a>标签和分类</h3><p> tags和categories用法：<a href="https://github.com/hexojs/hexo/issues/320" target="_blank" rel="noopener">https://github.com/hexojs/hexo/issues/320</a></p>
-<h3 id="增加搜索功能"><a href="#增加搜索功能" class="headerlink" title="增加搜索功能"></a>增加搜索功能</h3><p> 增加搜索功能：<a href="http://www.itfanr.cc/2017/10/27/add-search-function-to-hexo-blog/" target="_blank" rel="noopener">http://www.itfanr.cc/2017/10/27/add-search-function-to-hexo-blog/</a></p>
-<h3 id="增加本站访问统计次数"><a href="#增加本站访问统计次数" class="headerlink" title="增加本站访问统计次数"></a>增加本站访问统计次数</h3><p>使用了不蒜子 插件:<a href="http://ibruce.info/2015/04/04/busuanzi/" target="_blank" rel="noopener">http://ibruce.info/2015/04/04/busuanzi/</a></p>
-<p>修改hemes/你的主题/layout/_partial/footer.ejs文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;script async src=<span class="string">"https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">&lt;div class=<span class="string">"copyright"</span> &gt;</span><br><span class="line">  &#123;% <span class="built_in">set</span> current = date(Date.now(), <span class="string">"YYYY"</span>) %&#125;</span><br><span class="line">  &amp;copy; &#123;% <span class="keyword">if</span> theme.since and theme.since != current %&#125; &#123;&#123; theme.since &#125;&#125; - &#123;% endif %&#125;</span><br><span class="line">  &lt;span itemprop=<span class="string">"copyrightYear"</span>&gt;&#123;&#123; current &#125;&#125;&lt;/span&gt;</span><br><span class="line">  &lt;span class=<span class="string">"with-love"</span>&gt;</span><br><span class="line">    &lt;i class=<span class="string">"fa fa-&#123;&#123; theme.authoricon &#125;&#125;"</span>&gt;&lt;/i&gt;</span><br><span class="line">  &lt;/span&gt;</span><br><span class="line">  &lt;span class=<span class="string">"author"</span> itemprop=<span class="string">"copyrightHolder"</span>&gt;&#123;&#123; config.author &#125;&#125;&lt;/span&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=<span class="string">"powered-by"</span>&gt;</span><br><span class="line">&lt;i class=<span class="string">"fa fa-user-md"</span>&gt;&lt;/i&gt;</span><br><span class="line">&lt;span id=<span class="string">"busuanzi_container_site_uv"</span>&gt;</span><br><span class="line">  本站访客数:&lt;span id=<span class="string">"busuanzi_value_site_uv"</span>&gt;&lt;/span&gt;人次</span><br><span class="line">&lt;/span&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=<span class="string">"theme-info"</span>&gt;</span><br><span class="line">&lt;span id=<span class="string">"busuanzi_container_site_pv"</span>&gt;</span><br><span class="line">    本站总访问量&lt;span id=<span class="string">"busuanzi_value_site_pv"</span>&gt;&lt;/span&gt;次</span><br><span class="line">&lt;/span&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
-<p>我这里去掉了 “由 Hexo 强力驱动  |  主题 - NexT.Gemini“字样</p>
-<h3 id="hexo-部署后，绑定域名清空的问题"><a href="#hexo-部署后，绑定域名清空的问题" class="headerlink" title="hexo 部署后，绑定域名清空的问题"></a>hexo 部署后，绑定域名清空的问题</h3><p> hexo 部署后 git项目的 Custom domain清空：在source文件夹下面建个CNAME文件夹，里面写上自己的域名，同样的，favicon.ico也可以在里面设置。<br> 参考： <a href="https://www.zhihu.com/question/28814437" target="_blank" rel="noopener">https://www.zhihu.com/question/28814437</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wuvsxu.github.io/1990/01/01/leetcode简单难度题解法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无恤">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://www.wziyou.xyz:19080/title.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="晚来天欲雪，能饮一杯无">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/1990/01/01/leetcode简单难度题解法/" itemprop="url">leetcode简单难度题解法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="1990-01-01T01:01:01+08:00">
-                1990-01-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>&lt;!<a href="https://leetcode-cn.com&gt;" target="_blank" rel="noopener">https://leetcode-cn.com&gt;</a></p>
-<h5 id="1-两数之和-https-leetcode-cn-com-problems-two-sum-难度：☆☆"><a href="#1-两数之和-https-leetcode-cn-com-problems-two-sum-难度：☆☆" class="headerlink" title="1. 两数之和  https://leetcode-cn.com/problems/two-sum/ 难度：☆☆"></a>1. 两数之和  <a href="https://leetcode-cn.com/problems/two-sum/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/two-sum/</a> 难度：☆☆</h5><p> 题目&lt;!<a href="https://leetcode-cn.com/articles/two-sum/&gt;" target="_blank" rel="noopener">https://leetcode-cn.com/articles/two-sum/&gt;</a>:<br> 给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的 两个 整数。<br> 你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">给定 nums = [2, 7, 11, 15], target = 9</span><br><span class="line">因为 nums[0] + nums[1] = 2 + 7 = 9</span><br><span class="line">所以返回 [0, 1]</span><br></pre></td></tr></table></figure></p>
-<p>自己解法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public   int[] twoSum(int[] nums, int target) &#123;</span><br><span class="line">    int[] x=new int[2];</span><br><span class="line">    for(int i=0;i&lt;nums.length;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        for(int j=nums.length-1;j&gt;=0;j--)</span><br><span class="line">        &#123;</span><br><span class="line">            if(nums[i]+nums[j]==target &amp;&amp; i!=j)</span><br><span class="line">            &#123;</span><br><span class="line">                 x[0]=i;x[1]=j;</span><br><span class="line">                 return x;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    throw new Exception(&quot;没有符合条件的数&quot;);;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>最优解法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public int[] twoSum(int[] nums, int target) &#123;</span><br><span class="line">    Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();</span><br><span class="line">    for (int i = 0; i &lt; nums.length; i++) &#123;</span><br><span class="line">        int complement = target - nums[i];</span><br><span class="line">        if (map.containsKey(complement)) &#123;</span><br><span class="line">            return new int[] &#123; map.get(complement), i &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">        map.put(nums[i], i);</span><br><span class="line">    &#125;</span><br><span class="line">    throw new IllegalArgumentException(&quot;No two sum solution&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="1-1-求数字的根-有趣的题目-lt-来自知乎-gt"><a href="#1-1-求数字的根-有趣的题目-lt-来自知乎-gt" class="headerlink" title="1.1 求数字的根 有趣的题目&lt;来自知乎&gt;"></a>1.1 求数字的根 有趣的题目&lt;来自知乎&gt;</h5><p>求一个十进制数字的根<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f(12345) -&gt; 1+2+3+4+5 =15  -&gt;  1+5=6   12345的根为6</span><br></pre></td></tr></table></figure></p>
-<p>数学公式写法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function f(n)&#123;</span><br><span class="line">	return (n-1)%9 +1 ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>解释：<br>ab写成：10a+b=9a+a+b，这和a+b相差 9a，也就是9的倍数。如果大一点也是一样，abc写成：100a+10b+c=99a+9b+a+b+c,和a+b+c相差9的倍数99a+9b=9（11a+b）。所以abcde…把所有的位数相加结果就是9的倍数取余。<br>abcde=10000a+1000b+100c+10d+e=9999a +a+ 999b+ b+99c+c +9d +d +e = 9999a +999b +99c +9d  +a+b+c+d+e<br> 另外先减一再加一的原因结果不会等于0，如果可以被9整除，直接取余就会是0,这样在计算过程中，先保证所有位数相加是取余是0-8，这样在结果+1时候，就会是1-9.不会出现0值。非常完美的数学算法<br>这里 之所以写成(n-1)%9 +1 不写成 n %9 ，是要改变返回值的值域。(n-1)%9 +1 的值域是 [1,9] ,n %9的值域是[0,8];<br>f(n) =n%9   </p>
-<h5 id="2-两数相加-https-leetcode-cn-com-problems-add-two-numbers-难度：☆☆☆☆☆"><a href="#2-两数相加-https-leetcode-cn-com-problems-add-two-numbers-难度：☆☆☆☆☆" class="headerlink" title="2. 两数相加 https://leetcode-cn.com/problems/add-two-numbers/ 难度：☆☆☆☆☆"></a>2. 两数相加 <a href="https://leetcode-cn.com/problems/add-two-numbers/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/add-two-numbers/</a> 难度：☆☆☆☆☆</h5><p>给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。<br>如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。<br>您可以假设除了数字 0 之外，这两个数都不会以 0 开头。<br>示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：(2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)</span><br><span class="line">输出：7 -&gt; 0 -&gt; 8</span><br><span class="line">原因：342 + 465 = 807</span><br></pre></td></tr></table></figure></p>
-<p>自己第一次未解出来</p>
-<p>自己看过解析后，重新做的解答<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Definition for singly-linked list.</span><br><span class="line"> * public class </span><br><span class="line"> &#123;</span><br><span class="line"> *     int val;</span><br><span class="line"> *     ListNode next;</span><br><span class="line"> *     ListNode(int x) &#123; val = x; &#125;</span><br><span class="line"> * &#125;</span><br><span class="line"> */</span><br><span class="line">class Solution &#123;</span><br><span class="line">    public ListNode addTwoNumbers(ListNode l1, ListNode l2) &#123;</span><br><span class="line">        int temp=0;</span><br><span class="line">        ListNode result=new ListNode(0);  </span><br><span class="line">        result.next=new ListNode(0);  </span><br><span class="line">        ListNode tempNode= result.next;</span><br><span class="line">        while(l1!=null||l2!=null)&#123;</span><br><span class="line">            int a =0,b=0;</span><br><span class="line">            if(l1==null)&#123;a=0;&#125;else&#123;a=l1.val;&#125;</span><br><span class="line">            if(l2==null)&#123;b=0;&#125;else&#123;b=l2.val;&#125;</span><br><span class="line">            int i  = a+b+temp;            </span><br><span class="line">            int j=i%10;</span><br><span class="line">            tempNode.next=new ListNode(j );</span><br><span class="line">            if(i&gt;=10 )&#123;temp=1; &#125;else&#123;temp=0;&#125;</span><br><span class="line">            if(l1!=null) &#123;l1=l1.next;&#125;</span><br><span class="line">            if(l2!=null) &#123;l2=l2.next;&#125;</span><br><span class="line">            tempNode=tempNode.next;</span><br><span class="line">        &#125;</span><br><span class="line">        if(temp==1)&#123;</span><br><span class="line">            tempNode.next=new ListNode(1);  </span><br><span class="line">        &#125;</span><br><span class="line">        return result.next.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>标准答案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Definition for singly-linked list.</span><br><span class="line"> * public class ListNode &#123;</span><br><span class="line"> *     int val;</span><br><span class="line"> *     ListNode next;</span><br><span class="line"> *     ListNode(int x) &#123; val = x; &#125;</span><br><span class="line"> * &#125;</span><br><span class="line"> */</span><br><span class="line">public ListNode addTwoNumbers(ListNode l1, ListNode l2) &#123;</span><br><span class="line">    ListNode dummyHead = new ListNode(0);</span><br><span class="line">    ListNode p = l1, q = l2, curr = dummyHead;</span><br><span class="line">    int carry = 0;</span><br><span class="line">    while (p != null || q != null) &#123;</span><br><span class="line">        int x = (p != null) ? p.val : 0;</span><br><span class="line">        int y = (q != null) ? q.val : 0;</span><br><span class="line">        int sum = carry + x + y;</span><br><span class="line">        carry = sum / 10;</span><br><span class="line">        curr.next = new ListNode(sum % 10);</span><br><span class="line">        curr = curr.next;</span><br><span class="line">        if (p != null) p = p.next;</span><br><span class="line">        if (q != null) q = q.next;</span><br><span class="line">    &#125;</span><br><span class="line">    if (carry &gt; 0) &#123;</span><br><span class="line">        curr.next = new ListNode(carry);</span><br><span class="line">    &#125;</span><br><span class="line">    return dummyHead.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>自己问题难点：没有理解ListNode代表的含义，对链表类的对象没有操作经验。new   ListNode(x) 表示的是当前位数上的数字为X,new   ListNode(x).next,表示的是下一位上的数字。 自己考虑到了10位进1，后面位数上为null的情况，但是不知道怎么使用代码写出来。<br>这里可以给l1 ,l2 重新赋值临时变量，他的下一位在赋值给他本身。第一个dummyHead是需要返回的值。用curr来表示他的属性，不断的往后赋值，但是不会改变dummyHead对象本身。这里需要注意的是，两位数加两位数可能等于三位数，这里在最后就要多加一次carry值的判断。</p>
-<h6 id="3-宝石与石头-https-leetcode-cn-com-problems-jewels-and-stones-comments-难度：☆"><a href="#3-宝石与石头-https-leetcode-cn-com-problems-jewels-and-stones-comments-难度：☆" class="headerlink" title="3.宝石与石头 https://leetcode-cn.com/problems/jewels-and-stones/comments/ 难度：☆"></a>3.宝石与石头 <a href="https://leetcode-cn.com/problems/jewels-and-stones/comments/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/jewels-and-stones/comments/</a> 难度：☆</h6><p>给定字符串J 代表石头中宝石的类型，和字符串 S代表你拥有的石头。 S 中每个字符代表了一种你拥有的石头的类型，你想知道你拥有的石头中有多少是宝石。<br>J 中的字母不重复，J 和 S中的所有字符都是字母。字母区分大小写，因此”a”和”A”是不同类型的石头。<br>示例 1:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: J = &quot;aA&quot;, S = &quot;aAAbbbb&quot;</span><br><span class="line">输出: 3</span><br></pre></td></tr></table></figure></p>
-<p>自己的解法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int numJewelsInStones(String J, String S) &#123;</span><br><span class="line">        int x=0;</span><br><span class="line">        byte[] sArray=S.getBytes();</span><br><span class="line">         for(int i=0;i&lt;sArray.length;i++)</span><br><span class="line">         &#123;</span><br><span class="line">             if(J.indexOf(sArray[i])!=-1)</span><br><span class="line">             &#123;</span><br><span class="line">                 x++;</span><br><span class="line">             &#125;             </span><br><span class="line">         &#125;</span><br><span class="line">        return x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>此题暂时没有最优解法。可自由发挥。</p>
-<h5 id="4-回文数-https-leetcode-cn-com-problems-palindrome-number-难度：☆☆"><a href="#4-回文数-https-leetcode-cn-com-problems-palindrome-number-难度：☆☆" class="headerlink" title="4. 回文数 https://leetcode-cn.com/problems/palindrome-number/ 难度：☆☆"></a>4. 回文数 <a href="https://leetcode-cn.com/problems/palindrome-number/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/palindrome-number/</a> 难度：☆☆</h5><p>判断一个整数是否是回文数。回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。<br>示例 1:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 121</span><br><span class="line">输出: true</span><br></pre></td></tr></table></figure></p>
-<p>自己的解法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public boolean isPalindrome(int x) &#123;</span><br><span class="line">        if(x&lt;0) return false;       </span><br><span class="line">        if(x&gt;=0)&#123;</span><br><span class="line">            String y=x+&quot;&quot;;</span><br><span class="line">            byte[]  yArray =y.getBytes();</span><br><span class="line">            boolean flag=true;</span><br><span class="line">            for(int i=0;i&lt;yArray.length;i++)&#123;</span><br><span class="line">                if(yArray[i]!=yArray[yArray.length-i-1])&#123;</span><br><span class="line">                    flag=false;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            return flag; </span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="4-1-上述回文数中-不使用字符串该如何解决-难度：☆☆☆☆☆"><a href="#4-1-上述回文数中-不使用字符串该如何解决-难度：☆☆☆☆☆" class="headerlink" title="4.1 上述回文数中 不使用字符串该如何解决 难度：☆☆☆☆☆"></a>4.1 上述回文数中 不使用字符串该如何解决 难度：☆☆☆☆☆</h5><p>解析：不使用字符串，首先想到的是，是否有现成的数据公示可以用，想了想，目前接触的没有可以用的，只能想想其他方法。<br>因为数字的特殊性，在程序中经常用到，想一想是否能否算出各个位数上的数字。<br>比如12345，长度可以用12345/(10^i)算出来。<br>要计算12345的第三位上的数字。 可以先用12345减去第三位前面的数字，再除以10^2，取整数。即可算出第三位上的数字。<br>第三位前面的数字如何计算。 可以用12345 除以10^3，取整数，再乘以10^3，即可算出 第三位前面的数字为 12000。<br>用12345减去 12000 为345。 345 除以10^2，取整为3。<br>这样就可以算出各个位数上的数字。再用来比较就可以了。</p>
-<p>自己解法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"> public static boolean isPalindrome(int x) &#123;</span><br><span class="line">	if(x&lt;0) return false;</span><br><span class="line">	if(x&lt;10) return true;</span><br><span class="line">	//计算出x长度</span><br><span class="line">	int y=0;</span><br><span class="line">	for(int j=1;j&lt;22;j++)&#123;</span><br><span class="line">		int temp=(int) (x/(Math.pow(10,j)));</span><br><span class="line">		if(temp&gt;0&amp;&amp;temp&lt;10)&#123;</span><br><span class="line">			y=j+1;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	boolean flag=true;</span><br><span class="line">	for(int i=1;i&lt;=y;i++)&#123;</span><br><span class="line">		//第i位数字</span><br><span class="line">		int tempA1=(int) (x/(Math.pow( 10,i)));</span><br><span class="line">		int after= (int) ( (x- tempA1 *(Math.pow( 10,i)))/(Math.pow( 10,i-1)) );</span><br><span class="line">		// //第y-i-1位数字(倒数i位数字)</span><br><span class="line">		int tempB1=(int) (x/( Math.pow( 10,(y-i+1))));</span><br><span class="line">		int before= (int) ( (x- tempB1 *(Math.pow( 10,(y-i+1))))/(Math.pow( 10,(y-i-1+1))) );	            </span><br><span class="line">		if(before == after)&#123;</span><br><span class="line">			//flag=true;</span><br><span class="line">		&#125; else  &#123;</span><br><span class="line">			flag=false;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return flag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="4-2-软通笔试题"><a href="#4-2-软通笔试题" class="headerlink" title="4.2 软通笔试题"></a>4.2 软通笔试题</h5><p>长度为n的数组乱序存放着0至n-1. 现在只能进行0与其他数的交换，完成以下函数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">public class Solution &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 交换数组里n和0的位置</span><br><span class="line">     *</span><br><span class="line">     * @param array</span><br><span class="line">     *            数组</span><br><span class="line">     * @param len</span><br><span class="line">     *            数组长度</span><br><span class="line">     * @param n</span><br><span class="line">     *            和0交换的数</span><br><span class="line">     */</span><br><span class="line">    // 不要修改以下函数内容</span><br><span class="line">    public void swapWithZero(int[] array, int len, int n) &#123;</span><br><span class="line">        Main.SwapWithZero(array, len, n);</span><br><span class="line">    &#125;</span><br><span class="line">    // 不要修改以上函数内容</span><br><span class="line"> </span><br><span class="line">    /**</span><br><span class="line">     * 通过调用swapWithZero方法来排</span><br><span class="line">     *</span><br><span class="line">     * @param array</span><br><span class="line">     *            存储有[0,n)的数组</span><br><span class="line">     * @param len</span><br><span class="line">     *            数组长度</span><br><span class="line">     */</span><br><span class="line">    public void sort(int[] array, int len) &#123;</span><br><span class="line">        // 完成这个函数</span><br><span class="line">         for(int i = len-1;i&gt;=0; i--)&#123;</span><br><span class="line">				if(array[i] == i)                        //判断是否在正确位置</span><br><span class="line">					continue;</span><br><span class="line">                swapWithZero(array,len,array[i]);</span><br><span class="line">                swapWithZero(array,len,i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">在网上看到有人说为什么要用swapWithZero()这个方法，直接赋值更快，如下：</span><br></pre></td></tr></table></figure>
-<p>  for(int i = 0; i &lt; len; i++){<br>        array[i]=i;<br>  }<br><code>`</code></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2014,7 +1978,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">90</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2036,7 +2000,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
