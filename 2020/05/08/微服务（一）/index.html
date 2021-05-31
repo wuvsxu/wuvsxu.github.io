@@ -102,16 +102,16 @@
 <meta property="og:site_name" content="晚来天欲雪，能饮一杯无">
 <meta property="og:description" content="服务注册发现　　服务注册就是维护一个登记簿，它管理系统内所有的服务地址。当新的服务启动后，它会向登记簿交待自己的地址信息。服务的依赖方直接向登记簿要Service Provider地址就行了。当下用于服务注册的工具非常多ZooKeeper，Consul，Etcd, 还有Netflix家的eureka等。服务注册有两种形式：客户端注册和第三方注册。 客户端注册（zookeeper）　　客户端注册是服">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/6C65380F20C74173B85C08B4F6729C22.jpg">
-<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/3AC42620A1C44EADAE5010A7F7B5AFF0.jpg">
-<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/3C6D9E589B464FD292E4FEA82A42E193.jpg">
-<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/486CD1194A6F418DBCC32237927DCFD7.jpg">
-<meta property="og:image" content="http://www.wziyou.xyz:19080/image-handle/FEB63D2638A04C1B83D554A5F71E3FD9.jpg">
-<meta property="og:updated_time" content="2020-05-08T16:56:58.776Z">
+<meta property="og:image" content="http://47.98.201.234:19080/image-handle/6C65380F20C74173B85C08B4F6729C22.jpg">
+<meta property="og:image" content="http://47.98.201.234:19080/image-handle/3AC42620A1C44EADAE5010A7F7B5AFF0.jpg">
+<meta property="og:image" content="http://47.98.201.234:19080/image-handle/3C6D9E589B464FD292E4FEA82A42E193.jpg">
+<meta property="og:image" content="http://47.98.201.234:19080/image-handle/486CD1194A6F418DBCC32237927DCFD7.jpg">
+<meta property="og:image" content="http://47.98.201.234:19080/image-handle/FEB63D2638A04C1B83D554A5F71E3FD9.jpg">
+<meta property="og:updated_time" content="2021-03-27T12:43:12.522Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微服务（一）">
 <meta name="twitter:description" content="服务注册发现　　服务注册就是维护一个登记簿，它管理系统内所有的服务地址。当新的服务启动后，它会向登记簿交待自己的地址信息。服务的依赖方直接向登记簿要Service Provider地址就行了。当下用于服务注册的工具非常多ZooKeeper，Consul，Etcd, 还有Netflix家的eureka等。服务注册有两种形式：客户端注册和第三方注册。 客户端注册（zookeeper）　　客户端注册是服">
-<meta name="twitter:image" content="http://www.wziyou.xyz:19080/image-handle/6C65380F20C74173B85C08B4F6729C22.jpg">
+<meta name="twitter:image" content="http://47.98.201.234:19080/image-handle/6C65380F20C74173B85C08B4F6729C22.jpg">
 
 
 
@@ -381,12 +381,12 @@
 
       
         <h1 id="服务注册发现"><a href="#服务注册发现" class="headerlink" title="服务注册发现"></a>服务注册发现</h1><p>　　服务注册就是维护一个登记簿，它管理系统内所有的服务地址。当新的服务启动后，它会向登记簿交待自己的地址信息。服务的依赖方直接向登记簿要Service Provider地址就行了。当下用于服务注册的工具非常多ZooKeeper，Consul，Etcd, 还有Netflix家的eureka等。服务注册有两种形式：客户端注册和第三方注册。</p>
-<h2 id="客户端注册（zookeeper）"><a href="#客户端注册（zookeeper）" class="headerlink" title="客户端注册（zookeeper）"></a>客户端注册（zookeeper）</h2><p>　　客户端注册是服务自身要负责注册与注销的工作。当服务启动后向注册中心注册自身，当服务下线时注销自己。期间还需要和注册中心保持心跳。心跳不一定要客户端来做，也可以由注册中心负责（这个过程叫探活）。这种方式的缺点是注册工作与服务耦合在一起，不同语言都要实现一套注册逻辑。<br><img src="http://www.wziyou.xyz:19080/image-handle/6C65380F20C74173B85C08B4F6729C22.jpg" alt="avatar"></p>
-<h2 id="第三方注册（独立的服务Registrar）"><a href="#第三方注册（独立的服务Registrar）" class="headerlink" title="第三方注册（独立的服务Registrar）"></a>第三方注册（独立的服务Registrar）</h2><p>　　第三方注册由一个独立的服务Registrar负责注册与注销。当服务启动后以某种方式通知Registrar，然后Registrar负责向注册中心发起注册工作。同时注册中心要维护与服务之间的心跳，当服务不可用时，向注册中心注销服务。这种方式的缺点是Registrar必须是一个高可用的系统，否则注册工作没法进展。<br><img src="http://www.wziyou.xyz:19080/image-handle/3AC42620A1C44EADAE5010A7F7B5AFF0.jpg" alt="avatar"></p>
-<h2 id="客户端发现"><a href="#客户端发现" class="headerlink" title="客户端发现"></a>客户端发现</h2><p>　　客户端发现是指客户端负责查询可用服务地址，以及负载均衡的工作。这种方式最方便直接，而且也方便做负载均衡。再者一旦发现某个服务不可用立即换另外一个，非常直接。缺点也在于多语言时的重复工作，每个语言实现相同的逻辑。<br><img src="http://www.wziyou.xyz:19080/image-handle/3C6D9E589B464FD292E4FEA82A42E193.jpg" alt="avatar"></p>
-<h2 id="服务端发现"><a href="#服务端发现" class="headerlink" title="服务端发现"></a>服务端发现</h2><p>　　服务端发现需要额外的Router服务，请求先打到Router，然后Router负责查询服务与负载均衡。这种方式虽然没有客户端发现的缺点，但是它的缺点是保证Router的高可用。<br><img src="http://www.wziyou.xyz:19080/image-handle/486CD1194A6F418DBCC32237927DCFD7.jpg" alt="avatar"></p>
+<h2 id="客户端注册（zookeeper）"><a href="#客户端注册（zookeeper）" class="headerlink" title="客户端注册（zookeeper）"></a>客户端注册（zookeeper）</h2><p>　　客户端注册是服务自身要负责注册与注销的工作。当服务启动后向注册中心注册自身，当服务下线时注销自己。期间还需要和注册中心保持心跳。心跳不一定要客户端来做，也可以由注册中心负责（这个过程叫探活）。这种方式的缺点是注册工作与服务耦合在一起，不同语言都要实现一套注册逻辑。<br><img src="http://47.98.201.234:19080/image-handle/6C65380F20C74173B85C08B4F6729C22.jpg" alt="avatar"></p>
+<h2 id="第三方注册（独立的服务Registrar）"><a href="#第三方注册（独立的服务Registrar）" class="headerlink" title="第三方注册（独立的服务Registrar）"></a>第三方注册（独立的服务Registrar）</h2><p>　　第三方注册由一个独立的服务Registrar负责注册与注销。当服务启动后以某种方式通知Registrar，然后Registrar负责向注册中心发起注册工作。同时注册中心要维护与服务之间的心跳，当服务不可用时，向注册中心注销服务。这种方式的缺点是Registrar必须是一个高可用的系统，否则注册工作没法进展。<br><img src="http://47.98.201.234:19080/image-handle/3AC42620A1C44EADAE5010A7F7B5AFF0.jpg" alt="avatar"></p>
+<h2 id="客户端发现"><a href="#客户端发现" class="headerlink" title="客户端发现"></a>客户端发现</h2><p>　　客户端发现是指客户端负责查询可用服务地址，以及负载均衡的工作。这种方式最方便直接，而且也方便做负载均衡。再者一旦发现某个服务不可用立即换另外一个，非常直接。缺点也在于多语言时的重复工作，每个语言实现相同的逻辑。<br><img src="http://47.98.201.234:19080/image-handle/3C6D9E589B464FD292E4FEA82A42E193.jpg" alt="avatar"></p>
+<h2 id="服务端发现"><a href="#服务端发现" class="headerlink" title="服务端发现"></a>服务端发现</h2><p>　　服务端发现需要额外的Router服务，请求先打到Router，然后Router负责查询服务与负载均衡。这种方式虽然没有客户端发现的缺点，但是它的缺点是保证Router的高可用。<br><img src="http://47.98.201.234:19080/image-handle/486CD1194A6F418DBCC32237927DCFD7.jpg" alt="avatar"></p>
 <hr>
-<h1 id="API-网关"><a href="#API-网关" class="headerlink" title="API 网关"></a>API 网关</h1><p>　　API Gateway是一个服务器，也可以说是进入系统的唯一节点。这跟面向对象设计模式中的Facade模式很像。API Gateway封装内部系统的架构，并且提供API给各个客户端。它还可能有其他功能，如授权、监控、负载均衡、缓存、请求分片和管理、静态响应处理等。下图展示了一个适应当前架构的API Gateway。<br><img src="http://www.wziyou.xyz:19080/image-handle/FEB63D2638A04C1B83D554A5F71E3FD9.jpg" alt="avatar"><br>　　API Gateway负责请求转发、合成和协议转换。所有来自客户端的请求都要先经过API Gateway，然后路由这些请求到对应的微服务。API Gateway将经常通过调用多个微服务来处理一个请求以及聚合多个服务的结果。它可以在web协议与内部使用的非Web友好型协议间进行转换，如HTTP协议、WebSocket协议。</p>
+<h1 id="API-网关"><a href="#API-网关" class="headerlink" title="API 网关"></a>API 网关</h1><p>　　API Gateway是一个服务器，也可以说是进入系统的唯一节点。这跟面向对象设计模式中的Facade模式很像。API Gateway封装内部系统的架构，并且提供API给各个客户端。它还可能有其他功能，如授权、监控、负载均衡、缓存、请求分片和管理、静态响应处理等。下图展示了一个适应当前架构的API Gateway。<br><img src="http://47.98.201.234:19080/image-handle/FEB63D2638A04C1B83D554A5F71E3FD9.jpg" alt="avatar"><br>　　API Gateway负责请求转发、合成和协议转换。所有来自客户端的请求都要先经过API Gateway，然后路由这些请求到对应的微服务。API Gateway将经常通过调用多个微服务来处理一个请求以及聚合多个服务的结果。它可以在web协议与内部使用的非Web友好型协议间进行转换，如HTTP协议、WebSocket协议。</p>
 <h2 id="请求转发"><a href="#请求转发" class="headerlink" title="请求转发"></a>请求转发</h2><p>　　服务转发主要是对客户端的请求安装微服务的负载转发到不同的服务上</p>
 <h2 id="响应合并"><a href="#响应合并" class="headerlink" title="响应合并"></a>响应合并</h2><p>　　把业务上需要调用多个服务接口才能完成的工作合并成一次调用对外统一提供服务。<br>　　ps:<a href="https://blog.csdn.net/u012702547/article/details/78213270" target="_blank" rel="noopener">https://blog.csdn.net/u012702547/article/details/78213270</a></p>
 <h2 id="协议转换"><a href="#协议转换" class="headerlink" title="协议转换"></a>协议转换</h2><p>　　重点是支持SOAP，JMS，Rest间的协议转换。<br>　　ps:JSM <a href="https://www.cnblogs.com/chenpi/p/5559349.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenpi/p/5559349.html</a></p>
@@ -610,7 +610,7 @@
 <div class="copyright" >
   
   &copy;  2018 - 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

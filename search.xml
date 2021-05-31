@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[对象多属性排序]]></title>
     <url>%2F2020%2F11%2F04%2F%E5%AF%B9%E8%B1%A1%E5%A4%9A%E5%B1%9E%E6%80%A7%E6%8E%92%E5%BA%8F%2F</url>
-    <content type="text"><![CDATA[通过java的stream来排序 1234567// name 是success的特殊处理list = list.stream().sorted(Comparator.comparing(item -&gt; &quot;success&quot;.equals(item.getName()) ? Integer.MAX_VALUE : item.getAge())).collect(java.util.stream.Collectors.toList());// 逆序排列java.util.Collections.reverse(list);for (MoreSort item : list) &#123; System.out.println(item.getName());&#125;]]></content>
+    <content type="text"><![CDATA[通过java的stream来排序 12345678910// name 是success的特殊处理list = list.stream().sorted(Comparator.comparing(Student::getHeight) .thenComparing(Student::getWeight) .thenComparing(Student::getNum)) .collect(java.util.stream.Collectors.toList());// 逆序排列java.util.Collections.reverse(list);for (MoreSort item : list) &#123; System.out.println(item.getName());&#125;]]></content>
       <tags>
         <tag>java</tag>
       </tags>
@@ -27,7 +27,7 @@
   <entry>
     <title><![CDATA[进制表示法]]></title>
     <url>%2F2020%2F09%2F27%2F%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA%E6%B3%95%2F</url>
-    <content type="text"><![CDATA[0x :表示16进制 如0xFF0b :表示2进制 如0b110o :表示8进制 如0o77]]></content>
+    <content type="text"><![CDATA[0x :表示16进制 如0xFF0b :表示2进制 如0b110o :表示8进制 如0o77 java进制转换字符串转int123int jinzhi = scanner.nextInt();String numStr1 = scanner.next();Integer.parseUnsignedInt(numStr1, jinzhi); int转字符串123int jinzhi = scanner.nextInt();String num = scanner.next();Integer.toString(num,jinzhi) ;]]></content>
       <tags>
         <tag>java</tag>
       </tags>
